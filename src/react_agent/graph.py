@@ -10,6 +10,7 @@ from langchain_core.messages import AIMessage, SystemMessage, ToolMessage
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import interrupt
 
+from react_agent.intake import text_nodes
 from react_agent.models import Approval, ConflictError, ToolInputError
 from react_agent.prompts import SYSTEM_PROMPT
 from react_agent.state import State
@@ -17,7 +18,7 @@ from react_agent.store import canonical_json, content_hash
 from react_agent.tools import TOOL_SCHEMAS, execute_tool
 
 
-def build_graph(store, model, checkpointer, max_rounds=6):
+def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None):
     def call_model(state: State):
         rounds = state.get("rounds", 0)
         if rounds >= max_rounds:
@@ -84,7 +85,8 @@ def build_graph(store, model, checkpointer, max_rounds=6):
     def commit_order(state: State):
         if state.get("approved") is not True:
             raise ConflictError("human_approval_required")
-        order = store.create_order(state["run_id"], state["alarm"]["device_id"], state["proposal"])
+        kind = "public_corpus_demo_intake" if state.get("workflow") == "maintenance_text" else "synthetic_demo"
+        order = store.create_order(state["run_id"], state["alarm"]["device_id"], state["proposal"], data_kind=kind)
         store.trace(state["run_id"], "commit_order", {"order_id": order["id"], "approved": True})
         return {"order": order, "status": "completed"}
 
@@ -97,7 +99,17 @@ def build_graph(store, model, checkpointer, max_rounds=6):
     builder.add_node("human_review", human_review)
     builder.add_node("commit_order", commit_order)
     builder.add_node("finish_without_draft", finish_without_draft)
-    builder.add_edge(START, "call_model")
+    if cases is not None:
+        extract, retrieve, draft = text_nodes(store, model, cases)
+        builder.add_node("extract_text", extract)
+        builder.add_node("retrieve_cases", retrieve)
+        builder.add_node("draft_text_intake", draft)
+        builder.add_conditional_edges(START, lambda s: "extract_text" if s.get("workflow") == "maintenance_text" else "call_model")
+        builder.add_edge("extract_text", "retrieve_cases")
+        builder.add_edge("retrieve_cases", "draft_text_intake")
+        builder.add_conditional_edges("draft_text_intake", lambda s: "human_review" if s.get("proposal") else END)
+    else:
+        builder.add_edge(START, "call_model")
     builder.add_conditional_edges("call_model", route_model)
     builder.add_conditional_edges("tools", route_tools)
     builder.add_conditional_edges("human_review", lambda s: "commit_order" if s["approved"] else END)

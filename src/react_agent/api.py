@@ -10,6 +10,7 @@ from react_agent.models import (
     AlarmEvent,
     Approval,
     ConflictError,
+    MaintenanceText,
     MissingModelConfig,
     ModelCallError,
     NotFoundError,
@@ -26,8 +27,8 @@ def create_app(settings: Settings | None = None, model=None):
         yield
         service.close()
 
-    app = FastAPI(title="设备告警处置 Agent", version="0.1.0", lifespan=lifespan,
-                  description="个人FDE演示项目：Agent工具调用、检索、人工确认与本地工单写入。数据为构造样例。")
+    app = FastAPI(title="设备告警与维修文本受理 Agent", version="0.2.0", lifespan=lifespan,
+                  description="个人FDE项目：告警样例与公开MaintIE案例分开记录，支持文本抽取、检索、人工确认及本地工单写入。")
     app.state.service = service
 
     @app.exception_handler(NotFoundError)
@@ -53,7 +54,8 @@ def create_app(settings: Settings | None = None, model=None):
     @app.get("/health", tags=["状态"])
     def health():
         return {"status": "ok", "model_configured": bool(config.api_key), "model": config.model,
-                "execution_mode": service.model.mode, "data_kind": "synthetic_demo"}
+                "execution_mode": service.model.mode, "data_kind": "synthetic_demo",
+                "available_workflows": ["alarm", "maintenance_text"], "public_corpus": "MaintIE gold"}
 
     @app.get("/api/devices", tags=["演示业务数据"])
     def devices():
@@ -75,6 +77,22 @@ def create_app(settings: Settings | None = None, model=None):
     @app.post("/api/alarms", tags=["Agent工作流"])
     def diagnose(alarm: AlarmEvent):
         return service.diagnose(alarm)
+
+    @app.get("/api/datasets/maintie", tags=["公开维修文本"])
+    def maintie_metadata():
+        return service.cases.metadata()
+
+    @app.get("/api/cases/search", tags=["公开维修文本"])
+    def cases(q: str = Query(min_length=2, max_length=500), top_k: int = Query(default=3, ge=1, le=5)):
+        return service.cases.search(q, top_k)
+
+    @app.get("/api/cases/{case_id}", tags=["公开维修文本"])
+    def case(case_id: str):
+        return service.cases.record(case_id)
+
+    @app.post("/api/maintenance-texts", tags=["维修受理工作流"])
+    def submit_text(request: MaintenanceText):
+        return service.submit_text(request)
 
     @app.get("/api/runs/{run_id}", tags=["Agent工作流"])
     def run(run_id: str):

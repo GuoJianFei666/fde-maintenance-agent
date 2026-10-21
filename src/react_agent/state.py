@@ -22,3 +22,8 @@ class State(TypedDict, total=False):
     order: dict[str, Any]
     answer: str
     error_code: str
+    workflow: str
+    text_extraction: dict[str, Any]
+    case_evidence: list[dict[str, Any]]
+    dataset: dict[str, Any]
+    input_source: dict[str, Any] | None

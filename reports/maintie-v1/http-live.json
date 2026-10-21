@@ -1,0 +1,473 @@
+{
+  "kind": "live_loopback_http_maintie",
+  "performed_at": "2026-10-21T08:58:17.480428+00:00",
+  "url": "http://127.0.0.1:8766",
+  "request": {
+    "event_id": "http-maintie-7fce5cc38c95",
+    "device_id": "P-101",
+    "message": "<id> differential lube pump leaking PO",
+    "source_record_id": "MAINTIE-GOLD-0256",
+    "severity": "warning"
+  },
+  "run": {
+    "id": "0b56970fab50421eb9cc85af35ee6000",
+    "event_id": "http-maintie-7fce5cc38c95",
+    "alarm": {
+      "device_id": "P-101",
+      "event_id": "http-maintie-7fce5cc38c95",
+      "message": "<id> differential lube pump leaking PO",
+      "severity": "warning",
+      "source_record_id": "MAINTIE-GOLD-0256"
+    },
+    "alarm_hash": "fbb3812914a8447bdb412f9fc8deaa7f2fea7d08157a6535b4b576a5e2da77b7",
+    "status": "awaiting_approval",
+    "proposal": {
+      "checks": [
+        "核对所选设备编号、现场部件与用户原始描述是否一致。",
+        "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+        "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+      ],
+      "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+      "evidence_ids": [
+        "MAINTIE-GOLD-0255",
+        "MAINTIE-GOLD-0601",
+        "MAINTIE-GOLD-0252"
+      ],
+      "evidence_sha256": "6b3781c681eaf21ea9665945342c1a495a302afc606d9d9685f80000d0f23b0b",
+      "extracted_entities": [
+        {
+          "end": 4,
+          "start": 1,
+          "text": "differential lube pump",
+          "type": "PhysicalObject"
+        },
+        {
+          "end": 4,
+          "start": 3,
+          "text": "pump",
+          "type": "PhysicalObject"
+        },
+        {
+          "end": 5,
+          "start": 4,
+          "text": "leaking",
+          "type": "Process"
+        }
+      ],
+      "kind": "maintenance_text_intake",
+      "priority": "medium",
+      "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+      "source_text": "<id> differential lube pump leaking PO",
+      "summary": "维修受理复核：<id> differential lube pump leaking PO"
+    },
+    "report": {
+      "answer": null,
+      "approval_note": null,
+      "configured_model": "deepseek-flash",
+      "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+      "corpus_version": "demo-v1",
+      "data_kind": "public_corpus_demo_intake",
+      "dataset": {
+        "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+        "dataset": "MaintIE fine-grained expert-annotated corpus",
+        "files": {
+          "LICENSE.md": {
+            "bytes": 1068,
+            "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"
+          },
+          "README.upstream.md": {
+            "bytes": 10931,
+            "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"
+          },
+          "gold_release.json": {
+            "bytes": 817880,
+            "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"
+          }
+        },
+        "index_version": "maintie-lexical-v1",
+        "language": "en",
+        "license": "MIT",
+        "paper": "https://aclanthology.org/2024.lrec-main.954/",
+        "query_aliases": {
+          "密封": "seal seals",
+          "损坏": "broken failed damaged",
+          "更换": "change replace replacement",
+          "泄漏": "leak leaking leaks",
+          "泵": "pump pumps",
+          "渗漏": "leak leaking",
+          "温度": "temperature",
+          "漏油": "oil leak leaking",
+          "电机": "motor",
+          "软管": "hose",
+          "轴承": "bearing bearings",
+          "输送带": "conveyor belt",
+          "过热": "hot overheating",
+          "阀": "valve"
+        },
+        "record_count": 1076,
+        "repository": "https://github.com/nlp-tlp/maintie",
+        "retrieval": "SQLite FTS5 / BM25, reference rows only, exact normalized query excluded",
+        "retrieved_at": "2026-10-21",
+        "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+        "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+        "split_counts": {
+          "evaluation": 207,
+          "reference": 869
+        },
+        "split_policy": "normalized-text SHA256 first 8 hex modulo 5: 0=evaluation; others=reference"
+      },
+      "device_mapping": "user_selected_demo_device",
+      "evidence": [
+        {
+          "body": "<id> differential lube pump leaking",
+          "data_kind": "public_maintie_short_text",
+          "id": "MAINTIE-GOLD-0255",
+          "rank": -14.407054588789036,
+          "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+          "row_index": 255,
+          "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-255",
+          "split": "reference",
+          "text_sha256": "9c9209797305037a6912e051357ba8f67b94674855e5b83db47381b14f36636e",
+          "tokens": [
+            "<id>",
+            "differential",
+            "lube",
+            "pump",
+            "leaking"
+          ],
+          "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+        },
+        {
+          "body": "<id> - differential lube hose leaking",
+          "data_kind": "public_maintie_short_text",
+          "id": "MAINTIE-GOLD-0601",
+          "rank": -10.996978024924605,
+          "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+          "row_index": 601,
+          "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-601",
+          "split": "reference",
+          "text_sha256": "2457c05dbff8474bd39ffe321fef806c2c74fe2b2df58dcb6e6e15e46bb63062",
+          "tokens": [
+            "<id>",
+            "-",
+            "differential",
+            "lube",
+            "hose",
+            "leaking"
+          ],
+          "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+        },
+        {
+          "body": "<id> differential cooler pump leaking",
+          "data_kind": "public_maintie_short_text",
+          "id": "MAINTIE-GOLD-0252",
+          "rank": -10.347993461873344,
+          "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+          "row_index": 252,
+          "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-252",
+          "split": "reference",
+          "text_sha256": "47ff0b396401aeeafcc6f0c453fd0b23e0625308824572c8b978a1189a2155a2",
+          "tokens": [
+            "<id>",
+            "differential",
+            "cooler",
+            "pump",
+            "leaking"
+          ],
+          "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+        }
+      ],
+      "evidence_kind": "case_reference_not_sop",
+      "execution_mode": "live_deepseek",
+      "input_source": {
+        "body": "<id> differential lube pump leaking PO",
+        "data_kind": "public_maintie_short_text",
+        "id": "MAINTIE-GOLD-0256",
+        "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+        "row_index": 256,
+        "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-256",
+        "split": "evaluation",
+        "text_sha256": "96bec87805b452d2751e7b421ae7c73aa5b415ab086855e45f4817a8ee52f624",
+        "tokens": [
+          "<id>",
+          "differential",
+          "lube",
+          "pump",
+          "leaking",
+          "PO"
+        ],
+        "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+      },
+      "model_call_count": 1,
+      "observed_models": [
+        "deepseek-flash"
+      ],
+      "order": null,
+      "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+      "prompt_version": "maintie-intake-v1",
+      "proposal_sha256": "68bb54b36ee24ea05790e7d01669036b67f866b3b7fd08237419caa04a6a9fc5",
+      "text_extraction": {
+        "elapsed_ms": 2039.16,
+        "entities": [
+          {
+            "end": 4,
+            "start": 1,
+            "text": "differential lube pump",
+            "type": "PhysicalObject"
+          },
+          {
+            "end": 4,
+            "start": 3,
+            "text": "pump",
+            "type": "PhysicalObject"
+          },
+          {
+            "end": 5,
+            "start": 4,
+            "text": "leaking",
+            "type": "Process"
+          }
+        ],
+        "execution_mode": "live_deepseek",
+        "model_name": "deepseek-flash",
+        "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+        "prompt_version": "maintie-intake-v1",
+        "tokens": [
+          "<id>",
+          "differential",
+          "lube",
+          "pump",
+          "leaking",
+          "PO"
+        ],
+        "usage": {
+          "input_tokens": 798,
+          "output_tokens": 95,
+          "total_tokens": 893
+        }
+      },
+      "usage": {
+        "input_tokens": 798,
+        "output_tokens": 95,
+        "total_tokens": 893
+      },
+      "workflow": "maintenance_text"
+    },
+    "error_code": null,
+    "created_at": "2026-10-21T08:58:15.253951+00:00",
+    "updated_at": "2026-10-21T08:58:17.437547+00:00",
+    "workflow": "maintenance_text"
+  },
+  "trace": [
+    {
+      "id": 1,
+      "at": "2026-10-21T08:58:15.262204+00:00",
+      "node": "intake",
+      "data": {
+        "device_mapping": "user_selected_demo_device",
+        "event_id": "http-maintie-7fce5cc38c95",
+        "input_kind": "public_maintie_short_text",
+        "source_record_id": "MAINTIE-GOLD-0256",
+        "workflow": "maintenance_text"
+      }
+    },
+    {
+      "id": 2,
+      "at": "2026-10-21T08:58:17.347027+00:00",
+      "node": "model",
+      "data": {
+        "elapsed_ms": 2039.16,
+        "mode": "live_deepseek",
+        "model_name": "deepseek-flash",
+        "round": 1,
+        "tool_names": [
+          "submit_extraction"
+        ],
+        "usage": {
+          "input_tokens": 798,
+          "output_tokens": 95,
+          "total_tokens": 893
+        },
+        "workflow": "maintenance_text"
+      }
+    },
+    {
+      "id": 3,
+      "at": "2026-10-21T08:58:17.358670+00:00",
+      "node": "extract_text",
+      "data": {
+        "elapsed_ms": 2039.16,
+        "entities": [
+          {
+            "end": 4,
+            "start": 1,
+            "text": "differential lube pump",
+            "type": "PhysicalObject"
+          },
+          {
+            "end": 4,
+            "start": 3,
+            "text": "pump",
+            "type": "PhysicalObject"
+          },
+          {
+            "end": 5,
+            "start": 4,
+            "text": "leaking",
+            "type": "Process"
+          }
+        ],
+        "execution_mode": "live_deepseek",
+        "model_name": "deepseek-flash",
+        "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+        "prompt_version": "maintie-intake-v1",
+        "tokens": [
+          "<id>",
+          "differential",
+          "lube",
+          "pump",
+          "leaking",
+          "PO"
+        ],
+        "usage": {
+          "input_tokens": 798,
+          "output_tokens": 95,
+          "total_tokens": 893
+        }
+      }
+    },
+    {
+      "id": 4,
+      "at": "2026-10-21T08:58:17.371803+00:00",
+      "node": "retrieve_cases",
+      "data": {
+        "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+        "evaluation_rows_indexed": false,
+        "hits": [
+          {
+            "body": "<id> differential lube pump leaking",
+            "data_kind": "public_maintie_short_text",
+            "id": "MAINTIE-GOLD-0255",
+            "rank": -14.407054588789036,
+            "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+            "row_index": 255,
+            "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-255",
+            "split": "reference",
+            "text_sha256": "9c9209797305037a6912e051357ba8f67b94674855e5b83db47381b14f36636e",
+            "tokens": [
+              "<id>",
+              "differential",
+              "lube",
+              "pump",
+              "leaking"
+            ],
+            "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+          },
+          {
+            "body": "<id> - differential lube hose leaking",
+            "data_kind": "public_maintie_short_text",
+            "id": "MAINTIE-GOLD-0601",
+            "rank": -10.996978024924605,
+            "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+            "row_index": 601,
+            "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-601",
+            "split": "reference",
+            "text_sha256": "2457c05dbff8474bd39ffe321fef806c2c74fe2b2df58dcb6e6e15e46bb63062",
+            "tokens": [
+              "<id>",
+              "-",
+              "differential",
+              "lube",
+              "hose",
+              "leaking"
+            ],
+            "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+          },
+          {
+            "body": "<id> differential cooler pump leaking",
+            "data_kind": "public_maintie_short_text",
+            "id": "MAINTIE-GOLD-0252",
+            "rank": -10.347993461873344,
+            "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+            "row_index": 252,
+            "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-252",
+            "split": "reference",
+            "text_sha256": "47ff0b396401aeeafcc6f0c453fd0b23e0625308824572c8b978a1189a2155a2",
+            "tokens": [
+              "<id>",
+              "differential",
+              "cooler",
+              "pump",
+              "leaking"
+            ],
+            "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+          }
+        ],
+        "query": "<id> differential lube pump leaking PO"
+      }
+    },
+    {
+      "id": 5,
+      "at": "2026-10-21T08:58:17.408099+00:00",
+      "node": "draft_text_intake",
+      "data": {
+        "draft_only": true,
+        "proposal": {
+          "checks": [
+            "核对所选设备编号、现场部件与用户原始描述是否一致。",
+            "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+            "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+          ],
+          "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+          "evidence_ids": [
+            "MAINTIE-GOLD-0255",
+            "MAINTIE-GOLD-0601",
+            "MAINTIE-GOLD-0252"
+          ],
+          "evidence_sha256": "6b3781c681eaf21ea9665945342c1a495a302afc606d9d9685f80000d0f23b0b",
+          "extracted_entities": [
+            {
+              "end": 4,
+              "start": 1,
+              "text": "differential lube pump",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 4,
+              "start": 3,
+              "text": "pump",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 5,
+              "start": 4,
+              "text": "leaking",
+              "type": "Process"
+            }
+          ],
+          "kind": "maintenance_text_intake",
+          "priority": "medium",
+          "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+          "source_text": "<id> differential lube pump leaking PO",
+          "summary": "维修受理复核：<id> differential lube pump leaking PO"
+        }
+      }
+    }
+  ],
+  "checks": {
+    "live_provider": true,
+    "dataset_count": true,
+    "openapi": true,
+    "chinese_query": true,
+    "source_is_evaluation": true,
+    "pending_review": true,
+    "duplicate_reuses_run": true,
+    "one_model_call": true,
+    "no_unapproved_order": true,
+    "reference_only": true,
+    "no_exact_self_reference": true,
+    "source_preserved": true,
+    "report": true
+  },
+  "passed": true
+}

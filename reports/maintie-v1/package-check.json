@@ -1,0 +1,14 @@
+{
+  "kind": "wheel_corpus_check",
+  "wheel": "fde_maintenance_agent-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "d6fcfc4b5f67038bc927fd4fbab04da31cc212a108a64902ca8fbb53a93cc0e2",
+  "packaged_dataset_files": [
+    "react_agent/data/maintie/LICENSE.md",
+    "react_agent/data/maintie/README.upstream.md",
+    "react_agent/data/maintie/gold_release.json",
+    "react_agent/data/maintie/manifest.json"
+  ],
+  "actual_record_count": 1076,
+  "all_source_hashes_verified": true,
+  "import_from_wheel": true
+}

@@ -1,102 +1,131 @@
-# 设备告警处置 Agent 与工单工作流
+# 设备告警与维修文本受理 Agent
 
-基于 LangGraph 官方 ReAct 模板改造的个人 FDE 项目。输入设备告警，Agent 查询设备、历史工单和维护手册，形成有出处的检查草案；操作者确认后，工作流写入本地工单库。
+基于 LangGraph 官方 ReAct 模板改造的个人 FDE 项目，提供两条可运行流程：
 
-本项目在 AI 辅助下开发，完成本地单进程 POC。数据为构造的演示设备、手册和工单。上游版本、许可与增量见 [UPSTREAM.md](UPSTREAM.md)，交付与故障排查见 [docs/delivery.md](docs/delivery.md)。
+- **设备告警**：模型选择设备、历史工单与手册工具，生成检查草案，再由人工确认是否写入工单。
+- **维修文本受理**：接入公开 MaintIE 专家标注语料，模型抽取原文实体，固定工作流检索案例并生成受理草稿，人工确认后入库。
 
-## 已运行的结果
+项目在 AI 辅助下开发，当前为 Windows 本地单进程 POC。设备、演示手册和初始工单为合成材料；MaintIE 为作者公开的脱敏维修短文本，二者分别记录来源。上游与许可见 [UPSTREAM.md](UPSTREAM.md)，数据接入与复查见 [docs/maintie.md](docs/maintie.md)。
 
-- 24 项本地回归通过，覆盖中文检索、引用与设备范围、审批、重复事件、重启、接口和失败状态。
-- 真实 DeepSeek `deepseek-flash` 三个指定样例符合预期：确认后写入、拒绝后不写、依据不足返回待补信息。见 [实际接口记录](reports/live-verification.json)。
-- 真实本地 HTTP 联调通过，包含重复事件复用运行、待审批不写入与报告查看。见 [HTTP记录](reports/http-smoke.json)。
-- 样例结果只描述本地 POC；实际工业客户、MES/ERP 接入与生产运行不属于本次完成范围。
+## 本轮实际结果
+
+| 检查 | 实际结果 | 记录 |
+|---|---|---|
+| MaintIE 原始文件 | 固定作者提交，1,076 条 gold 文本；原始字节 SHA256 验证通过 | data/maintie/manifest.json |
+| 数据分区 | 869 条参考、207 条评估（203 个不同归一化文本）；评估区未进入检索索引 | [数据说明](docs/maintie.md) |
+| 真实 DeepSeek 抽取 | 固定哈希顺序的 24 条评估文本，24 条输出通过结构校验；顶层实体严格跨度 micro-F1 **0.8105** | [原始预测与计分](reports/maintie-v1/evaluation.json) |
+| 真实模型工作流 | 确认后创建 1 单；拒绝与信息不足各 0 单；重建服务后可审批，重复确认不重复创建 | [流程验收](reports/maintie-v1/workflow-live.json) |
+| 实际本机 HTTP | 使用公开评估记录作为输入，验证原文来源、案例隔离、重复事件与待审批状态 | [HTTP 记录](reports/maintie-v1/http-live.json) |
+
+micro-F1 是 24 条指定文本上“跨度和顶层类别同时一致”的实体指标，不是工单解决率。当前只抽取 PhysicalObject、State、Process、Activity、Property 五类；没有复现细粒度类别或关系抽取。主要误差见数据说明。
+
+原告警路径的 24 项回归和三例真实模型结果保留在 [原验收记录](reports/live-verification.json)。新增回归与最新本地结果见 [tests/](tests/) 和 [本轮测试报告](reports/maintie-v1/local-tests.xml)。GitHub Actions 在 Windows 运行回归，无需模型密钥。
 
 ## 技术与工作流
 
 Python 3.11+、LangGraph、DeepSeek API、FastAPI、Pydantic、SQLite FTS5/BM25、SqliteSaver。
 
-```mermaid
-flowchart LR
-  A[设备告警] --> B[模型选工具]
-  B --> C[设备 历史工单 手册检索]
+~~~mermaid
+flowchart TD
+  A[设备告警] --> B[模型选业务工具]
+  B --> C[设备 历史工单 手册]
   C --> B
-  B --> D[带引用的草案]
-  D --> E[人工确认与持久化检查点]
-  E -->|确认| F[幂等写入工单]
-  E -->|拒绝| G[保留拒绝状态]
-  B -->|依据不足| H[请求补充信息]
-```
+  B --> D[检查草案]
+  T[维修短文本] --> E[模型抽取实体与token跨度]
+  E --> F[参考分区案例检索]
+  F --> G[固定规则生成受理草稿]
+  G --> H[人工确认与持久化检查点]
+  D --> H
+  H -->|确认| I[幂等写入本地工单]
+  H -->|拒绝| J[保留拒绝状态]
+  G -->|缺少对象 事项或参考| K[请求补充信息]
+~~~
 
-工具清单：`query_device`、`query_work_orders`、`search_manual`、`draft_work_order`。模型自主选工具和参数；固定图结构负责审批、状态和写入。
-
-手册检索使用中文重叠二元词组和 FTS5/BM25。返回的片段带原文、ID、来源和版本。草案只接受当前运行真正检索过、且属于当前设备类型的引用。引用校验与语义判断分别处理。
+告警工具：query_device、query_work_orders、search_manual、draft_work_order。维修文本路径使用单次 submit_extraction 工具调用；实体抽取后的检索、草稿与审批由固定节点执行。案例不是设备履历或维修操作规程。
 
 ## Windows 本地启动
 
-```powershell
+~~~powershell
 git clone https://github.com/GuoJianFei666/fde-maintenance-agent.git
 Set-Location fde-maintenance-agent
 py -3 -m venv .venv
-& .venvScriptspython.exe -m pip install -e '.[dev]'
+& .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+& .\.venv\Scripts\python.exe -m pip install -e '.[dev]' --no-deps
 Copy-Item .env.example .env
-# 在本地 .env 填写 DEEPSEEK_API_KEY；不要提交该文件。
-& .venvScriptspython.exe -m uvicorn react_agent.api:create_app --factory --host 127.0.0.1 --port 8765 --workers 1
-```
+# 在本地 .env 填写 DEEPSEEK_API_KEY。
+& .\.venv\Scripts\python.exe -m uvicorn react_agent.api:create_app --factory --host 127.0.0.1 --port 8766 --workers 1
+~~~
 
-打开 <http://127.0.0.1:8765/docs> 交互操作 API。仅配置 DeepSeek 密钥即可，模型名默认 `deepseek-flash`；可通过 `.env` 调整接口、模型、超时和最大轮数。完整固定依赖另存于 `requirements-lock.txt`。
+打开 <http://127.0.0.1:8766/docs>。完整固定语料已随项目提供，启动无需下载或训练模型。默认模型为 deepseek-flash；密钥、运行库和虚拟环境均排除出 Git。原始种子数据库无需替换，升级会保留原运行和审批记录。
 
-## 演示请求
+## 维修文本演示
 
-在 `/api/alarms` 提交：
+在 POST /api/maintenance-texts 提交：
 
-```json
+~~~json
 {
-  "event_id": "demo-pump-001",
+  "event_id": "maintie-demo-001",
   "device_id": "P-101",
-  "message": "循环泵振动升高并伴随轴承异响，请查手册和历史工单后生成检查草案。",
-  "severity": "warning"
+  "message": "<id> differential lube pump leaking PO",
+  "severity": "warning",
+  "source_record_id": "MAINTIE-GOLD-0256"
 }
-```
+~~~
 
-结果为 `awaiting_approval` 时，查看 `proposal` 和 `report.evidence`。把 `report.proposal_sha256` 与运行编号用于 `/api/runs/{run_id}/approval`，提交 `approved: true` 或 `false`。工单写入只发生在确认分支；草案哈希不匹配返回409。
+这条输入来自公开评估分区；P-101 是操作者选择的演示设备映射，不是原始数据中的真实设备编号。source_record_id 可省略；填写时 message 必须与对应原文完全一致，否则返回 409。
 
-同号同内容的事件返回原运行；同号不同内容返回409。重启时保留同一 `OPS_DATA_DIR`，即可继续处理待审批运行。默认运行状态在 `runtime/`，与本地密钥一起排除出 Git。
+返回 awaiting_approval 后，查看 proposal、report.text_extraction、report.evidence 与 report.input_source。将 run_id 和 report.proposal_sha256 用于 POST /api/runs/{run_id}/approval：
 
-CLI 也支持相同流程：
+~~~json
+{"approved": true, "proposal_sha256": "从当前报告复制64位哈希", "note": "已人工核对受理内容"}
+~~~
 
-```powershell
-& .venvScriptspython.exe -m react_agent.cli diagnose --event cli-001 --device P-101 --message '循环泵振动升高，请生成检查草案'
-# 阅读输出，复制 run_id 及 proposal_sha256 后再执行：
-& .venvScriptspython.exe -m react_agent.cli decide '<run_id>' --decision approve --proposal-hash '<proposal_sha256>'
-& .venvScriptspython.exe -m react_agent.cli report '<run_id>' --out runtime
-eport.md
-```
+同事件同内容返回原运行；同号不同内容返回 409。草案哈希不匹配也返回 409。重启后使用同一 OPS_DATA_DIR 即可继续审批。
 
-## 检查与真实模型验收
+只读入口：
 
-```powershell
-& .venvScriptspython.exe -m ruff check src tests scripts
-& .venvScriptspython.exe -m pytest -q --junitxml=reportslocal-tests.xml
-# 以下命令会调用本地配置的 DeepSeek，产生该账号的 API 用量：
-& .venvScriptspython.exe scriptserify_live.py --out runtimemy-live-verification.json
-# 先启动本地服务，再检查真实 HTTP：
-& .venvScriptspython.exe scriptserify_http.py
-```
+- GET /api/datasets/maintie：固定版本、文件哈希、分区数量与检索规则。
+- GET /api/cases/search?q=泵漏油：中文关键词别名检索，返回英文原文与来源。
+- GET /api/cases/MAINTIE-GOLD-0256：公开记录和原始 token，不返回标注答案。
+- GET /api/runs/{run_id}/trace 与 /report：模型、节点轨迹及 Markdown 报告。
 
-回归使用 `scripted_test` 模型替身，生产 API 和 CLI 只选择真实 DeepSeek。未配置密钥返回503，供应商失败返回502；失败状态和错误类别保留在运行记录。CI 运行回归和静态检查，无需真实模型密钥。
+CLI 支持相同流程：
+
+~~~powershell
+& .\.venv\Scripts\python.exe -m react_agent.cli dataset
+& .\.venv\Scripts\python.exe -m react_agent.cli cases '泵漏油'
+& .\.venv\Scripts\python.exe -m react_agent.cli intake --event cli-maintie-001 --device P-101 --message 'hydraulic pump leaking oil'
+& .\.venv\Scripts\python.exe -m react_agent.cli report '<run_id>' --out runtime/intake-report.md
+~~~
+
+## 复查与评估
+
+~~~powershell
+& .\.venv\Scripts\python.exe -m ruff check src tests scripts
+& .\.venv\Scripts\python.exe -m pytest -q
+# 重新下载固定文件并验证哈希；--direct仅为本次下载绕过系统代理。
+& .\.venv\Scripts\python.exe scripts/fetch_maintie.py --out runtime/maintie-download --direct
+# 以下命令调用本地配置的真实 DeepSeek，产生 API 用量；选择新路径保留旧记录。
+& .\.venv\Scripts\python.exe scripts/evaluate_maintie.py --limit 24 --out runtime/my-evaluation.json
+& .\.venv\Scripts\python.exe scripts/verify_maintie_live.py --out runtime/my-workflow.json
+& .\.venv\Scripts\python.exe scripts/verify_maintie_http.py --url http://127.0.0.1:8766 --out runtime/my-http.json
+~~~
+
+回归的模型替身明确标为 scripted_test；生产 API/CLI 使用真实 DeepSeek。缺少密钥返回 503，供应商或模型输出协议错误返回 502，失败记录保留。验收脚本中的确认动作标为 acceptance_script，不代表用户已完成现场维护。
 
 ## 文件导读
 
 | 文件 | 职责 |
 |---|---|
-| `src/react_agent/graph.py` | 模型与工具循环、人工确认、工单写入节点 |
-| `src/react_agent/tools.py` | 4类工具输入和业务约束 |
-| `src/react_agent/store.py` | 演示业务数据、手册检索、事件去重与工单幂等 |
-| `src/react_agent/llm.py` | DeepSeek Tool Calls 接入与实际用量 |
-| `src/react_agent/service.py` | 持久化运行、审批恢复、轨迹与报告 |
-| `src/react_agent/api.py` | REST接口和交互文档 |
-| `tests/` | 明确区分模型替身的回归检查 |
-| `reports/` | 本次实际验证记录和样例报告 |
-| `docs/resume-and-interview.md` | 真实项目正文、源码讲解及面试参考 |
+| src/react_agent/maintie.py | 固定文件校验、分区、独立案例索引与来源 |
+| src/react_agent/extraction.py | 维修文本 Prompt、工具协议及原文跨度校验 |
+| src/react_agent/intake.py | 实体抽取、案例检索、缺项检查与受理草稿节点 |
+| src/react_agent/evaluation.py | 顶层类别投影与严格实体计分 |
+| src/react_agent/graph.py | 两条路径路由、人工确认及工单写入 |
+| src/react_agent/service.py | 持久化运行、审批恢复、轨迹和报告 |
+| src/react_agent/tools.py、store.py | 原告警业务工具、手册检索与工单幂等 |
+| src/react_agent/api.py、cli.py | REST 与命令行入口 |
+| docs/maintie.md | 数据接入、评估口径、误差与复查方法 |
+| docs/resume-and-interview.md | 项目正文、源码路线与面试参考 |
 
-没有实测的生产指标不填数字。后续进入真实业务时，应单独确认数据、接口权限、验收场景与部署条件。
+项目未连接真实 MES/ERP 或设备控制接口。公开维修短文本可以支撑文本处理和案例检索演示；具体维护方法仍需适用规程与维护人员判断。

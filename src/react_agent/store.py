@@ -59,6 +59,8 @@ class Store:
             CREATE TABLE IF NOT EXISTS traces(id INTEGER PRIMARY KEY AUTOINCREMENT,
               run_id TEXT NOT NULL, at TEXT NOT NULL, node TEXT NOT NULL, data TEXT NOT NULL);
             """)
+            if "workflow" not in {row["name"] for row in conn.execute("PRAGMA table_info(runs)")}:
+                conn.execute("ALTER TABLE runs ADD COLUMN workflow TEXT NOT NULL DEFAULT 'alarm'")
             current = conn.execute("SELECT value FROM metadata WHERE key='corpus_sha256'").fetchone()
             if current and current["value"] != self.corpus_sha256:
                 raise ValueError("Demo corpus changed; use a new OPS_DATA_DIR or explicitly migrate the database")
@@ -127,9 +129,9 @@ class Store:
                 if device_id else conn.execute("SELECT data FROM orders ORDER BY id")
             return [json.loads(row["data"]) for row in rows]
 
-    def create_run(self, alarm: AlarmEvent):
+    def create_run(self, alarm: AlarmEvent, *, workflow="alarm"):
         payload = alarm.model_dump()
-        fingerprint = content_hash(payload)
+        fingerprint = content_hash(payload if workflow == "alarm" else {"workflow": workflow, "input": payload})
         with self.connection() as conn:
             old = conn.execute("SELECT id,alarm_hash FROM runs WHERE event_id=?", (alarm.event_id,)).fetchone()
             if old:
@@ -138,8 +140,9 @@ class Store:
                 return old["id"], False
             run_id = uuid.uuid4().hex
             now = utc_now()
-            conn.execute("INSERT INTO runs VALUES(?,?,?,?,?,NULL,NULL,NULL,?,?)", (
-                run_id, alarm.event_id, canonical_json(payload), fingerprint, "running", now, now))
+            conn.execute("""INSERT INTO runs(id,event_id,alarm,alarm_hash,status,created_at,updated_at,workflow)
+                VALUES(?,?,?,?,?,?,?,?)""", (
+                run_id, alarm.event_id, canonical_json(payload), fingerprint, "running", now, now, workflow))
         return run_id, True
 
     def run(self, run_id):
@@ -169,7 +172,7 @@ class Store:
             rows = conn.execute("SELECT id,at,node,data FROM traces WHERE run_id=? ORDER BY id", (run_id,))
             return [{**dict(row), "data": json.loads(row["data"])} for row in rows]
 
-    def create_order(self, run_id, device_id, proposal):
+    def create_order(self, run_id, device_id, proposal, *, data_kind="synthetic_demo"):
         """Insert once even if the graph replays this node after a crash."""
         with self.connection() as conn:
             old = conn.execute("SELECT data FROM orders WHERE source_run=?", (run_id,)).fetchone()
@@ -177,7 +180,7 @@ class Store:
                 return json.loads(old["data"])
             order = {"id": "WO-" + run_id[:12].upper(), "source_run": run_id,
                      "device_id": device_id, "summary": proposal["summary"], "status": "open",
-                     "proposal": proposal, "created_at": utc_now(), "data_kind": "synthetic_demo"}
+                     "proposal": proposal, "created_at": utc_now(), "data_kind": data_kind}
             conn.execute("INSERT INTO orders VALUES(?,?,?,?,?,?)", (
                 order["id"], run_id, device_id, order["summary"], "open", canonical_json(order)))
         return order

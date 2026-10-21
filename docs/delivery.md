@@ -61,3 +61,11 @@ Agent决定调用哪个只读工具和草案工具，固定工作流负责确认
 - scripts/verify_live.py明确调用本地配置的DeepSeek，结果写入reports/live-verification.json；验收脚本的审批动作标为acceptance_script。
 - scripts/verify_http.py通过真实HTTP访问已启动服务，留一条待人工确认的告警供演示。
 - 具体状态、调用次数、tokens和耗时以reports/中的实际记录为准。这些是选定本地样例的结果，不代表生产准确率、可用性或客户收益。
+
+## MaintIE文本受理增量
+
+新增接口POST /api/maintenance-texts，输入维修短文本、来源编号（可选）与操作者选择的演示设备。模型只做五类实体的原文跨度抽取；固定节点检索公开参考案例、检查缺项并生成受理复核草稿，再进入相同的人工确认和幂等写库节点。
+
+公开案例与演示设备历史分开保存。GET /api/datasets/maintie查看数据版本、文件哈希与分区；GET /api/cases/search检索参考记录；评估记录不在索引中。详细数据契约、实际F1、错误分析和复查命令见[maintie.md](maintie.md)。
+
+新增定位点：422表示输入字段或token上限不符；409也可能表示source_record_id与原文不匹配；502的category可区分抽取协议、类别、跨度等错误。失败运行保留model和execution_failed轨迹，不生成替代草稿。案例索引固定原始语料哈希；数据版本改变时使用新OPS_DATA_DIR，不替换运行中的旧记录。

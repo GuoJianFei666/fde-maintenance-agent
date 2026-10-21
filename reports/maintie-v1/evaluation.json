@@ -1,0 +1,2238 @@
+{
+  "kind": "live_maintie_entity_evaluation",
+  "provider": "DeepSeek",
+  "model": "deepseek-flash",
+  "performed_at": "2026-10-21T08:56:36.191065+00:00",
+  "dataset": {
+    "dataset": "MaintIE fine-grained expert-annotated corpus",
+    "repository": "https://github.com/nlp-tlp/maintie",
+    "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+    "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+    "paper": "https://aclanthology.org/2024.lrec-main.954/",
+    "license": "MIT",
+    "retrieved_at": "2026-10-21",
+    "record_count": 1076,
+    "language": "en",
+    "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+    "files": {
+      "gold_release.json": {
+        "bytes": 817880,
+        "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"
+      },
+      "LICENSE.md": {
+        "bytes": 1068,
+        "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"
+      },
+      "README.upstream.md": {
+        "bytes": 10931,
+        "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"
+      }
+    },
+    "split_counts": {
+      "reference": 869,
+      "evaluation": 207
+    },
+    "split_policy": "normalized-text SHA256 first 8 hex modulo 5: 0=evaluation; others=reference",
+    "retrieval": "SQLite FTS5 / BM25, reference rows only, exact normalized query excluded",
+    "query_aliases": {
+      "泵": "pump pumps",
+      "泄漏": "leak leaking leaks",
+      "漏油": "oil leak leaking",
+      "渗漏": "leak leaking",
+      "电机": "motor",
+      "轴承": "bearing bearings",
+      "输送带": "conveyor belt",
+      "软管": "hose",
+      "密封": "seal seals",
+      "损坏": "broken failed damaged",
+      "更换": "change replace replacement",
+      "过热": "hot overheating",
+      "温度": "temperature",
+      "阀": "valve"
+    },
+    "index_version": "maintie-lexical-v1"
+  },
+  "prompt_version": "maintie-intake-v1",
+  "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+  "selection": "First N unique evaluation texts sorted by normalized text SHA256; no topic filtering",
+  "planned_count": 24,
+  "cases": [
+    {
+      "case_id": "MAINTIE-GOLD-1055",
+      "text": "<id> replace ground fault relay",
+      "tokens": [
+        "<id>",
+        "replace",
+        "ground",
+        "fault",
+        "relay"
+      ],
+      "text_sha256": "00db024acb997da8576c305f26f4590b491850c2144c426efd6dcc831506433f",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 2,
+          "end": 5,
+          "type": "PhysicalObject/ControllingObject/ElectricEarthingObject"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/InformationProcessingObject/ElectricSignalRelayingObject"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity/MaintenanceActivity/Replace"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity",
+          "text": "replace"
+        },
+        {
+          "start": 2,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "ground fault relay"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "relay"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2159.61,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_TVcdUWZh2rQUsQNSFgln1166",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 792,
+        "output_tokens": 95,
+        "total_tokens": 887
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0295",
+      "text": "<id> tub hook greasing and inspection",
+      "tokens": [
+        "<id>",
+        "tub",
+        "hook",
+        "greasing",
+        "and",
+        "inspection"
+      ],
+      "text_sha256": "052d5938fd9eef8e25008ab23edff56f1be6fbfb9be7d91d26d7ce6178a84bb6",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 3,
+          "end": 4,
+          "type": "Activity/MaintenanceActivity/Service"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "Activity/MaintenanceActivity/Inspect"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/StoringObject/MoveableStoringObject"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "PhysicalObject/HoldingObject/CarryingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "PhysicalObject",
+          "text": "tub hook"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "PhysicalObject",
+          "text": "hook"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "Activity",
+          "text": "greasing"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "Activity",
+          "text": "inspection"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1368.0,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 3,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "Activity"
+              },
+              {
+                "start": 5,
+                "end": 6,
+                "type": "Activity"
+              }
+            ]
+          },
+          "id": "call_00_mIXOCmVBuyMC4Hv2lJUo6328",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 796,
+        "output_tokens": 113,
+        "total_tokens": 909
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0099",
+      "text": "<id> broken fuel cooler mounts",
+      "tokens": [
+        "<id>",
+        "broken",
+        "fuel",
+        "cooler",
+        "mounts"
+      ],
+      "text_sha256": "065b79dea86b816e48168a12a5e699e454cbaf40af5f0ec9ad7c934e17fad88a",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject/EmittingObject/ThermalCoolingObject"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/HoldingObject/StructuralSupportingObject"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject/EmittingObject/ThermalCoolingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "State",
+          "text": "broken"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "fuel cooler"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "mounts"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1834.58,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "State"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_xSLRPjnGOui7Sel1757s7053",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 792,
+        "output_tokens": 95,
+        "total_tokens": 887
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0427",
+      "text": "<id> replace damaged tyre on position <num>",
+      "tokens": [
+        "<id>",
+        "replace",
+        "damaged",
+        "tyre",
+        "on",
+        "position",
+        "<num>"
+      ],
+      "text_sha256": "069bbe13dc09e577e7f4ed5f2c1baf527567cf56fde3587baf4cda1d14e0e426",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State/UndesirableState/DegradedState"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject/GuidingObject/MechanicalEnergyGuidingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity",
+          "text": "replace"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State",
+          "text": "damaged"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "tyre"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1977.06,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "State"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_KQI7Hkkiz7C81YUuM20P4624",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 802,
+        "output_tokens": 94,
+        "total_tokens": 896
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0385",
+      "text": "<id> oil leak at air compressor",
+      "tokens": [
+        "<id>",
+        "oil",
+        "leak",
+        "at",
+        "air",
+        "compressor"
+      ],
+      "text_sha256": "06ef10c774db169f73abfa575f52ea1ac42c73759813e30a54ef6282a3bfbdda",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/ProtectingObject/WearProtectingObject"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "Process/UndesirableProcess"
+        },
+        {
+          "start": 4,
+          "end": 6,
+          "type": "PhysicalObject/GeneratingObject/GaseousFlowGeneratingObject"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "PhysicalObject/GeneratingObject/GaseousFlowGeneratingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "oil"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "Process",
+          "text": "leak"
+        },
+        {
+          "start": 4,
+          "end": 6,
+          "type": "PhysicalObject",
+          "text": "air compressor"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "PhysicalObject",
+          "text": "compressor"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1465.02,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "Process"
+              },
+              {
+                "start": 4,
+                "end": 6,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 5,
+                "end": 6,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_mjRbnlhPGuJPh0Ncc5ED5789",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 795,
+        "output_tokens": 114,
+        "total_tokens": 909
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0137",
+      "text": "<id> change out cracked pipe on valve bank",
+      "tokens": [
+        "<id>",
+        "change",
+        "out",
+        "cracked",
+        "pipe",
+        "on",
+        "valve",
+        "bank"
+      ],
+      "text_sha256": "070cee494be3df43ad154567370563b41f251e1f3e6e45e168d20008a8f81914",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/GuidingObject/ClosedEnclosureGuidingObject"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "type": "PhysicalObject/ControllingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity",
+          "text": "change out"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State",
+          "text": "cracked"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "pipe"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "type": "PhysicalObject",
+          "text": "valve bank"
+        },
+        {
+          "start": 7,
+          "end": 8,
+          "type": "PhysicalObject",
+          "text": "bank"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1842.13,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 3,
+                "type": "Activity"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "State"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 6,
+                "end": 8,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 7,
+                "end": 8,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_TVqRPYBcYQAm936CjWgt9581",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 802,
+        "output_tokens": 132,
+        "total_tokens": 934
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-1063",
+      "text": "TV monitor has no signal",
+      "tokens": [
+        "TV",
+        "monitor",
+        "has",
+        "no",
+        "signal"
+      ],
+      "text_sha256": "0855f4c66a518671c9fe2b80654493315bf62326a857d57eafccbb83aff5936c",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/PresentingObject/MultipleFormPresentingObject"
+        },
+        {
+          "start": 0,
+          "end": 1,
+          "type": "PhysicalObject/PresentingObject/MultipleFormPresentingObject"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "State/UndesirableState/DegradedState"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 0,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "TV monitor"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "monitor"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "State",
+          "text": "no signal"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1827.4,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 0,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 5,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_D82jwDCjsVQmMtU9A7B66987",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 787,
+        "output_tokens": 95,
+        "total_tokens": 882
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0266",
+      "text": "<id> driver's door top hinge broken",
+      "tokens": [
+        "<id>",
+        "driver's",
+        "door",
+        "top",
+        "hinge",
+        "broken"
+      ],
+      "text_sha256": "0a558fd968f5ab337c7867a38a52f999aca6d5f89378f54b189e625b87cf8fe4",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 2,
+          "end": 3,
+          "type": "PhysicalObject/ControllingObject/SpaceAccessObject"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/HoldingObject/JointingObject"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 1,
+          "end": 3,
+          "type": "PhysicalObject/ControllingObject/SpaceAccessObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "PhysicalObject",
+          "text": "driver's door"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "top hinge"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "hinge"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "State",
+          "text": "broken"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2518.17,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 3,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 5,
+                "end": 6,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_98jCjsVPT8PrpEkaQx9D4320",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 796,
+        "output_tokens": 114,
+        "total_tokens": 910
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0020",
+      "text": "<id> airhorn not working",
+      "tokens": [
+        "<id>",
+        "airhorn",
+        "not",
+        "working"
+      ],
+      "text_sha256": "0a875ca34d4b08924a04774ce1eb6c1c4c981151bc6b707f54b510dd672ba08e",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/PresentingObject/AcousticDevice"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "State/UndesirableState/FailedState"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "airhorn"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "State",
+          "text": "not working"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2981.53,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_XOy9FYHJMJAr6ZmQIZdF2674",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 789,
+        "output_tokens": 76,
+        "total_tokens": 865
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-1054",
+      "text": "<id> fit variable speed drive",
+      "tokens": [
+        "<id>",
+        "fit",
+        "variable",
+        "speed",
+        "drive"
+      ],
+      "text_sha256": "0c22f8c9c819ac59830aa2195836cfd5cf93718650d7a3cbf7e5a94e12d8d899",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity/SupportingActivity/Assemble"
+        },
+        {
+          "start": 2,
+          "end": 5,
+          "type": "PhysicalObject/TransformingObject/ElectricEnergyTransformingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity",
+          "text": "fit"
+        },
+        {
+          "start": 2,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "variable speed drive"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "drive"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2602.12,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_RAVgf7hR0XVIz9jfsif62352",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 790,
+        "output_tokens": 95,
+        "total_tokens": 885
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0332",
+      "text": "<id> replace front crankshaft TBC",
+      "tokens": [
+        "<id>",
+        "replace",
+        "front",
+        "crankshaft",
+        "TBC"
+      ],
+      "text_sha256": "0d6cbd694afd87603f8a98669ddd45aab60a61c0f12b8bf5ab41522730a63e22",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject/GuidingObject/MechanicalEnergyGuidingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity",
+          "text": "replace"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "front crankshaft"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "crankshaft"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2320.62,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_bx9E3slyVIdniz7drd726893",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 797,
+        "output_tokens": 95,
+        "total_tokens": 892
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0182",
+      "text": "<id> change out water pump",
+      "tokens": [
+        "<id>",
+        "change",
+        "out",
+        "water",
+        "pump"
+      ],
+      "text_sha256": "0de5d7f3b0b51eaf733f73e25590f0ac173299097227954bab820a58f189d0f9",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "PhysicalObject/GeneratingObject/LiquidFlowGeneratingObject"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/GeneratingObject/LiquidFlowGeneratingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity",
+          "text": "change out"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "water pump"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "pump"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 3219.93,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 3,
+                "type": "Activity"
+              },
+              {
+                "start": 3,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_CZYCvyEAHTOMkegBj2DC9231",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 791,
+        "output_tokens": 95,
+        "total_tokens": 886
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0575",
+      "text": "<id> - change out right hand engine air conditioner compressor PO",
+      "tokens": [
+        "<id>",
+        "-",
+        "change",
+        "out",
+        "right",
+        "hand",
+        "engine",
+        "air",
+        "conditioner",
+        "compressor",
+        "PO"
+      ],
+      "text_sha256": "0eb4f73659797eaa7a421c65f2d45ae6dbd09f6db37bd0b5a98e8896ece7e816",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 2,
+          "end": 4,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "type": "PhysicalObject/DrivingObject/CombustionEngine"
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "type": "PhysicalObject/EmittingObject/ElectricCoolingObject"
+        },
+        {
+          "start": 9,
+          "end": 10,
+          "type": "PhysicalObject/GeneratingObject/GaseousFlowGeneratingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 2,
+          "end": 4,
+          "type": "Activity",
+          "text": "change out"
+        },
+        {
+          "start": 4,
+          "end": 6,
+          "type": "Property",
+          "text": "right hand"
+        },
+        {
+          "start": 6,
+          "end": 10,
+          "type": "PhysicalObject",
+          "text": "engine air conditioner compressor"
+        },
+        {
+          "start": 7,
+          "end": 10,
+          "type": "PhysicalObject",
+          "text": "air conditioner compressor"
+        },
+        {
+          "start": 9,
+          "end": 10,
+          "type": "PhysicalObject",
+          "text": "compressor"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1377.87,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 2,
+                "end": 4,
+                "type": "Activity"
+              },
+              {
+                "start": 4,
+                "end": 6,
+                "type": "Property"
+              },
+              {
+                "start": 6,
+                "end": 10,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 7,
+                "end": 10,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 9,
+                "end": 10,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_oNzpQdLEtBu9lWD3T2KT7442",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 810,
+        "output_tokens": 132,
+        "total_tokens": 942
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0151",
+      "text": "<id> change out leaking heater taps",
+      "tokens": [
+        "<id>",
+        "change",
+        "out",
+        "leaking",
+        "heater",
+        "taps"
+      ],
+      "text_sha256": "11d3def02088d5e682b84be9870d935a4fc1ebecb8c5574efdbf03c903a72c53",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "Process/UndesirableProcess"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject/EmittingObject"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "PhysicalObject/ControllingObject/SealedFluidVaryingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 3,
+          "type": "Activity",
+          "text": "change out"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "Process",
+          "text": "leaking"
+        },
+        {
+          "start": 4,
+          "end": 6,
+          "type": "PhysicalObject",
+          "text": "heater taps"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "type": "PhysicalObject",
+          "text": "taps"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2612.54,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 3,
+                "type": "Activity"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "Process"
+              },
+              {
+                "start": 4,
+                "end": 6,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 5,
+                "end": 6,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_W5uhhmiakK7F2JWqiHYu7126",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 796,
+        "output_tokens": 113,
+        "total_tokens": 909
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0106",
+      "text": "<id> broken ripper tooth",
+      "tokens": [
+        "<id>",
+        "broken",
+        "ripper",
+        "tooth"
+      ],
+      "text_sha256": "12478aad4f199c29aac9e02a19528055b32256549df634d2625c7282eeca9ac1",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject/MatterProcessingObject/GrindingAndCrushingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "State",
+          "text": "broken"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "ripper tooth"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "tooth"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1415.16,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "State"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_eTZloFVSkEnxGbkcBTPF7115",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 790,
+        "output_tokens": 95,
+        "total_tokens": 885
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0509",
+      "text": "<id> - Tele-Remote fault",
+      "tokens": [
+        "<id>",
+        "-",
+        "Tele-Remote",
+        "fault"
+      ],
+      "text_sha256": "1351f352b01c20b2993072a81d925938e72e22b1603b1ef9208a002378d4fed8",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State/UndesirableState"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "PhysicalObject/HumanInteractionObject/MovementInteractionObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 2,
+          "end": 3,
+          "type": "PhysicalObject",
+          "text": "Tele-Remote"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State",
+          "text": "fault"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2211.17,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 2,
+                "end": 3,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_byOlY4lrN3BImQHYFVSA8390",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 794,
+        "output_tokens": 76,
+        "total_tokens": 870
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0091",
+      "text": "<id> both stick cylinders leaking",
+      "tokens": [
+        "<id>",
+        "both",
+        "stick",
+        "cylinders",
+        "leaking"
+      ],
+      "text_sha256": "151eaf45a11648bbfa2c5acfa44664cb06b229a09d0f94ce88b3be2da3498208",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject/DrivingObject/FluidPoweredDrivingObject"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "Process/UndesirableProcess"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject/DrivingObject/FluidPoweredDrivingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "stick cylinders"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "cylinders"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "Process",
+          "text": "leaking"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 3608.91,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "Process"
+              }
+            ]
+          },
+          "id": "call_00_JCdpIlQct5RaxGaGJ19g0115",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 792,
+        "output_tokens": 95,
+        "total_tokens": 887
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0298",
+      "text": "rear door limit switches to be modified",
+      "tokens": [
+        "rear",
+        "door",
+        "limit",
+        "switches",
+        "to",
+        "be",
+        "modified"
+      ],
+      "text_sha256": "15a05e32ed12c511db96f9451d382766f9dff13a10709054ab8a63be5f1d7493",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/ControllingObject/SpaceAccessObject"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "type": "Activity/SupportingActivity/Modify"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject/SensingObject/PhysicalDimensionSensingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 0,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "rear door"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "limit switches"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "switches"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "type": "Activity",
+          "text": "modified"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1377.95,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 0,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 6,
+                "end": 7,
+                "type": "Activity"
+              }
+            ]
+          },
+          "id": "call_00_P1mwSBdOOVy3kGHaMAE72011",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 793,
+        "output_tokens": 114,
+        "total_tokens": 907
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0337",
+      "text": "<id> install safety handrail",
+      "tokens": [
+        "<id>",
+        "install",
+        "safety",
+        "handrail"
+      ],
+      "text_sha256": "15a933cc0144a51eeff77fdcdbd5a311e0e825f23c7afaf0c339b04d80a04632",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity/MaintenanceActivity/Replace"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject/ProtectingObject/PreventiveProtectingObject"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject/ProtectingObject/PreventiveProtectingObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Activity",
+          "text": "install"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "safety handrail"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "PhysicalObject",
+          "text": "handrail"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 3848.84,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 4,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_ku5JQCbikIy5tb2cLBoC6613",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 790,
+        "output_tokens": 95,
+        "total_tokens": 885
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0789",
+      "text": "<id> aftercooler temperature error",
+      "tokens": [
+        "<id>",
+        "aftercooler",
+        "temperature",
+        "error"
+      ],
+      "text_sha256": "1731396ac224dabc423b56252e00be1e9986864eeb8083e3d2be69a20d7a1248",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/EmittingObject/ThermalCoolingObject"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "type": "State/UndesirableState"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State/UndesirableState"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "aftercooler"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "Property",
+          "text": "temperature"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State",
+          "text": "error"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1844.59,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "Property"
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_6Urp1AGFAIaaeQ50JuKs1235",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 791,
+        "output_tokens": 94,
+        "total_tokens": 885
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0464",
+      "text": "clean and seal electrical components",
+      "tokens": [
+        "clean",
+        "and",
+        "seal",
+        "electrical",
+        "components"
+      ],
+      "text_sha256": "18ec2760cd99f499cb4d20c22a22a4a1e73452f19625d8604a6512500d64e0b5",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "type": "Activity/MaintenanceActivity/Service"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "PhysicalObject"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "Activity/SupportingActivity/Modify"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 0,
+          "end": 1,
+          "type": "Activity",
+          "text": "clean"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "Activity",
+          "text": "seal"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "electrical components"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "PhysicalObject",
+          "text": "components"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1732.91,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 0,
+                "end": 1,
+                "type": "Activity"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "Activity"
+              },
+              {
+                "start": 3,
+                "end": 5,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_RscZua20t3xhh6o5zkZF0023",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 788,
+        "output_tokens": 113,
+        "total_tokens": 901
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0484",
+      "text": "cabin seat unserviceable needs replacing",
+      "tokens": [
+        "cabin",
+        "seat",
+        "unserviceable",
+        "needs",
+        "replacing"
+      ],
+      "text_sha256": "1924d9cf78199046a4c49a087b272795813c6447d4503aab63cbb945a09f9a92",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 0,
+          "end": 1,
+          "type": "PhysicalObject/HoldingObject/EnclosingObject"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/StoringObject/OpenStationaryStoringObject"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "type": "State/UndesirableState/FailedState"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "Activity/MaintenanceActivity/Replace"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 0,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "cabin seat"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "seat"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State",
+          "text": "unserviceable"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "type": "Activity",
+          "text": "replacing"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1515.76,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 0,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "State"
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "type": "Activity"
+              }
+            ]
+          },
+          "id": "call_00_e54GotdmaYBwOkmSp0D86158",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 794,
+        "output_tokens": 113,
+        "total_tokens": 907
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0034",
+      "text": "<id> auto-lube error PO",
+      "tokens": [
+        "<id>",
+        "auto-lube",
+        "error",
+        "PO"
+      ],
+      "text_sha256": "19778b2f26df473beea6f55713454f4e60e9265e5c013ac87f9fef429ddb1f39",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject/GeneratingObject/LiquidFlowGeneratingObject"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State/UndesirableState"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "PhysicalObject",
+          "text": "auto-lube"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "type": "State",
+          "text": "error"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 1991.8,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "PhysicalObject"
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "type": "State"
+              }
+            ]
+          },
+          "id": "call_00_4EZ0SbNRAVl5rINTVYj74450",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 791,
+        "output_tokens": 76,
+        "total_tokens": 867
+      },
+      "observed_model": "deepseek-flash"
+    },
+    {
+      "case_id": "MAINTIE-GOLD-0219",
+      "text": "<id> crack in lower centre of windscreen",
+      "tokens": [
+        "<id>",
+        "crack",
+        "in",
+        "lower",
+        "centre",
+        "of",
+        "windscreen"
+      ],
+      "text_sha256": "1b768c5561a84d874139a5633ce386e307f2b387f29a5d1cfab54e4d6a342f25",
+      "split": "evaluation",
+      "expected": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "Property/UndesirableProperty"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "type": "PhysicalObject/ControllingObject/SpaceAccessObject"
+        }
+      ],
+      "predicted": [
+        {
+          "start": 1,
+          "end": 2,
+          "type": "State",
+          "text": "crack"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "type": "PhysicalObject",
+          "text": "windscreen"
+        }
+      ],
+      "schema_valid": true,
+      "elapsed_ms": 2223.59,
+      "raw_tool_calls": [
+        {
+          "name": "submit_extraction",
+          "args": {
+            "entities": [
+              {
+                "start": 1,
+                "end": 2,
+                "type": "State"
+              },
+              {
+                "start": 6,
+                "end": 7,
+                "type": "PhysicalObject"
+              }
+            ]
+          },
+          "id": "call_00_p2nCgvoqp6qHEIonOaw74523",
+          "type": "tool_call"
+        }
+      ],
+      "usage": {
+        "input_tokens": 800,
+        "output_tokens": 76,
+        "total_tokens": 876
+      },
+      "observed_model": "deepseek-flash"
+    }
+  ],
+  "scope": "Five top-level entity types and exact token spans; no fine-grained classes or relation extraction; not a reproduction of the MaintIE paper",
+  "completed_count": 24,
+  "schema_valid_count": 24,
+  "metrics": {
+    "micro": {
+      "tp": 62,
+      "fp": 17,
+      "fn": 12,
+      "precision": 0.7848101265822784,
+      "recall": 0.8378378378378378,
+      "f1": 0.8104575163398693
+    },
+    "by_type": {
+      "Activity": {
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "PhysicalObject": {
+        "tp": 33,
+        "fp": 14,
+        "fn": 9,
+        "precision": 0.7021276595744681,
+        "recall": 0.7857142857142857,
+        "f1": 0.7415730337078652
+      },
+      "Process": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "Property": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "State": {
+        "tp": 11,
+        "fp": 1,
+        "fn": 2,
+        "precision": 0.9166666666666666,
+        "recall": 0.8461538461538461,
+        "f1": 0.88
+      }
+    },
+    "exact_record_count": 9,
+    "evaluated_record_count": 24,
+    "scoring": "Exact (start,end,top-level type) set matching; zero denominator -> 0; failed calls -> empty prediction"
+  },
+  "completed": true,
+  "observed_usage_total_tokens": 21463,
+  "usage_recorded_call_count": 24
+}

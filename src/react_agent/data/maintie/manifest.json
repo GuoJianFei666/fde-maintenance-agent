@@ -1,0 +1,17 @@
+{
+  "dataset": "MaintIE fine-grained expert-annotated corpus",
+  "repository": "https://github.com/nlp-tlp/maintie",
+  "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+  "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+  "paper": "https://aclanthology.org/2024.lrec-main.954/",
+  "license": "MIT",
+  "retrieved_at": "2026-10-21",
+  "record_count": 1076,
+  "language": "en",
+  "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+  "files": {
+    "gold_release.json": {"bytes": 817880, "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"},
+    "LICENSE.md": {"bytes": 1068, "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"},
+    "README.upstream.md": {"bytes": 10931, "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"}
+  }
+}

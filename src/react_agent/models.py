@@ -1,8 +1,9 @@
 """Validate alarm events, tool inputs, and human approval."""
 
+import re
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, model_validator
 
 ShortText = Annotated[str, Field(min_length=2, max_length=300)]
 DeviceId = Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9-]{1,30}$")]
@@ -17,6 +18,22 @@ class AlarmEvent(InputModel):
     device_id: DeviceId
     message: str = Field(min_length=3, max_length=2000)
     severity: Literal["info", "warning", "critical"] = "warning"
+
+
+class MaintenanceText(AlarmEvent):
+    message: str = Field(min_length=3, max_length=500)
+    source_record_id: str | None = Field(default=None, pattern=r"^MAINTIE-GOLD-\d{4}$")
+
+    @model_validator(mode="after")
+    def check_token_limit(self):
+        if len(tokenize_text(self.message)) > 160:
+            raise ValueError("maintenance_text_exceeds_160_tokens")
+        return self
+
+
+def tokenize_text(text):
+    return re.findall(r"<(?:id|num|date|sensitive)>|[A-Za-z0-9]+(?:[-'.][A-Za-z0-9]+)*|[\u4e00-\u9fff]|[^\w\s]",
+                      text)
 
 
 class DeviceQuery(InputModel):

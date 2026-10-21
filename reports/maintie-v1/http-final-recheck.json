@@ -1,0 +1,11 @@
+{
+  "kind": "final_service_recheck_no_new_model_calls",
+  "checks": {
+    "restored_pending": true,
+    "duplicate_no_model_call": true,
+    "new_token_validation": true,
+    "dataset_available": true
+  },
+  "passed": true,
+  "run_id": "0b56970fab50421eb9cc85af35ee6000"
+}

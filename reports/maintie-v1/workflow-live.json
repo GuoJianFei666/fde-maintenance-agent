@@ -1,0 +1,1223 @@
+{
+  "kind": "live_maintie_workflow_acceptance",
+  "performed_at": "2026-10-21T08:56:37.370395+00:00",
+  "model": "deepseek-flash",
+  "planned_count": 3,
+  "approval_operator": "acceptance_script",
+  "scope": "Three authored intake examples, public case references and demo assets; not industrial maintenance outcomes",
+  "cases": [
+    {
+      "scenario": "approve_after_restart",
+      "request": {
+        "event_id": "68ffb287ef874f2aa02494ce14490199",
+        "device_id": "P-101",
+        "message": "hydraulic pump leaking oil",
+        "severity": "warning",
+        "source_record_id": null
+      },
+      "initial_status": "awaiting_approval",
+      "actual_status": "completed",
+      "expected_status": "completed",
+      "written_orders": 1,
+      "passed": true,
+      "run": {
+        "id": "7c67e1840e764d9a8cc09e3780ab73be",
+        "event_id": "68ffb287ef874f2aa02494ce14490199",
+        "alarm": {
+          "device_id": "P-101",
+          "event_id": "68ffb287ef874f2aa02494ce14490199",
+          "message": "hydraulic pump leaking oil",
+          "severity": "warning",
+          "source_record_id": null
+        },
+        "alarm_hash": "c30cf530827006ac7da11d5e03605060e1b0b389ef8f4185e8ee3e6a409203ff",
+        "status": "completed",
+        "proposal": {
+          "checks": [
+            "核对所选设备编号、现场部件与用户原始描述是否一致。",
+            "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+            "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+          ],
+          "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+          "evidence_ids": [
+            "MAINTIE-GOLD-0429",
+            "MAINTIE-GOLD-0631",
+            "MAINTIE-GOLD-0152"
+          ],
+          "evidence_sha256": "adbb10f068b8bd3d0cb3df9bd5dd68e1add3b6b60fed8071ebe3f8295fbf5da4",
+          "extracted_entities": [
+            {
+              "end": 2,
+              "start": 0,
+              "text": "hydraulic pump",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 2,
+              "start": 1,
+              "text": "pump",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 3,
+              "start": 2,
+              "text": "leaking",
+              "type": "Process"
+            },
+            {
+              "end": 4,
+              "start": 3,
+              "text": "oil",
+              "type": "PhysicalObject"
+            }
+          ],
+          "kind": "maintenance_text_intake",
+          "priority": "medium",
+          "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+          "source_text": "hydraulic pump leaking oil",
+          "summary": "维修受理复核：hydraulic pump leaking oil"
+        },
+        "report": {
+          "answer": null,
+          "approval_note": "本地验收脚本演示审批，未执行真实设备维护。",
+          "configured_model": "deepseek-flash",
+          "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+          "corpus_version": "demo-v1",
+          "data_kind": "public_corpus_demo_intake",
+          "dataset": {
+            "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+            "dataset": "MaintIE fine-grained expert-annotated corpus",
+            "files": {
+              "LICENSE.md": {
+                "bytes": 1068,
+                "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"
+              },
+              "README.upstream.md": {
+                "bytes": 10931,
+                "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"
+              },
+              "gold_release.json": {
+                "bytes": 817880,
+                "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"
+              }
+            },
+            "index_version": "maintie-lexical-v1",
+            "language": "en",
+            "license": "MIT",
+            "paper": "https://aclanthology.org/2024.lrec-main.954/",
+            "query_aliases": {
+              "密封": "seal seals",
+              "损坏": "broken failed damaged",
+              "更换": "change replace replacement",
+              "泄漏": "leak leaking leaks",
+              "泵": "pump pumps",
+              "渗漏": "leak leaking",
+              "温度": "temperature",
+              "漏油": "oil leak leaking",
+              "电机": "motor",
+              "软管": "hose",
+              "轴承": "bearing bearings",
+              "输送带": "conveyor belt",
+              "过热": "hot overheating",
+              "阀": "valve"
+            },
+            "record_count": 1076,
+            "repository": "https://github.com/nlp-tlp/maintie",
+            "retrieval": "SQLite FTS5 / BM25, reference rows only, exact normalized query excluded",
+            "retrieved_at": "2026-10-21",
+            "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+            "split_counts": {
+              "evaluation": 207,
+              "reference": 869
+            },
+            "split_policy": "normalized-text SHA256 first 8 hex modulo 5: 0=evaluation; others=reference"
+          },
+          "device_mapping": "user_selected_demo_device",
+          "evidence": [
+            {
+              "body": "replace hydraulic pump coupling",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0429",
+              "rank": -7.679168119110025,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 429,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-429",
+              "split": "reference",
+              "text_sha256": "18d166e8079518466002efdbe76c786e893a55e5bd2eac4b50bdd1a9bec9248b",
+              "tokens": [
+                "replace",
+                "hydraulic",
+                "pump",
+                "coupling"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            },
+            {
+              "body": "<id> - hydraulic oil leak from environmental",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0631",
+              "rank": -6.559350946122157,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 631,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-631",
+              "split": "reference",
+              "text_sha256": "05942bab485d03126aa7d91733b14a2174bb01b03f3675f1c6dd0aed2b7e9ee7",
+              "tokens": [
+                "<id>",
+                "-",
+                "hydraulic",
+                "oil",
+                "leak",
+                "from",
+                "environmental"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            },
+            {
+              "body": "<id> change out leaking hydraulic hose",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0152",
+              "rank": -6.3864966002970665,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 152,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-152",
+              "split": "reference",
+              "text_sha256": "d0d6f924b0c6d2a188a5f74e638a3b169ab9beea81fa1936060ea007509e6139",
+              "tokens": [
+                "<id>",
+                "change",
+                "out",
+                "leaking",
+                "hydraulic",
+                "hose"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            }
+          ],
+          "evidence_kind": "case_reference_not_sop",
+          "execution_mode": "live_deepseek",
+          "input_source": null,
+          "model_call_count": 1,
+          "observed_models": [
+            "deepseek-flash"
+          ],
+          "order": {
+            "created_at": "2026-10-21T08:56:40.439594+00:00",
+            "data_kind": "public_corpus_demo_intake",
+            "device_id": "P-101",
+            "id": "WO-7C67E1840E76",
+            "proposal": {
+              "checks": [
+                "核对所选设备编号、现场部件与用户原始描述是否一致。",
+                "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+                "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+              ],
+              "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+              "evidence_ids": [
+                "MAINTIE-GOLD-0429",
+                "MAINTIE-GOLD-0631",
+                "MAINTIE-GOLD-0152"
+              ],
+              "evidence_sha256": "adbb10f068b8bd3d0cb3df9bd5dd68e1add3b6b60fed8071ebe3f8295fbf5da4",
+              "extracted_entities": [
+                {
+                  "end": 2,
+                  "start": 0,
+                  "text": "hydraulic pump",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 2,
+                  "start": 1,
+                  "text": "pump",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 3,
+                  "start": 2,
+                  "text": "leaking",
+                  "type": "Process"
+                },
+                {
+                  "end": 4,
+                  "start": 3,
+                  "text": "oil",
+                  "type": "PhysicalObject"
+                }
+              ],
+              "kind": "maintenance_text_intake",
+              "priority": "medium",
+              "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+              "source_text": "hydraulic pump leaking oil",
+              "summary": "维修受理复核：hydraulic pump leaking oil"
+            },
+            "source_run": "7c67e1840e764d9a8cc09e3780ab73be",
+            "status": "open",
+            "summary": "维修受理复核：hydraulic pump leaking oil"
+          },
+          "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+          "prompt_version": "maintie-intake-v1",
+          "proposal_sha256": "dddf5ec3258e441826b0990bea62f186358a3388ede839bbb278a3cf7607faa8",
+          "text_extraction": {
+            "elapsed_ms": 2713.7,
+            "entities": [
+              {
+                "end": 2,
+                "start": 0,
+                "text": "hydraulic pump",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 2,
+                "start": 1,
+                "text": "pump",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 3,
+                "start": 2,
+                "text": "leaking",
+                "type": "Process"
+              },
+              {
+                "end": 4,
+                "start": 3,
+                "text": "oil",
+                "type": "PhysicalObject"
+              }
+            ],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "hydraulic",
+              "pump",
+              "leaking",
+              "oil"
+            ],
+            "usage": {
+              "input_tokens": 787,
+              "output_tokens": 114,
+              "total_tokens": 901
+            }
+          },
+          "usage": {
+            "input_tokens": 787,
+            "output_tokens": 114,
+            "total_tokens": 901
+          },
+          "workflow": "maintenance_text"
+        },
+        "error_code": null,
+        "created_at": "2026-10-21T08:56:37.542506+00:00",
+        "updated_at": "2026-10-21T08:56:40.466331+00:00",
+        "workflow": "maintenance_text"
+      },
+      "trace": [
+        {
+          "id": 1,
+          "at": "2026-10-21T08:56:37.552856+00:00",
+          "node": "intake",
+          "data": {
+            "device_mapping": "user_selected_demo_device",
+            "event_id": "68ffb287ef874f2aa02494ce14490199",
+            "input_kind": "user_supplied_text",
+            "source_record_id": null,
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 2,
+          "at": "2026-10-21T08:56:40.310867+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 2713.7,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "submit_extraction"
+            ],
+            "usage": {
+              "input_tokens": 787,
+              "output_tokens": 114,
+              "total_tokens": 901
+            },
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 3,
+          "at": "2026-10-21T08:56:40.319423+00:00",
+          "node": "extract_text",
+          "data": {
+            "elapsed_ms": 2713.7,
+            "entities": [
+              {
+                "end": 2,
+                "start": 0,
+                "text": "hydraulic pump",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 2,
+                "start": 1,
+                "text": "pump",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 3,
+                "start": 2,
+                "text": "leaking",
+                "type": "Process"
+              },
+              {
+                "end": 4,
+                "start": 3,
+                "text": "oil",
+                "type": "PhysicalObject"
+              }
+            ],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "hydraulic",
+              "pump",
+              "leaking",
+              "oil"
+            ],
+            "usage": {
+              "input_tokens": 787,
+              "output_tokens": 114,
+              "total_tokens": 901
+            }
+          }
+        },
+        {
+          "id": 4,
+          "at": "2026-10-21T08:56:40.330035+00:00",
+          "node": "retrieve_cases",
+          "data": {
+            "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "evaluation_rows_indexed": false,
+            "hits": [
+              {
+                "body": "replace hydraulic pump coupling",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0429",
+                "rank": -7.679168119110025,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 429,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-429",
+                "split": "reference",
+                "text_sha256": "18d166e8079518466002efdbe76c786e893a55e5bd2eac4b50bdd1a9bec9248b",
+                "tokens": [
+                  "replace",
+                  "hydraulic",
+                  "pump",
+                  "coupling"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              },
+              {
+                "body": "<id> - hydraulic oil leak from environmental",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0631",
+                "rank": -6.559350946122157,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 631,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-631",
+                "split": "reference",
+                "text_sha256": "05942bab485d03126aa7d91733b14a2174bb01b03f3675f1c6dd0aed2b7e9ee7",
+                "tokens": [
+                  "<id>",
+                  "-",
+                  "hydraulic",
+                  "oil",
+                  "leak",
+                  "from",
+                  "environmental"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              },
+              {
+                "body": "<id> change out leaking hydraulic hose",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0152",
+                "rank": -6.3864966002970665,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 152,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-152",
+                "split": "reference",
+                "text_sha256": "d0d6f924b0c6d2a188a5f74e638a3b169ab9beea81fa1936060ea007509e6139",
+                "tokens": [
+                  "<id>",
+                  "change",
+                  "out",
+                  "leaking",
+                  "hydraulic",
+                  "hose"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              }
+            ],
+            "query": "hydraulic pump leaking oil"
+          }
+        },
+        {
+          "id": 5,
+          "at": "2026-10-21T08:56:40.341572+00:00",
+          "node": "draft_text_intake",
+          "data": {
+            "draft_only": true,
+            "proposal": {
+              "checks": [
+                "核对所选设备编号、现场部件与用户原始描述是否一致。",
+                "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+                "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+              ],
+              "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+              "evidence_ids": [
+                "MAINTIE-GOLD-0429",
+                "MAINTIE-GOLD-0631",
+                "MAINTIE-GOLD-0152"
+              ],
+              "evidence_sha256": "adbb10f068b8bd3d0cb3df9bd5dd68e1add3b6b60fed8071ebe3f8295fbf5da4",
+              "extracted_entities": [
+                {
+                  "end": 2,
+                  "start": 0,
+                  "text": "hydraulic pump",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 2,
+                  "start": 1,
+                  "text": "pump",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 3,
+                  "start": 2,
+                  "text": "leaking",
+                  "type": "Process"
+                },
+                {
+                  "end": 4,
+                  "start": 3,
+                  "text": "oil",
+                  "type": "PhysicalObject"
+                }
+              ],
+              "kind": "maintenance_text_intake",
+              "priority": "medium",
+              "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+              "source_text": "hydraulic pump leaking oil",
+              "summary": "维修受理复核：hydraulic pump leaking oil"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "at": "2026-10-21T08:56:40.426977+00:00",
+          "node": "human_decision",
+          "data": {
+            "approved": true,
+            "note": "本地验收脚本演示审批，未执行真实设备维护。",
+            "proposal_sha256": "dddf5ec3258e441826b0990bea62f186358a3388ede839bbb278a3cf7607faa8"
+          }
+        },
+        {
+          "id": 7,
+          "at": "2026-10-21T08:56:40.448162+00:00",
+          "node": "commit_order",
+          "data": {
+            "approved": true,
+            "order_id": "WO-7C67E1840E76"
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "reject",
+      "request": {
+        "event_id": "402681d9346945238896bcec261fba54",
+        "device_id": "M-201",
+        "message": "electric motor bearings damaged",
+        "severity": "warning",
+        "source_record_id": null
+      },
+      "initial_status": "awaiting_approval",
+      "actual_status": "rejected",
+      "expected_status": "rejected",
+      "written_orders": 0,
+      "passed": true,
+      "run": {
+        "id": "f5d12bcc3f7645228ddc492638f58c49",
+        "event_id": "402681d9346945238896bcec261fba54",
+        "alarm": {
+          "device_id": "M-201",
+          "event_id": "402681d9346945238896bcec261fba54",
+          "message": "electric motor bearings damaged",
+          "severity": "warning",
+          "source_record_id": null
+        },
+        "alarm_hash": "3d81c24c4a7878432ae79d7d1981382fef42fcc5e47c324e6bdea2b3a677c823",
+        "status": "rejected",
+        "proposal": {
+          "checks": [
+            "核对所选设备编号、现场部件与用户原始描述是否一致。",
+            "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+            "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+          ],
+          "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+          "evidence_ids": [
+            "MAINTIE-GOLD-0053",
+            "MAINTIE-GOLD-0240",
+            "MAINTIE-GOLD-0352"
+          ],
+          "evidence_sha256": "383d19cd0fc856da67dbe6edd94f2e0a8a4b34c8d1fde674b93b3be7a412439a",
+          "extracted_entities": [
+            {
+              "end": 2,
+              "start": 0,
+              "text": "electric motor",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 2,
+              "start": 1,
+              "text": "motor",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 3,
+              "start": 2,
+              "text": "bearings",
+              "type": "PhysicalObject"
+            },
+            {
+              "end": 4,
+              "start": 3,
+              "text": "damaged",
+              "type": "State"
+            }
+          ],
+          "kind": "maintenance_text_intake",
+          "priority": "medium",
+          "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+          "source_text": "electric motor bearings damaged",
+          "summary": "维修受理复核：electric motor bearings damaged"
+        },
+        "report": {
+          "answer": null,
+          "approval_note": "本地验收脚本演示审批，未执行真实设备维护。",
+          "configured_model": "deepseek-flash",
+          "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+          "corpus_version": "demo-v1",
+          "data_kind": "public_corpus_demo_intake",
+          "dataset": {
+            "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+            "dataset": "MaintIE fine-grained expert-annotated corpus",
+            "files": {
+              "LICENSE.md": {
+                "bytes": 1068,
+                "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"
+              },
+              "README.upstream.md": {
+                "bytes": 10931,
+                "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"
+              },
+              "gold_release.json": {
+                "bytes": 817880,
+                "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"
+              }
+            },
+            "index_version": "maintie-lexical-v1",
+            "language": "en",
+            "license": "MIT",
+            "paper": "https://aclanthology.org/2024.lrec-main.954/",
+            "query_aliases": {
+              "密封": "seal seals",
+              "损坏": "broken failed damaged",
+              "更换": "change replace replacement",
+              "泄漏": "leak leaking leaks",
+              "泵": "pump pumps",
+              "渗漏": "leak leaking",
+              "温度": "temperature",
+              "漏油": "oil leak leaking",
+              "电机": "motor",
+              "软管": "hose",
+              "轴承": "bearing bearings",
+              "输送带": "conveyor belt",
+              "过热": "hot overheating",
+              "阀": "valve"
+            },
+            "record_count": 1076,
+            "repository": "https://github.com/nlp-tlp/maintie",
+            "retrieval": "SQLite FTS5 / BM25, reference rows only, exact normalized query excluded",
+            "retrieved_at": "2026-10-21",
+            "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+            "split_counts": {
+              "evaluation": 207,
+              "reference": 869
+            },
+            "split_policy": "normalized-text SHA256 first 8 hex modulo 5: 0=evaluation; others=reference"
+          },
+          "device_mapping": "user_selected_demo_device",
+          "evidence": [
+            {
+              "body": "<id> bearings are shot",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0053",
+              "rank": -6.670960091204527,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 53,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-53",
+              "split": "reference",
+              "text_sha256": "9b04b01837581d012cae8060b9ac695ccd8ea2630df3766be54e4dbd34611403",
+              "tokens": [
+                "<id>",
+                "bearings",
+                "are",
+                "shot"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            },
+            {
+              "body": "<id> damaged position <num> tyre",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0240",
+              "rank": -5.767799920077503,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 240,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-240",
+              "split": "reference",
+              "text_sha256": "f34e54a35dc5e2e2dbf0d6a9ab86b0d3f5b6160e31ee7b796c5d70ce8e5345cd",
+              "tokens": [
+                "<id>",
+                "damaged",
+                "position",
+                "<num>",
+                "tyre"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            },
+            {
+              "body": "drag tune roller bracket / bearings",
+              "data_kind": "public_maintie_short_text",
+              "id": "MAINTIE-GOLD-0352",
+              "rank": -5.479714497887315,
+              "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+              "row_index": 352,
+              "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-352",
+              "split": "reference",
+              "text_sha256": "7610f47829e0b269b5df99d801206e86c3cb8d47626a5e97891f760011162179",
+              "tokens": [
+                "drag",
+                "tune",
+                "roller",
+                "bracket",
+                "/",
+                "bearings"
+              ],
+              "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+            }
+          ],
+          "evidence_kind": "case_reference_not_sop",
+          "execution_mode": "live_deepseek",
+          "input_source": null,
+          "model_call_count": 1,
+          "observed_models": [
+            "deepseek-flash"
+          ],
+          "order": null,
+          "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+          "prompt_version": "maintie-intake-v1",
+          "proposal_sha256": "edd6cf3c43e65e7377664b5e572622ae85b6154e134ad5c9af38ca8a01af9c01",
+          "text_extraction": {
+            "elapsed_ms": 1712.48,
+            "entities": [
+              {
+                "end": 2,
+                "start": 0,
+                "text": "electric motor",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 2,
+                "start": 1,
+                "text": "motor",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 3,
+                "start": 2,
+                "text": "bearings",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 4,
+                "start": 3,
+                "text": "damaged",
+                "type": "State"
+              }
+            ],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "electric",
+              "motor",
+              "bearings",
+              "damaged"
+            ],
+            "usage": {
+              "input_tokens": 785,
+              "output_tokens": 114,
+              "total_tokens": 899
+            }
+          },
+          "usage": {
+            "input_tokens": 785,
+            "output_tokens": 114,
+            "total_tokens": 899
+          },
+          "workflow": "maintenance_text"
+        },
+        "error_code": null,
+        "created_at": "2026-10-21T08:56:40.605787+00:00",
+        "updated_at": "2026-10-21T08:56:42.481384+00:00",
+        "workflow": "maintenance_text"
+      },
+      "trace": [
+        {
+          "id": 8,
+          "at": "2026-10-21T08:56:40.612340+00:00",
+          "node": "intake",
+          "data": {
+            "device_mapping": "user_selected_demo_device",
+            "event_id": "402681d9346945238896bcec261fba54",
+            "input_kind": "user_supplied_text",
+            "source_record_id": null,
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 9,
+          "at": "2026-10-21T08:56:42.347944+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 1712.48,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "submit_extraction"
+            ],
+            "usage": {
+              "input_tokens": 785,
+              "output_tokens": 114,
+              "total_tokens": 899
+            },
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 10,
+          "at": "2026-10-21T08:56:42.356401+00:00",
+          "node": "extract_text",
+          "data": {
+            "elapsed_ms": 1712.48,
+            "entities": [
+              {
+                "end": 2,
+                "start": 0,
+                "text": "electric motor",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 2,
+                "start": 1,
+                "text": "motor",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 3,
+                "start": 2,
+                "text": "bearings",
+                "type": "PhysicalObject"
+              },
+              {
+                "end": 4,
+                "start": 3,
+                "text": "damaged",
+                "type": "State"
+              }
+            ],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "electric",
+              "motor",
+              "bearings",
+              "damaged"
+            ],
+            "usage": {
+              "input_tokens": 785,
+              "output_tokens": 114,
+              "total_tokens": 899
+            }
+          }
+        },
+        {
+          "id": 11,
+          "at": "2026-10-21T08:56:42.369336+00:00",
+          "node": "retrieve_cases",
+          "data": {
+            "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "evaluation_rows_indexed": false,
+            "hits": [
+              {
+                "body": "<id> bearings are shot",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0053",
+                "rank": -6.670960091204527,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 53,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-53",
+                "split": "reference",
+                "text_sha256": "9b04b01837581d012cae8060b9ac695ccd8ea2630df3766be54e4dbd34611403",
+                "tokens": [
+                  "<id>",
+                  "bearings",
+                  "are",
+                  "shot"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              },
+              {
+                "body": "<id> damaged position <num> tyre",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0240",
+                "rank": -5.767799920077503,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 240,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-240",
+                "split": "reference",
+                "text_sha256": "f34e54a35dc5e2e2dbf0d6a9ab86b0d3f5b6160e31ee7b796c5d70ce8e5345cd",
+                "tokens": [
+                  "<id>",
+                  "damaged",
+                  "position",
+                  "<num>",
+                  "tyre"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              },
+              {
+                "body": "drag tune roller bracket / bearings",
+                "data_kind": "public_maintie_short_text",
+                "id": "MAINTIE-GOLD-0352",
+                "rank": -5.479714497887315,
+                "raw_sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+                "row_index": 352,
+                "source": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json#record-352",
+                "split": "reference",
+                "text_sha256": "7610f47829e0b269b5df99d801206e86c3cb8d47626a5e97891f760011162179",
+                "tokens": [
+                  "drag",
+                  "tune",
+                  "roller",
+                  "bracket",
+                  "/",
+                  "bearings"
+                ],
+                "version": "825e7710e4129598da997276a38b3cb40b200bc2"
+              }
+            ],
+            "query": "electric motor bearings damaged"
+          }
+        },
+        {
+          "id": 12,
+          "at": "2026-10-21T08:56:42.381913+00:00",
+          "node": "draft_text_intake",
+          "data": {
+            "draft_only": true,
+            "proposal": {
+              "checks": [
+                "核对所选设备编号、现场部件与用户原始描述是否一致。",
+                "补充发生时间、当前状态、相关测量值及适用作业规程，再由维护人员判断处理方法。",
+                "相似案例仅作受理参考；原文中的历史活动不能直接转成当前设备的维修指令。"
+              ],
+              "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+              "evidence_ids": [
+                "MAINTIE-GOLD-0053",
+                "MAINTIE-GOLD-0240",
+                "MAINTIE-GOLD-0352"
+              ],
+              "evidence_sha256": "383d19cd0fc856da67dbe6edd94f2e0a8a4b34c8d1fde674b93b3be7a412439a",
+              "extracted_entities": [
+                {
+                  "end": 2,
+                  "start": 0,
+                  "text": "electric motor",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 2,
+                  "start": 1,
+                  "text": "motor",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 3,
+                  "start": 2,
+                  "text": "bearings",
+                  "type": "PhysicalObject"
+                },
+                {
+                  "end": 4,
+                  "start": 3,
+                  "text": "damaged",
+                  "type": "State"
+                }
+              ],
+              "kind": "maintenance_text_intake",
+              "priority": "medium",
+              "rationale": "依据用户原始描述抽取受理字段，并附公开维修短文本供人工比较；未推断故障原因或维修效果。",
+              "source_text": "electric motor bearings damaged",
+              "summary": "维修受理复核：electric motor bearings damaged"
+            }
+          }
+        },
+        {
+          "id": 13,
+          "at": "2026-10-21T08:56:42.462982+00:00",
+          "node": "human_decision",
+          "data": {
+            "approved": false,
+            "note": "本地验收脚本演示审批，未执行真实设备维护。",
+            "proposal_sha256": "edd6cf3c43e65e7377664b5e572622ae85b6154e134ad5c9af38ca8a01af9c01"
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "missing_information",
+      "request": {
+        "event_id": "ca05832a868645f093d640b158c7c544",
+        "device_id": "P-101",
+        "message": "please help",
+        "severity": "warning",
+        "source_record_id": null
+      },
+      "initial_status": "needs_information",
+      "actual_status": "needs_information",
+      "expected_status": "needs_information",
+      "written_orders": 0,
+      "passed": true,
+      "run": {
+        "id": "cdb7cc61c1ab4dd4b657dc6ce63c920d",
+        "event_id": "ca05832a868645f093d640b158c7c544",
+        "alarm": {
+          "device_id": "P-101",
+          "event_id": "ca05832a868645f093d640b158c7c544",
+          "message": "please help",
+          "severity": "warning",
+          "source_record_id": null
+        },
+        "alarm_hash": "59838f70f5ba7238342388915d00e9c3e3dd8087aa280388bbbb5ae7cc88e564",
+        "status": "needs_information",
+        "proposal": null,
+        "report": {
+          "answer": "请补充或核实：设备或部件名称、异常状态、现象或待处理事项、可供受理参考的维修案例。当前未生成工单草稿。",
+          "approval_note": null,
+          "configured_model": "deepseek-flash",
+          "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+          "corpus_version": "demo-v1",
+          "data_kind": "public_corpus_demo_intake",
+          "dataset": {
+            "data_kind": "public_normalized_and_sanitized_maintenance_short_texts",
+            "dataset": "MaintIE fine-grained expert-annotated corpus",
+            "files": {
+              "LICENSE.md": {
+                "bytes": 1068,
+                "sha256": "a406579cd136771c705c521db86ca7d60a6f3de7c9b5460e6193a2df27861bde"
+              },
+              "README.upstream.md": {
+                "bytes": 10931,
+                "sha256": "3e6105601d6e36d83995896a5b0b8c509b0b1b152018b1049fa41efa0e4c9aee"
+              },
+              "gold_release.json": {
+                "bytes": 817880,
+                "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0"
+              }
+            },
+            "index_version": "maintie-lexical-v1",
+            "language": "en",
+            "license": "MIT",
+            "paper": "https://aclanthology.org/2024.lrec-main.954/",
+            "query_aliases": {
+              "密封": "seal seals",
+              "损坏": "broken failed damaged",
+              "更换": "change replace replacement",
+              "泄漏": "leak leaking leaks",
+              "泵": "pump pumps",
+              "渗漏": "leak leaking",
+              "温度": "temperature",
+              "漏油": "oil leak leaking",
+              "电机": "motor",
+              "软管": "hose",
+              "轴承": "bearing bearings",
+              "输送带": "conveyor belt",
+              "过热": "hot overheating",
+              "阀": "valve"
+            },
+            "record_count": 1076,
+            "repository": "https://github.com/nlp-tlp/maintie",
+            "retrieval": "SQLite FTS5 / BM25, reference rows only, exact normalized query excluded",
+            "retrieved_at": "2026-10-21",
+            "revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "source_url": "https://github.com/nlp-tlp/maintie/blob/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+            "split_counts": {
+              "evaluation": 207,
+              "reference": 869
+            },
+            "split_policy": "normalized-text SHA256 first 8 hex modulo 5: 0=evaluation; others=reference"
+          },
+          "device_mapping": "user_selected_demo_device",
+          "evidence": [],
+          "evidence_kind": "case_reference_not_sop",
+          "execution_mode": "live_deepseek",
+          "input_source": null,
+          "model_call_count": 1,
+          "observed_models": [
+            "deepseek-flash"
+          ],
+          "order": null,
+          "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+          "prompt_version": "maintie-intake-v1",
+          "proposal_sha256": null,
+          "text_extraction": {
+            "elapsed_ms": 2092.93,
+            "entities": [],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "please",
+              "help"
+            ],
+            "usage": {
+              "input_tokens": 777,
+              "output_tokens": 38,
+              "total_tokens": 815
+            }
+          },
+          "usage": {
+            "input_tokens": 777,
+            "output_tokens": 38,
+            "total_tokens": 815
+          },
+          "workflow": "maintenance_text"
+        },
+        "error_code": null,
+        "created_at": "2026-10-21T08:56:42.549426+00:00",
+        "updated_at": "2026-10-21T08:56:44.713092+00:00",
+        "workflow": "maintenance_text"
+      },
+      "trace": [
+        {
+          "id": 14,
+          "at": "2026-10-21T08:56:42.558458+00:00",
+          "node": "intake",
+          "data": {
+            "device_mapping": "user_selected_demo_device",
+            "event_id": "ca05832a868645f093d640b158c7c544",
+            "input_kind": "user_supplied_text",
+            "source_record_id": null,
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 15,
+          "at": "2026-10-21T08:56:44.667758+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 2092.93,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "submit_extraction"
+            ],
+            "usage": {
+              "input_tokens": 777,
+              "output_tokens": 38,
+              "total_tokens": 815
+            },
+            "workflow": "maintenance_text"
+          }
+        },
+        {
+          "id": 16,
+          "at": "2026-10-21T08:56:44.675191+00:00",
+          "node": "extract_text",
+          "data": {
+            "elapsed_ms": 2092.93,
+            "entities": [],
+            "execution_mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "prompt_sha256": "da22b666b6cf9b020e07ba8942f286a26fecaf7b8e992388afc3da284c26da97",
+            "prompt_version": "maintie-intake-v1",
+            "tokens": [
+              "please",
+              "help"
+            ],
+            "usage": {
+              "input_tokens": 777,
+              "output_tokens": 38,
+              "total_tokens": 815
+            }
+          }
+        },
+        {
+          "id": 17,
+          "at": "2026-10-21T08:56:44.685763+00:00",
+          "node": "retrieve_cases",
+          "data": {
+            "dataset_revision": "825e7710e4129598da997276a38b3cb40b200bc2",
+            "evaluation_rows_indexed": false,
+            "hits": [],
+            "query": "please help"
+          }
+        },
+        {
+          "id": 18,
+          "at": "2026-10-21T08:56:44.697302+00:00",
+          "node": "draft_text_intake",
+          "data": {
+            "missing": [
+              "设备或部件名称",
+              "异常状态、现象或待处理事项",
+              "可供受理参考的维修案例"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "completed_count": 3,
+  "passed": true
+}

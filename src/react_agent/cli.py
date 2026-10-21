@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from react_agent.config import Settings
-from react_agent.models import AlarmEvent, Approval
+from react_agent.models import AlarmEvent, Approval, MaintenanceText
 from react_agent.service import AgentService
 from react_agent.store import content_hash
 
@@ -18,6 +18,15 @@ def main():
     diagnose.add_argument("--device", required=True)
     diagnose.add_argument("--message", required=True)
     diagnose.add_argument("--severity", choices=["info", "warning", "critical"], default="warning")
+    intake = sub.add_parser("intake", help="抽取维修文本并提交待人工确认的受理草稿")
+    intake.add_argument("--event", required=True)
+    intake.add_argument("--device", required=True)
+    intake.add_argument("--message", required=True)
+    intake.add_argument("--source-record", help="仅当message与该公开记录原文完全相同时填写")
+    intake.add_argument("--severity", choices=["info", "warning", "critical"], default="warning")
+    sub.add_parser("dataset", help="查看固定数据版本、校验哈希和分区统计")
+    search = sub.add_parser("cases", help="检索公开维修案例；不包含评估分区")
+    search.add_argument("query")
     decide = sub.add_parser("decide")
     decide.add_argument("run_id")
     decide.add_argument("--decision", choices=["approve", "reject"], required=True)
@@ -32,6 +41,15 @@ def main():
         if args.command == "diagnose":
             result = service.diagnose(AlarmEvent(event_id=args.event, device_id=args.device,
                                                  message=args.message, severity=args.severity))
+        elif args.command == "intake":
+            result = service.submit_text(MaintenanceText(event_id=args.event, device_id=args.device,
+                         message=args.message, severity=args.severity, source_record_id=args.source_record))
+        elif args.command == "dataset":
+            print(json.dumps(service.cases.metadata(), ensure_ascii=False, indent=2))
+            return
+        elif args.command == "cases":
+            print(json.dumps(service.cases.search(args.query), ensure_ascii=False, indent=2))
+            return
         elif args.command == "decide":
             result = service.decide(args.run_id, Approval(approved=args.decision == "approve",
                                      proposal_sha256=args.proposal_hash, note=args.note))

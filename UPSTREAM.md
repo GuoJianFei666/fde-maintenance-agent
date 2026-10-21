@@ -9,3 +9,9 @@
 - 上游默认 Tavily/Anthropic 搜索示例改为 DeepSeek 和本地演示数据。应用不依赖 LangGraph Studio、Docker 或 GPU。
 
 开发使用 AI 辅助。设备、手册及工单是本项目构造的演示数据，不对应真实工业客户或生产系统。
+
+## 本轮公开数据来源
+
+新增MaintIE维修文本受理路径，使用作者仓库[nlp-tlp/maintie](https://github.com/nlp-tlp/maintie)的专家标注集，固定提交825e7710e4129598da997276a38b3cb40b200bc2。原始JSON、作者MIT许可和README原字节保存在src/react_agent/data/maintie，manifest记录来源、SHA256与条数。作者论文见[MaintIE，LREC-COLING 2024](https://aclanthology.org/2024.lrec-main.954/)。
+
+本轮未复用作者的模型训练代码，也未声称研发或标注该语料。本项目新增的是文件校验、参考/评估分区、案例索引、DeepSeek顶层实体抽取与计分、受理草稿、审批接口和交付报告。公开案例单独存放，不作为演示设备的真实历史。

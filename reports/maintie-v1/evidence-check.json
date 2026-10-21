@@ -1,0 +1,12 @@
+{
+  "kind": "maintie_final_evidence_crosscheck",
+  "raw_gold_and_manifest_verified": true,
+  "fixed_selection_verified": true,
+  "current_prompt_matches_report": true,
+  "gold_and_predicted_surface_verified": true,
+  "recomputed_metrics_match": true,
+  "tests": 44,
+  "passed": true,
+  "model_calls": 28,
+  "total_reported_tokens": 24971
+}
