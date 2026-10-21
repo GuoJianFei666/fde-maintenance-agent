@@ -1,0 +1,23 @@
+{
+  "kind": "synthetic_demo",
+  "version": "demo-v1",
+  "devices": [
+    {"id": "P-101", "name": "循环泵演示设备", "type": "pump", "location": "演示车间A", "owner_team": "机械维护组", "status": "running"},
+    {"id": "M-201", "name": "驱动电机演示设备", "type": "motor", "location": "演示车间B", "owner_team": "电气维护组", "status": "running"},
+    {"id": "C-301", "name": "输送带演示设备", "type": "conveyor", "location": "演示车间C", "owner_team": "机械维护组", "status": "running"}
+  ],
+  "manuals": [
+    {"id": "PUMP-VIB-01", "device_type": "pump", "title": "泵振动告警检查", "body": "泵出现振动升高或轴承异响时，先记录告警发生时间、振动变化和负荷条件。由维护人员现场复核紧固件、联轴器状态与轴承情况。单次告警不能直接判定轴承损坏。", "source": "演示维护手册/泵/振动", "version": "demo-v1"},
+    {"id": "PUMP-TEMP-02", "device_type": "pump", "title": "泵轴承温升检查", "body": "泵轴承温度或温升异常时，关联查看振动告警和最近检修记录，核对润滑记录与传感器状态。缺少现场复核时，将建议写为待核查项，不作确定故障归因。", "source": "演示维护手册/泵/温度", "version": "demo-v1"},
+    {"id": "PUMP-FLOW-03", "device_type": "pump", "title": "泵流量与压力波动", "body": "泵流量下降、压力波动时，收集运行负荷、入口条件和仪表状态信息；对照历史记录后，由维护人员判断后续检查顺序。", "source": "演示维护手册/泵/流量", "version": "demo-v1"},
+    {"id": "MOTOR-HEAT-01", "device_type": "motor", "title": "电机过热与温升告警", "body": "电机出现过热或温升告警时，记录负载、电流、通风条件和告警时间，结合近期维护记录形成检查清单。电流或负荷信息缺失时，应明确列为待补数据。", "source": "演示维护手册/电机/温升", "version": "demo-v1"},
+    {"id": "MOTOR-CURRENT-02", "device_type": "motor", "title": "电机电流异常检查", "body": "电机电流异常需要核对负荷变化、告警时序和传感器状态，并由有资质人员进行现场电气检查。系统仅生成检查工单，不执行通断电控制。", "source": "演示维护手册/电机/电流", "version": "demo-v1"},
+    {"id": "BELT-SLIP-01", "device_type": "conveyor", "title": "输送带打滑与跑偏", "body": "输送带打滑或跑偏时，记录物料负荷、告警时序和传感器状态，由维护人员核对滚筒、张紧和带面状况，形成待检查项目。", "source": "演示维护手册/输送带/打滑", "version": "demo-v1"},
+    {"id": "BELT-JAM-02", "device_type": "conveyor", "title": "输送带堵料告警", "body": "输送带堵料告警需关联查看前后工位状态、物料变化及近期工单。现场措施应由负责人员依据实际作业规程确认，系统不远程控制设备。", "source": "演示维护手册/输送带/堵料", "version": "demo-v1"},
+    {"id": "ORDER-REVIEW-01", "device_type": "general", "title": "维护工单人工确认与交接", "body": "工单草案应包含设备编号、告警内容、建议检查项、手册引用和待核实信息。提交人工确认后再写入工单；未确认、拒绝或信息不足时不得写入。", "source": "演示交付规范/工单", "version": "demo-v1"}
+  ],
+  "history": [
+    {"id": "DEMO-WO-001", "device_id": "P-101", "summary": "振动趋势复核与润滑记录检查", "status": "closed", "note": "演示历史记录：已完成信息复核，不代表当前告警已解决。"},
+    {"id": "DEMO-WO-002", "device_id": "M-201", "summary": "电机通风与负荷记录检查", "status": "open", "note": "演示历史记录：检查项待现场处理。"}
+  ]
+}

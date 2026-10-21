@@ -1,0 +1,313 @@
+{
+  "status": "pass",
+  "kind": "live_local_http",
+  "performed_at": "2026-10-21T08:02:11.260454+00:00",
+  "checks": {
+    "/health": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 126
+    },
+    "/docs": {
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 1023
+    },
+    "/openapi.json": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 6221
+    },
+    "/api/devices": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 420
+    }
+  },
+  "repeated_event_same_run": true,
+  "unapproved_work_orders": 0,
+  "run": {
+    "id": "9bc8a323f6b342688cb4537aae4dbddd",
+    "event_id": "http-demo-c6bba8c650fa",
+    "alarm": {
+      "device_id": "P-101",
+      "event_id": "http-demo-c6bba8c650fa",
+      "message": "循环泵振动升高并伴随温升，请查设备、历史工单和手册，生成待人工确认的检查工单。",
+      "severity": "warning"
+    },
+    "alarm_hash": "cb0b47ac9554bf92efa56d9e30193f4292994d658be96f0473e6f390b9da1b47",
+    "status": "awaiting_approval",
+    "proposal": {
+      "checks": [
+        "现场记录告警发生时间、振动变化趋势及当时的负荷条件（依据 PUMP-VIB-01）",
+        "现场复核泵体与地脚紧固件是否松动、联轴器对中与状态（依据 PUMP-VIB-01）",
+        "现场检查轴承状态与是否有异响，单次告警不直接判定轴承损坏（依据 PUMP-VIB-01）",
+        "现场测量并核对轴承温度/温升读数，确认温度传感器状态是否正常（依据 PUMP-TEMP-02）",
+        "核对润滑记录与最近检修记录，确认润滑是否缺失或异常（依据 PUMP-TEMP-02）",
+        "确认设备铭牌与工单设备编号 P-101 一致，并补充现场复核结论后再决定后续处理"
+      ],
+      "evidence_ids": [
+        "PUMP-VIB-01",
+        "PUMP-TEMP-02",
+        "ORDER-REVIEW-01"
+      ],
+      "priority": "medium",
+      "rationale": "设备查询显示 P-101 为演示车间A的循环泵演示设备，归属机械维护组，当前状态 running，与告警对象一致。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明仅为演示历史记录、不代表当前告警已解决，故本次仍需现场复核。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，并由维护人员现场复核紧固件、联轴器与轴承，单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求温升异常时关联振动告警与最近检修记录、核对润滑记录与传感器状态，缺少现场复核时只写待核查项、不作确定故障归因。因此本草案仅列出现场待复核项，不给出确定诊断；按 ORDER-REVIEW-01 需经人工确认后方可写入工单。",
+      "summary": "P-101 循环泵演示设备（演示车间A）振动升高并伴随温升，需现场复核紧固件、联轴器、轴承与润滑及传感器状态"
+    },
+    "report": {
+      "answer": null,
+      "approval_note": null,
+      "configured_model": "deepseek-flash",
+      "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+      "corpus_version": "demo-v1",
+      "data_kind": "synthetic_demo",
+      "evidence": [
+        {
+          "body": "泵出现振动升高或轴承异响时，先记录告警发生时间、振动变化和负荷条件。由维护人员现场复核紧固件、联轴器状态与轴承情况。单次告警不能直接判定轴承损坏。",
+          "device_type": "pump",
+          "id": "PUMP-VIB-01",
+          "source": "演示维护手册/泵/振动",
+          "title": "泵振动告警检查",
+          "version": "demo-v1"
+        },
+        {
+          "body": "泵轴承温度或温升异常时，关联查看振动告警和最近检修记录，核对润滑记录与传感器状态。缺少现场复核时，将建议写为待核查项，不作确定故障归因。",
+          "device_type": "pump",
+          "id": "PUMP-TEMP-02",
+          "source": "演示维护手册/泵/温度",
+          "title": "泵轴承温升检查",
+          "version": "demo-v1"
+        },
+        {
+          "body": "工单草案应包含设备编号、告警内容、建议检查项、手册引用和待核实信息。提交人工确认后再写入工单；未确认、拒绝或信息不足时不得写入。",
+          "device_type": "general",
+          "id": "ORDER-REVIEW-01",
+          "source": "演示交付规范/工单",
+          "title": "维护工单人工确认与交接",
+          "version": "demo-v1"
+        }
+      ],
+      "execution_mode": "live_deepseek",
+      "model_call_count": 2,
+      "observed_models": [
+        "deepseek-flash"
+      ],
+      "order": null,
+      "prompt_sha256": "c90cf40b7914f587e7c41d908c467d04f0d5629dd55ac21a3f0ee02014b81480",
+      "prompt_version": "maintenance-v1",
+      "proposal_sha256": "8b23b0a434963a15278c05e866773ea84f0f0f387a55a23eebc4d039b29a95f0",
+      "usage": {
+        "input_tokens": 2876,
+        "output_tokens": 679,
+        "total_tokens": 3555
+      }
+    },
+    "error_code": null,
+    "created_at": "2026-10-21T08:02:04.973247+00:00",
+    "updated_at": "2026-10-21T08:02:11.235557+00:00"
+  },
+  "trace": [
+    {
+      "id": 1,
+      "at": "2026-10-21T08:02:04.979245+00:00",
+      "node": "intake",
+      "data": {
+        "data_kind": "synthetic_demo",
+        "event_id": "http-demo-c6bba8c650fa"
+      }
+    },
+    {
+      "id": 2,
+      "at": "2026-10-21T08:02:07.622997+00:00",
+      "node": "model",
+      "data": {
+        "elapsed_ms": 2628.15,
+        "mode": "live_deepseek",
+        "model_name": "deepseek-flash",
+        "round": 1,
+        "tool_names": [
+          "query_device",
+          "query_work_orders",
+          "search_manual"
+        ],
+        "usage": {
+          "input_tokens": 1096,
+          "output_tokens": 141,
+          "total_tokens": 1237
+        }
+      }
+    },
+    {
+      "id": 3,
+      "at": "2026-10-21T08:02:07.632399+00:00",
+      "node": "tool",
+      "data": {
+        "arguments": {
+          "device_id": "P-101"
+        },
+        "elapsed_ms": 2.12,
+        "name": "query_device",
+        "result": {
+          "device": {
+            "id": "P-101",
+            "location": "演示车间A",
+            "name": "循环泵演示设备",
+            "owner_team": "机械维护组",
+            "status": "running",
+            "type": "pump"
+          },
+          "ok": true
+        }
+      }
+    },
+    {
+      "id": 4,
+      "at": "2026-10-21T08:02:07.639456+00:00",
+      "node": "tool",
+      "data": {
+        "arguments": {
+          "device_id": "P-101"
+        },
+        "elapsed_ms": 2.15,
+        "name": "query_work_orders",
+        "result": {
+          "ok": true,
+          "orders": [
+            {
+              "device_id": "P-101",
+              "id": "DEMO-WO-001",
+              "note": "演示历史记录：已完成信息复核，不代表当前告警已解决。",
+              "status": "closed",
+              "summary": "振动趋势复核与润滑记录检查"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "at": "2026-10-21T08:02:07.649966+00:00",
+      "node": "tool",
+      "data": {
+        "arguments": {
+          "query": "循环泵 振动升高 温升 检查",
+          "top_k": 5
+        },
+        "elapsed_ms": 5.13,
+        "name": "search_manual",
+        "result": {
+          "hits": [
+            {
+              "body": "泵出现振动升高或轴承异响时，先记录告警发生时间、振动变化和负荷条件。由维护人员现场复核紧固件、联轴器状态与轴承情况。单次告警不能直接判定轴承损坏。",
+              "device_type": "pump",
+              "id": "PUMP-VIB-01",
+              "rank": -3.8814787934277857,
+              "source": "演示维护手册/泵/振动",
+              "title": "泵振动告警检查",
+              "version": "demo-v1"
+            },
+            {
+              "body": "泵轴承温度或温升异常时，关联查看振动告警和最近检修记录，核对润滑记录与传感器状态。缺少现场复核时，将建议写为待核查项，不作确定故障归因。",
+              "device_type": "pump",
+              "id": "PUMP-TEMP-02",
+              "rank": -1.8310275411688552,
+              "source": "演示维护手册/泵/温度",
+              "title": "泵轴承温升检查",
+              "version": "demo-v1"
+            },
+            {
+              "body": "泵流量下降、压力波动时，收集运行负荷、入口条件和仪表状态信息；对照历史记录后，由维护人员判断后续检查顺序。",
+              "device_type": "pump",
+              "id": "PUMP-FLOW-03",
+              "rank": -1.0724088973024137e-06,
+              "source": "演示维护手册/泵/流量",
+              "title": "泵流量与压力波动",
+              "version": "demo-v1"
+            },
+            {
+              "body": "工单草案应包含设备编号、告警内容、建议检查项、手册引用和待核实信息。提交人工确认后再写入工单；未确认、拒绝或信息不足时不得写入。",
+              "device_type": "general",
+              "id": "ORDER-REVIEW-01",
+              "rank": -9.96043956043956e-07,
+              "source": "演示交付规范/工单",
+              "title": "维护工单人工确认与交接",
+              "version": "demo-v1"
+            }
+          ],
+          "ok": true,
+          "retrieval": "SQLite FTS5 / BM25"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "at": "2026-10-21T08:02:11.205269+00:00",
+      "node": "model",
+      "data": {
+        "elapsed_ms": 3548.69,
+        "mode": "live_deepseek",
+        "model_name": "deepseek-flash",
+        "round": 2,
+        "tool_names": [
+          "draft_work_order"
+        ],
+        "usage": {
+          "input_tokens": 1780,
+          "output_tokens": 538,
+          "total_tokens": 2318
+        }
+      }
+    },
+    {
+      "id": 7,
+      "at": "2026-10-21T08:02:11.217801+00:00",
+      "node": "tool",
+      "data": {
+        "arguments": {
+          "checks": [
+            "现场记录告警发生时间、振动变化趋势及当时的负荷条件（依据 PUMP-VIB-01）",
+            "现场复核泵体与地脚紧固件是否松动、联轴器对中与状态（依据 PUMP-VIB-01）",
+            "现场检查轴承状态与是否有异响，单次告警不直接判定轴承损坏（依据 PUMP-VIB-01）",
+            "现场测量并核对轴承温度/温升读数，确认温度传感器状态是否正常（依据 PUMP-TEMP-02）",
+            "核对润滑记录与最近检修记录，确认润滑是否缺失或异常（依据 PUMP-TEMP-02）",
+            "确认设备铭牌与工单设备编号 P-101 一致，并补充现场复核结论后再决定后续处理"
+          ],
+          "evidence_ids": [
+            "PUMP-VIB-01",
+            "PUMP-TEMP-02",
+            "ORDER-REVIEW-01"
+          ],
+          "priority": "medium",
+          "rationale": "设备查询显示 P-101 为演示车间A的循环泵演示设备，归属机械维护组，当前状态 running，与告警对象一致。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明仅为演示历史记录、不代表当前告警已解决，故本次仍需现场复核。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，并由维护人员现场复核紧固件、联轴器与轴承，单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求温升异常时关联振动告警与最近检修记录、核对润滑记录与传感器状态，缺少现场复核时只写待核查项、不作确定故障归因。因此本草案仅列出现场待复核项，不给出确定诊断；按 ORDER-REVIEW-01 需经人工确认后方可写入工单。",
+          "summary": "P-101 循环泵演示设备（演示车间A）振动升高并伴随温升，需现场复核紧固件、联轴器、轴承与润滑及传感器状态"
+        },
+        "elapsed_ms": 6.48,
+        "name": "draft_work_order",
+        "result": {
+          "ok": true,
+          "proposal": {
+            "checks": [
+              "现场记录告警发生时间、振动变化趋势及当时的负荷条件（依据 PUMP-VIB-01）",
+              "现场复核泵体与地脚紧固件是否松动、联轴器对中与状态（依据 PUMP-VIB-01）",
+              "现场检查轴承状态与是否有异响，单次告警不直接判定轴承损坏（依据 PUMP-VIB-01）",
+              "现场测量并核对轴承温度/温升读数，确认温度传感器状态是否正常（依据 PUMP-TEMP-02）",
+              "核对润滑记录与最近检修记录，确认润滑是否缺失或异常（依据 PUMP-TEMP-02）",
+              "确认设备铭牌与工单设备编号 P-101 一致，并补充现场复核结论后再决定后续处理"
+            ],
+            "evidence_ids": [
+              "PUMP-VIB-01",
+              "PUMP-TEMP-02",
+              "ORDER-REVIEW-01"
+            ],
+            "priority": "medium",
+            "rationale": "设备查询显示 P-101 为演示车间A的循环泵演示设备，归属机械维护组，当前状态 running，与告警对象一致。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明仅为演示历史记录、不代表当前告警已解决，故本次仍需现场复核。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，并由维护人员现场复核紧固件、联轴器与轴承，单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求温升异常时关联振动告警与最近检修记录、核对润滑记录与传感器状态，缺少现场复核时只写待核查项、不作确定故障归因。因此本草案仅列出现场待复核项，不给出确定诊断；按 ORDER-REVIEW-01 需经人工确认后方可写入工单。",
+            "summary": "P-101 循环泵演示设备（演示车间A）振动升高并伴随温升，需现场复核紧固件、联轴器、轴承与润滑及传感器状态"
+          },
+          "status": "draft_only"
+        }
+      }
+    }
+  ],
+  "retained_for_manual_demo": true
+}

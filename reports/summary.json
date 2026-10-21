@@ -1,0 +1,11 @@
+{
+  "local_tests": 24,
+  "live_cases": 3,
+  "provider": "DeepSeek",
+  "model": "deepseek-flash",
+  "live_case_total_tokens": 11364,
+  "http_smoke": "pass",
+  "data_kind": "synthetic_demo",
+  "scope": "local_POC",
+  "upstream_sha": "087d90d0c876668956b733a104f1708cef0128e2"
+}

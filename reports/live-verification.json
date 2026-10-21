@@ -1,0 +1,803 @@
+{
+  "kind": "live_provider_acceptance",
+  "provider": "DeepSeek",
+  "model": "deepseek-flash",
+  "performed_at": "20261021T075651Z",
+  "data_kind": "synthetic_demo",
+  "cases": [
+    {
+      "case": "pump_approve_after_restart",
+      "run_id": "3bd8a98293ce42318d917a3a5dba1c26",
+      "event": {
+        "event_id": "20261021T075651Z-pump_approve_after_restart",
+        "device_id": "P-101",
+        "message": "循环泵振动升高并伴随轴承异响，请按手册和历史工单生成待确认检查工单。",
+        "severity": "warning"
+      },
+      "expected_status": "completed",
+      "initial_status": "awaiting_approval",
+      "actual_status": "completed",
+      "passed": true,
+      "unapproved_writes": 0,
+      "written_orders": 1,
+      "elapsed_ms": 9956.61,
+      "proposal": {
+        "checks": [
+          "记录告警发生时间（2026-10-21 07:56:51Z）、振动变化趋势及当时的负荷/工况条件",
+          "现场复核泵体与地脚紧固件是否松动、缺失",
+          "现场检查联轴器对中与弹性件状态",
+          "现场听诊并检查轴承情况（异响位置、是否伴随温升），必要时测量轴承温度",
+          "核对润滑记录与最近检修记录，确认润滑是否正常",
+          "核对振动/温度传感器状态，排除测量异常"
+        ],
+        "evidence_ids": [
+          "PUMP-VIB-01",
+          "PUMP-TEMP-02"
+        ],
+        "priority": "medium",
+        "rationale": "设备 P-101（演示车间A，循环泵，机械维护组，运行中）报振动升高并伴轴承异响。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，再由维护人员现场复核紧固件、联轴器与轴承情况，并明确单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求轴承温度/温升异常时关联振动告警与最近检修记录，核对润滑记录与传感器状态，缺少现场复核时仅列为待核查项。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明不代表当前告警已解决，故本次仍需现场复核。以上均为待现场确认的检查项，不作确定故障归因。",
+        "summary": "P-101 循环泵振动升高并伴轴承异响，需现场复核紧固件、联轴器与轴承状态"
+      },
+      "report": {
+        "answer": null,
+        "approval_note": "本地验收脚本执行的审批接口演示，非真实维护指令。",
+        "configured_model": "deepseek-flash",
+        "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+        "corpus_version": "demo-v1",
+        "data_kind": "synthetic_demo",
+        "evidence": [
+          {
+            "body": "泵出现振动升高或轴承异响时，先记录告警发生时间、振动变化和负荷条件。由维护人员现场复核紧固件、联轴器状态与轴承情况。单次告警不能直接判定轴承损坏。",
+            "device_type": "pump",
+            "id": "PUMP-VIB-01",
+            "source": "演示维护手册/泵/振动",
+            "title": "泵振动告警检查",
+            "version": "demo-v1"
+          },
+          {
+            "body": "泵轴承温度或温升异常时，关联查看振动告警和最近检修记录，核对润滑记录与传感器状态。缺少现场复核时，将建议写为待核查项，不作确定故障归因。",
+            "device_type": "pump",
+            "id": "PUMP-TEMP-02",
+            "source": "演示维护手册/泵/温度",
+            "title": "泵轴承温升检查",
+            "version": "demo-v1"
+          }
+        ],
+        "execution_mode": "live_deepseek",
+        "model_call_count": 2,
+        "observed_models": [
+          "deepseek-flash"
+        ],
+        "order": {
+          "created_at": "2026-10-21T07:57:01.417302+00:00",
+          "data_kind": "synthetic_demo",
+          "device_id": "P-101",
+          "id": "WO-3BD8A98293CE",
+          "proposal": {
+            "checks": [
+              "记录告警发生时间（2026-10-21 07:56:51Z）、振动变化趋势及当时的负荷/工况条件",
+              "现场复核泵体与地脚紧固件是否松动、缺失",
+              "现场检查联轴器对中与弹性件状态",
+              "现场听诊并检查轴承情况（异响位置、是否伴随温升），必要时测量轴承温度",
+              "核对润滑记录与最近检修记录，确认润滑是否正常",
+              "核对振动/温度传感器状态，排除测量异常"
+            ],
+            "evidence_ids": [
+              "PUMP-VIB-01",
+              "PUMP-TEMP-02"
+            ],
+            "priority": "medium",
+            "rationale": "设备 P-101（演示车间A，循环泵，机械维护组，运行中）报振动升高并伴轴承异响。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，再由维护人员现场复核紧固件、联轴器与轴承情况，并明确单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求轴承温度/温升异常时关联振动告警与最近检修记录，核对润滑记录与传感器状态，缺少现场复核时仅列为待核查项。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明不代表当前告警已解决，故本次仍需现场复核。以上均为待现场确认的检查项，不作确定故障归因。",
+            "summary": "P-101 循环泵振动升高并伴轴承异响，需现场复核紧固件、联轴器与轴承状态"
+          },
+          "source_run": "3bd8a98293ce42318d917a3a5dba1c26",
+          "status": "open",
+          "summary": "P-101 循环泵振动升高并伴轴承异响，需现场复核紧固件、联轴器与轴承状态"
+        },
+        "prompt_sha256": "c90cf40b7914f587e7c41d908c467d04f0d5629dd55ac21a3f0ee02014b81480",
+        "prompt_version": "maintenance-v1",
+        "proposal_sha256": "2cb5dacf3197e34013748fe730f7a117109c14d326bd81a10e23ab9cfd08ba17",
+        "usage": {
+          "input_tokens": 2689,
+          "output_tokens": 582,
+          "total_tokens": 3271
+        }
+      },
+      "trace": [
+        {
+          "id": 1,
+          "at": "2026-10-21T07:56:51.539345+00:00",
+          "node": "intake",
+          "data": {
+            "data_kind": "synthetic_demo",
+            "event_id": "20261021T075651Z-pump_approve_after_restart"
+          }
+        },
+        {
+          "id": 2,
+          "at": "2026-10-21T07:56:56.208991+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 4654.14,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "query_device",
+              "query_work_orders",
+              "search_manual"
+            ],
+            "usage": {
+              "input_tokens": 1098,
+              "output_tokens": 140,
+              "total_tokens": 1238
+            }
+          }
+        },
+        {
+          "id": 3,
+          "at": "2026-10-21T07:56:56.217355+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "P-101"
+            },
+            "elapsed_ms": 2.3,
+            "name": "query_device",
+            "result": {
+              "device": {
+                "id": "P-101",
+                "location": "演示车间A",
+                "name": "循环泵演示设备",
+                "owner_team": "机械维护组",
+                "status": "running",
+                "type": "pump"
+              },
+              "ok": true
+            }
+          }
+        },
+        {
+          "id": 4,
+          "at": "2026-10-21T07:56:56.224949+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "P-101"
+            },
+            "elapsed_ms": 1.9,
+            "name": "query_work_orders",
+            "result": {
+              "ok": true,
+              "orders": [
+                {
+                  "device_id": "P-101",
+                  "id": "DEMO-WO-001",
+                  "note": "演示历史记录：已完成信息复核，不代表当前告警已解决。",
+                  "status": "closed",
+                  "summary": "振动趋势复核与润滑记录检查"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": 5,
+          "at": "2026-10-21T07:56:56.233704+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "query": "循环泵振动升高 轴承异响",
+              "top_k": 5
+            },
+            "elapsed_ms": 3.7,
+            "name": "search_manual",
+            "result": {
+              "hits": [
+                {
+                  "body": "泵出现振动升高或轴承异响时，先记录告警发生时间、振动变化和负荷条件。由维护人员现场复核紧固件、联轴器状态与轴承情况。单次告警不能直接判定轴承损坏。",
+                  "device_type": "pump",
+                  "id": "PUMP-VIB-01",
+                  "rank": -9.259462214502543,
+                  "source": "演示维护手册/泵/振动",
+                  "title": "泵振动告警检查",
+                  "version": "demo-v1"
+                },
+                {
+                  "body": "泵轴承温度或温升异常时，关联查看振动告警和最近检修记录，核对润滑记录与传感器状态。缺少现场复核时，将建议写为待核查项，不作确定故障归因。",
+                  "device_type": "pump",
+                  "id": "PUMP-TEMP-02",
+                  "rank": -1.8310265830293204,
+                  "source": "演示维护手册/泵/温度",
+                  "title": "泵轴承温升检查",
+                  "version": "demo-v1"
+                }
+              ],
+              "ok": true,
+              "retrieval": "SQLite FTS5 / BM25"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "at": "2026-10-21T07:57:01.365809+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 5125.28,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 2,
+            "tool_names": [
+              "draft_work_order"
+            ],
+            "usage": {
+              "input_tokens": 1591,
+              "output_tokens": 442,
+              "total_tokens": 2033
+            }
+          }
+        },
+        {
+          "id": 7,
+          "at": "2026-10-21T07:57:01.377102+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "checks": [
+                "记录告警发生时间（2026-10-21 07:56:51Z）、振动变化趋势及当时的负荷/工况条件",
+                "现场复核泵体与地脚紧固件是否松动、缺失",
+                "现场检查联轴器对中与弹性件状态",
+                "现场听诊并检查轴承情况（异响位置、是否伴随温升），必要时测量轴承温度",
+                "核对润滑记录与最近检修记录，确认润滑是否正常",
+                "核对振动/温度传感器状态，排除测量异常"
+              ],
+              "evidence_ids": [
+                "PUMP-VIB-01",
+                "PUMP-TEMP-02"
+              ],
+              "priority": "medium",
+              "rationale": "设备 P-101（演示车间A，循环泵，机械维护组，运行中）报振动升高并伴轴承异响。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，再由维护人员现场复核紧固件、联轴器与轴承情况，并明确单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求轴承温度/温升异常时关联振动告警与最近检修记录，核对润滑记录与传感器状态，缺少现场复核时仅列为待核查项。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明不代表当前告警已解决，故本次仍需现场复核。以上均为待现场确认的检查项，不作确定故障归因。",
+              "summary": "P-101 循环泵振动升高并伴轴承异响，需现场复核紧固件、联轴器与轴承状态"
+            },
+            "elapsed_ms": 4.21,
+            "name": "draft_work_order",
+            "result": {
+              "ok": true,
+              "proposal": {
+                "checks": [
+                  "记录告警发生时间（2026-10-21 07:56:51Z）、振动变化趋势及当时的负荷/工况条件",
+                  "现场复核泵体与地脚紧固件是否松动、缺失",
+                  "现场检查联轴器对中与弹性件状态",
+                  "现场听诊并检查轴承情况（异响位置、是否伴随温升），必要时测量轴承温度",
+                  "核对润滑记录与最近检修记录，确认润滑是否正常",
+                  "核对振动/温度传感器状态，排除测量异常"
+                ],
+                "evidence_ids": [
+                  "PUMP-VIB-01",
+                  "PUMP-TEMP-02"
+                ],
+                "priority": "medium",
+                "rationale": "设备 P-101（演示车间A，循环泵，机械维护组，运行中）报振动升高并伴轴承异响。手册 PUMP-VIB-01 要求先记录告警时间、振动变化与负荷条件，再由维护人员现场复核紧固件、联轴器与轴承情况，并明确单次告警不能直接判定轴承损坏；PUMP-TEMP-02 要求轴承温度/温升异常时关联振动告警与最近检修记录，核对润滑记录与传感器状态，缺少现场复核时仅列为待核查项。历史工单 DEMO-WO-001 为已关闭的振动趋势复核与润滑记录检查，其备注说明不代表当前告警已解决，故本次仍需现场复核。以上均为待现场确认的检查项，不作确定故障归因。",
+                "summary": "P-101 循环泵振动升高并伴轴承异响，需现场复核紧固件、联轴器与轴承状态"
+              },
+              "status": "draft_only"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "at": "2026-10-21T07:57:01.408970+00:00",
+          "node": "human_decision",
+          "data": {
+            "approved": true,
+            "note": "本地验收脚本执行的审批接口演示，非真实维护指令。",
+            "proposal_sha256": "2cb5dacf3197e34013748fe730f7a117109c14d326bd81a10e23ab9cfd08ba17"
+          }
+        },
+        {
+          "id": 9,
+          "at": "2026-10-21T07:57:01.423634+00:00",
+          "node": "commit_order",
+          "data": {
+            "approved": true,
+            "order_id": "WO-3BD8A98293CE"
+          }
+        }
+      ]
+    },
+    {
+      "case": "motor_reject",
+      "run_id": "cfce8b2383df48348f81d09fc440ca0d",
+      "event": {
+        "event_id": "20261021T075651Z-motor_reject",
+        "device_id": "M-201",
+        "message": "驱动电机出现过热温升告警，现场电流和负载数据尚未补齐，请查手册后生成待核实的检查工单。",
+        "severity": "warning"
+      },
+      "expected_status": "rejected",
+      "initial_status": "awaiting_approval",
+      "actual_status": "rejected",
+      "passed": true,
+      "unapproved_writes": 0,
+      "written_orders": 0,
+      "elapsed_ms": 5930.71,
+      "proposal": {
+        "checks": [
+          "现场复核电机实际温升与告警发生时间（2026-10-21 07:56:51Z 前后），确认告警是否持续或已恢复",
+          "补齐并记录告警时段的负载数据（负载率/工艺负荷变化），作为待补数据项",
+          "补齐并记录告警时段的三相电流实测值，与额定值对比，确认是否存在电流异常",
+          "检查电机通风条件：风扇、风道、滤网是否堵塞，环境温度是否超标",
+          "核对电流/温度传感器状态与接线，确认读数是否可信",
+          "查阅并对照历史工单 DEMO-WO-002（电机通风与负荷记录检查，状态 open）的遗留检查项"
+        ],
+        "evidence_ids": [
+          "MOTOR-HEAT-01",
+          "MOTOR-CURRENT-02",
+          "ORDER-REVIEW-01"
+        ],
+        "priority": "medium",
+        "rationale": "设备 M-201 为演示车间B 驱动电机演示设备，归属电气维护组，当前运行中，与告警设备类型一致。手册 MOTOR-HEAT-01 要求过热/温升告警时记录负载、电流、通风条件和告警时间，并明确电流或负荷信息缺失时应列为待补数据；MOTOR-CURRENT-02 要求核对负荷变化、告警时序与传感器状态，且现场电气检查须由有资质人员执行，系统不执行通断电控制；ORDER-REVIEW-01 要求草案经人工确认后方可写入。因现场电流与负载数据尚未补齐，本工单仅列为待核实检查项，不给出诊断结论，优先级按 warning 定为 medium。",
+        "summary": "M-201 驱动电机过热温升告警（事件 20261021T075651Z-motor_reject），电流与负载数据缺失，需现场核实"
+      },
+      "report": {
+        "answer": null,
+        "approval_note": "本地验收脚本执行的审批接口演示，非真实维护指令。",
+        "configured_model": "deepseek-flash",
+        "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+        "corpus_version": "demo-v1",
+        "data_kind": "synthetic_demo",
+        "evidence": [
+          {
+            "body": "电机出现过热或温升告警时，记录负载、电流、通风条件和告警时间，结合近期维护记录形成检查清单。电流或负荷信息缺失时，应明确列为待补数据。",
+            "device_type": "motor",
+            "id": "MOTOR-HEAT-01",
+            "source": "演示维护手册/电机/温升",
+            "title": "电机过热与温升告警",
+            "version": "demo-v1"
+          },
+          {
+            "body": "电机电流异常需要核对负荷变化、告警时序和传感器状态，并由有资质人员进行现场电气检查。系统仅生成检查工单，不执行通断电控制。",
+            "device_type": "motor",
+            "id": "MOTOR-CURRENT-02",
+            "source": "演示维护手册/电机/电流",
+            "title": "电机电流异常检查",
+            "version": "demo-v1"
+          },
+          {
+            "body": "工单草案应包含设备编号、告警内容、建议检查项、手册引用和待核实信息。提交人工确认后再写入工单；未确认、拒绝或信息不足时不得写入。",
+            "device_type": "general",
+            "id": "ORDER-REVIEW-01",
+            "source": "演示交付规范/工单",
+            "title": "维护工单人工确认与交接",
+            "version": "demo-v1"
+          }
+        ],
+        "execution_mode": "live_deepseek",
+        "model_call_count": 2,
+        "observed_models": [
+          "deepseek-flash"
+        ],
+        "order": null,
+        "prompt_sha256": "c90cf40b7914f587e7c41d908c467d04f0d5629dd55ac21a3f0ee02014b81480",
+        "prompt_version": "maintenance-v1",
+        "proposal_sha256": "00f7215dbeb8bb66316d488679c97be6d2e60c452644e97ef4de206f0a43e225",
+        "usage": {
+          "input_tokens": 2771,
+          "output_tokens": 627,
+          "total_tokens": 3398
+        }
+      },
+      "trace": [
+        {
+          "id": 10,
+          "at": "2026-10-21T07:57:01.462480+00:00",
+          "node": "intake",
+          "data": {
+            "data_kind": "synthetic_demo",
+            "event_id": "20261021T075651Z-motor_reject"
+          }
+        },
+        {
+          "id": 11,
+          "at": "2026-10-21T07:57:03.633699+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 2161.35,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "query_device",
+              "query_work_orders",
+              "search_manual"
+            ],
+            "usage": {
+              "input_tokens": 1098,
+              "output_tokens": 141,
+              "total_tokens": 1239
+            }
+          }
+        },
+        {
+          "id": 12,
+          "at": "2026-10-21T07:57:03.642732+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "M-201"
+            },
+            "elapsed_ms": 2.0,
+            "name": "query_device",
+            "result": {
+              "device": {
+                "id": "M-201",
+                "location": "演示车间B",
+                "name": "驱动电机演示设备",
+                "owner_team": "电气维护组",
+                "status": "running",
+                "type": "motor"
+              },
+              "ok": true
+            }
+          }
+        },
+        {
+          "id": 13,
+          "at": "2026-10-21T07:57:03.649459+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "M-201"
+            },
+            "elapsed_ms": 1.99,
+            "name": "query_work_orders",
+            "result": {
+              "ok": true,
+              "orders": [
+                {
+                  "device_id": "M-201",
+                  "id": "DEMO-WO-002",
+                  "note": "演示历史记录：检查项待现场处理。",
+                  "status": "open",
+                  "summary": "电机通风与负荷记录检查"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": 14,
+          "at": "2026-10-21T07:57:03.657807+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "query": "驱动电机 过热 温升 告警",
+              "top_k": 5
+            },
+            "elapsed_ms": 3.14,
+            "name": "search_manual",
+            "result": {
+              "hits": [
+                {
+                  "body": "电机出现过热或温升告警时，记录负载、电流、通风条件和告警时间，结合近期维护记录形成检查清单。电流或负荷信息缺失时，应明确列为待补数据。",
+                  "device_type": "motor",
+                  "id": "MOTOR-HEAT-01",
+                  "rank": -3.5065347008527525,
+                  "source": "演示维护手册/电机/温升",
+                  "title": "电机过热与温升告警",
+                  "version": "demo-v1"
+                },
+                {
+                  "body": "电机电流异常需要核对负荷变化、告警时序和传感器状态，并由有资质人员进行现场电气检查。系统仅生成检查工单，不执行通断电控制。",
+                  "device_type": "motor",
+                  "id": "MOTOR-CURRENT-02",
+                  "rank": -0.9593226408649406,
+                  "source": "演示维护手册/电机/电流",
+                  "title": "电机电流异常检查",
+                  "version": "demo-v1"
+                },
+                {
+                  "body": "工单草案应包含设备编号、告警内容、建议检查项、手册引用和待核实信息。提交人工确认后再写入工单；未确认、拒绝或信息不足时不得写入。",
+                  "device_type": "general",
+                  "id": "ORDER-REVIEW-01",
+                  "rank": -9.96043956043956e-07,
+                  "source": "演示交付规范/工单",
+                  "title": "维护工单人工确认与交接",
+                  "version": "demo-v1"
+                }
+              ],
+              "ok": true,
+              "retrieval": "SQLite FTS5 / BM25"
+            }
+          }
+        },
+        {
+          "id": 15,
+          "at": "2026-10-21T07:57:07.311249+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 3647.19,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 2,
+            "tool_names": [
+              "draft_work_order"
+            ],
+            "usage": {
+              "input_tokens": 1673,
+              "output_tokens": 486,
+              "total_tokens": 2159
+            }
+          }
+        },
+        {
+          "id": 16,
+          "at": "2026-10-21T07:57:07.325447+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "checks": [
+                "现场复核电机实际温升与告警发生时间（2026-10-21 07:56:51Z 前后），确认告警是否持续或已恢复",
+                "补齐并记录告警时段的负载数据（负载率/工艺负荷变化），作为待补数据项",
+                "补齐并记录告警时段的三相电流实测值，与额定值对比，确认是否存在电流异常",
+                "检查电机通风条件：风扇、风道、滤网是否堵塞，环境温度是否超标",
+                "核对电流/温度传感器状态与接线，确认读数是否可信",
+                "查阅并对照历史工单 DEMO-WO-002（电机通风与负荷记录检查，状态 open）的遗留检查项"
+              ],
+              "evidence_ids": [
+                "MOTOR-HEAT-01",
+                "MOTOR-CURRENT-02",
+                "ORDER-REVIEW-01"
+              ],
+              "priority": "medium",
+              "rationale": "设备 M-201 为演示车间B 驱动电机演示设备，归属电气维护组，当前运行中，与告警设备类型一致。手册 MOTOR-HEAT-01 要求过热/温升告警时记录负载、电流、通风条件和告警时间，并明确电流或负荷信息缺失时应列为待补数据；MOTOR-CURRENT-02 要求核对负荷变化、告警时序与传感器状态，且现场电气检查须由有资质人员执行，系统不执行通断电控制；ORDER-REVIEW-01 要求草案经人工确认后方可写入。因现场电流与负载数据尚未补齐，本工单仅列为待核实检查项，不给出诊断结论，优先级按 warning 定为 medium。",
+              "summary": "M-201 驱动电机过热温升告警（事件 20261021T075651Z-motor_reject），电流与负载数据缺失，需现场核实"
+            },
+            "elapsed_ms": 5.55,
+            "name": "draft_work_order",
+            "result": {
+              "ok": true,
+              "proposal": {
+                "checks": [
+                  "现场复核电机实际温升与告警发生时间（2026-10-21 07:56:51Z 前后），确认告警是否持续或已恢复",
+                  "补齐并记录告警时段的负载数据（负载率/工艺负荷变化），作为待补数据项",
+                  "补齐并记录告警时段的三相电流实测值，与额定值对比，确认是否存在电流异常",
+                  "检查电机通风条件：风扇、风道、滤网是否堵塞，环境温度是否超标",
+                  "核对电流/温度传感器状态与接线，确认读数是否可信",
+                  "查阅并对照历史工单 DEMO-WO-002（电机通风与负荷记录检查，状态 open）的遗留检查项"
+                ],
+                "evidence_ids": [
+                  "MOTOR-HEAT-01",
+                  "MOTOR-CURRENT-02",
+                  "ORDER-REVIEW-01"
+                ],
+                "priority": "medium",
+                "rationale": "设备 M-201 为演示车间B 驱动电机演示设备，归属电气维护组，当前运行中，与告警设备类型一致。手册 MOTOR-HEAT-01 要求过热/温升告警时记录负载、电流、通风条件和告警时间，并明确电流或负荷信息缺失时应列为待补数据；MOTOR-CURRENT-02 要求核对负荷变化、告警时序与传感器状态，且现场电气检查须由有资质人员执行，系统不执行通断电控制；ORDER-REVIEW-01 要求草案经人工确认后方可写入。因现场电流与负载数据尚未补齐，本工单仅列为待核实检查项，不给出诊断结论，优先级按 warning 定为 medium。",
+                "summary": "M-201 驱动电机过热温升告警（事件 20261021T075651Z-motor_reject），电流与负载数据缺失，需现场核实"
+              },
+              "status": "draft_only"
+            }
+          }
+        },
+        {
+          "id": 17,
+          "at": "2026-10-21T07:57:07.356092+00:00",
+          "node": "human_decision",
+          "data": {
+            "approved": false,
+            "note": "本地验收脚本执行的审批接口演示，非真实维护指令。",
+            "proposal_sha256": "00f7215dbeb8bb66316d488679c97be6d2e60c452644e97ef4de206f0a43e225"
+          }
+        }
+      ]
+    },
+    {
+      "case": "unknown_manual_evidence",
+      "run_id": "ef91106c9a8348c4babb2b194de5c0c1",
+      "event": {
+        "event_id": "20261021T075651Z-unknown_manual_evidence",
+        "device_id": "C-301",
+        "message": "设备出现固件签名校验失败，错误码SIG900。现有维护手册未提供该错误码，请明确缺少的依据，不要编造维修步骤。",
+        "severity": "warning"
+      },
+      "expected_status": "needs_information",
+      "initial_status": "needs_information",
+      "actual_status": "needs_information",
+      "passed": true,
+      "unapproved_writes": 0,
+      "written_orders": 0,
+      "elapsed_ms": 9854.05,
+      "proposal": null,
+      "report": {
+        "answer": "## 处置结论：手册依据不足，暂不生成工单草案\n\n### 已核实的事实（来自工具返回）\n- **设备 C-301**：输送带演示设备（conveyor），位于演示车间C，归属**机械维护组**，当前状态 running。\n- **历史工单**：无任何既有工单，不存在重复问题记录。\n- **手册检索**：以「固件签名校验失败 SIG900」「固件升级 签名校验」「错误码 SIG900 处理」三组关键词检索，**均返回 0 条命中**，无任何证据ID可用。\n\n### 为什么没有提交草案\n`draft_work_order` 要求至少引用 1 条本次检索真实返回的证据ID，而本次检索结果为空。告警本身也明确说明手册未提供 SIG900 错误码。在无手册依据的情况下，我不能编造诊断结论、维修步骤或引用来源，因此不提交草案。\n\n### 需要补充的信息\n1. **SIG900 的权威定义**：该错误码所属的固件/控制器型号与厂商错误码手册（当前设备档案仅显示为输送带设备，未记录固件版本与控制器型号）。\n2. **适用手册的覆盖范围**：现有手册库是否包含该设备的固件安全/签名校验章节；若不含，需先补充手册入库。\n3. **告警来源与上下文**：触发告警的固件包版本、签名证书链、校验时间点，以及是否为计划内升级操作。\n4. **责任组确认**：设备归属机械维护组，但固件签名校验通常涉及电气/自动化或信息安全职责，需确认实际承接组。\n\n### 建议的现场复核项（待依据补齐后写入工单）\n- 记录设备当前固件版本与控制器型号，与告警中的固件包版本比对。\n- 确认告警发生前是否有固件升级或远程下发操作。\n- 采集完整告警日志与错误码原文，供厂商或手册补充时使用。\n\n请补充上述手册依据或错误码定义后，我再重新检索并生成草案。",
+        "approval_note": null,
+        "configured_model": "deepseek-flash",
+        "corpus_sha256": "d88752d41f144b8bc9058bf3d4522d2697c9861ccbd4a011fba9a706f92fdaea",
+        "corpus_version": "demo-v1",
+        "data_kind": "synthetic_demo",
+        "evidence": [],
+        "execution_mode": "live_deepseek",
+        "model_call_count": 3,
+        "observed_models": [
+          "deepseek-flash"
+        ],
+        "order": null,
+        "prompt_sha256": "c90cf40b7914f587e7c41d908c467d04f0d5629dd55ac21a3f0ee02014b81480",
+        "prompt_version": "maintenance-v1",
+        "proposal_sha256": null,
+        "usage": {
+          "input_tokens": 3986,
+          "output_tokens": 709,
+          "total_tokens": 4695
+        }
+      },
+      "trace": [
+        {
+          "id": 18,
+          "at": "2026-10-21T07:57:07.400829+00:00",
+          "node": "intake",
+          "data": {
+            "data_kind": "synthetic_demo",
+            "event_id": "20261021T075651Z-unknown_manual_evidence"
+          }
+        },
+        {
+          "id": 19,
+          "at": "2026-10-21T07:57:09.441994+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 2033.51,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 1,
+            "tool_names": [
+              "query_device",
+              "query_work_orders",
+              "search_manual"
+            ],
+            "usage": {
+              "input_tokens": 1105,
+              "output_tokens": 138,
+              "total_tokens": 1243
+            }
+          }
+        },
+        {
+          "id": 20,
+          "at": "2026-10-21T07:57:09.452130+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "C-301"
+            },
+            "elapsed_ms": 2.4,
+            "name": "query_device",
+            "result": {
+              "device": {
+                "id": "C-301",
+                "location": "演示车间C",
+                "name": "输送带演示设备",
+                "owner_team": "机械维护组",
+                "status": "running",
+                "type": "conveyor"
+              },
+              "ok": true
+            }
+          }
+        },
+        {
+          "id": 21,
+          "at": "2026-10-21T07:57:09.458201+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "device_id": "C-301"
+            },
+            "elapsed_ms": 1.67,
+            "name": "query_work_orders",
+            "result": {
+              "ok": true,
+              "orders": []
+            }
+          }
+        },
+        {
+          "id": 22,
+          "at": "2026-10-21T07:57:09.467201+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "query": "固件签名校验失败 SIG900",
+              "top_k": 5
+            },
+            "elapsed_ms": 3.31,
+            "name": "search_manual",
+            "result": {
+              "hits": [],
+              "ok": true,
+              "retrieval": "SQLite FTS5 / BM25"
+            }
+          }
+        },
+        {
+          "id": 23,
+          "at": "2026-10-21T07:57:12.707551+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 3234.71,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 2,
+            "tool_names": [
+              "search_manual",
+              "search_manual"
+            ],
+            "usage": {
+              "input_tokens": 1346,
+              "output_tokens": 123,
+              "total_tokens": 1469
+            }
+          }
+        },
+        {
+          "id": 24,
+          "at": "2026-10-21T07:57:12.718557+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "query": "固件升级 签名校验",
+              "top_k": 5
+            },
+            "elapsed_ms": 3.67,
+            "name": "search_manual",
+            "result": {
+              "hits": [],
+              "ok": true,
+              "retrieval": "SQLite FTS5 / BM25"
+            }
+          }
+        },
+        {
+          "id": 25,
+          "at": "2026-10-21T07:57:12.726557+00:00",
+          "node": "tool",
+          "data": {
+            "arguments": {
+              "query": "错误码 SIG900 处理",
+              "top_k": 5
+            },
+            "elapsed_ms": 3.24,
+            "name": "search_manual",
+            "result": {
+              "hits": [],
+              "ok": true,
+              "retrieval": "SQLite FTS5 / BM25"
+            }
+          }
+        },
+        {
+          "id": 26,
+          "at": "2026-10-21T07:57:17.214371+00:00",
+          "node": "model",
+          "data": {
+            "elapsed_ms": 4481.95,
+            "mode": "live_deepseek",
+            "model_name": "deepseek-flash",
+            "round": 3,
+            "tool_names": [],
+            "usage": {
+              "input_tokens": 1535,
+              "output_tokens": 448,
+              "total_tokens": 1983
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "passed": true,
+  "planned_case_count": 3,
+  "completed_case_count": 3,
+  "approval_operator": "acceptance_script",
+  "scope": "Three selected local POC cases, not production accuracy or reliability statistics"
+}

@@ -1,92 +1,102 @@
-# LangGraph ReAct Agent Template
+# 设备告警处置 Agent 与工单工作流
 
-[![CI](https://github.com/langchain-ai/react-agent/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/langchain-ai/react-agent/actions/workflows/unit-tests.yml)
-[![Open in - LangGraph Studio](https://img.shields.io/badge/Open_in-LangGraph_Studio-00324d.svg?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NS4zMzMiIGhlaWdodD0iODUuMzMzIiB2ZXJzaW9uPSIxLjAiIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZD0iTTEzIDcuOGMtNi4zIDMuMS03LjEgNi4zLTYuOCAyNS43LjQgMjQuNi4zIDI0LjUgMjUuOSAyNC41QzU3LjUgNTggNTggNTcuNSA1OCAzMi4zIDU4IDcuMyA1Ni43IDYgMzIgNmMtMTIuOCAwLTE2LjEuMy0xOSAxLjhtMzcuNiAxNi42YzIuOCAyLjggMy40IDQuMiAzLjQgNy42cy0uNiA0LjgtMy40IDcuNkw0Ny4yIDQzSDE2LjhsLTMuNC0zLjRjLTQuOC00LjgtNC44LTEwLjQgMC0xNS4ybDMuNC0zLjRoMzAuNHoiLz48cGF0aCBkPSJNMTguOSAyNS42Yy0xLjEgMS4zLTEgMS43LjQgMi41LjkuNiAxLjcgMS44IDEuNyAyLjcgMCAxIC43IDIuOCAxLjYgNC4xIDEuNCAxLjkgMS40IDIuNS4zIDMuMi0xIC42LS42LjkgMS40LjkgMS41IDAgMi43LS41IDIuNy0xIDAtLjYgMS4xLS44IDIuNi0uNGwyLjYuNy0xLjgtMi45Yy01LjktOS4zLTkuNC0xMi4zLTExLjUtOS44TTM5IDI2YzAgMS4xLS45IDIuNS0yIDMuMi0yLjQgMS41LTIuNiAzLjQtLjUgNC4yLjguMyAyIDEuNyAyLjUgMy4xLjYgMS41IDEuNCAyLjMgMiAyIDEuNS0uOSAxLjItMy41LS40LTMuNS0yLjEgMC0yLjgtMi44LS44LTMuMyAxLjYtLjQgMS42LS41IDAtLjYtMS4xLS4xLTEuNS0uNi0xLjItMS42LjctMS43IDMuMy0yLjEgMy41LS41LjEuNS4yIDEuNi4zIDIuMiAwIC43LjkgMS40IDEuOSAxLjYgMi4xLjQgMi4zLTIuMy4yLTMuMi0uOC0uMy0yLTEuNy0yLjUtMy4xLTEuMS0zLTMtMy4zLTMtLjUiLz48L3N2Zz4=)](https://langgraph-studio.vercel.app/templates/open?githubUrl=https://github.com/langchain-ai/react-agent)
+基于 LangGraph 官方 ReAct 模板改造的个人 FDE 项目。输入设备告警，Agent 查询设备、历史工单和维护手册，形成有出处的检查草案；操作者确认后，工作流写入本地工单库。
 
-This template showcases a [ReAct agent](https://arxiv.org/abs/2210.03629) implemented using [LangGraph](https://github.com/langchain-ai/langgraph), designed for [LangGraph Studio](https://github.com/langchain-ai/langgraph-studio). ReAct agents are uncomplicated, prototypical agents that can be flexibly extended to many tools.
+本项目在 AI 辅助下开发，完成本地单进程 POC。数据为构造的演示设备、手册和工单。上游版本、许可与增量见 [UPSTREAM.md](UPSTREAM.md)，交付与故障排查见 [docs/delivery.md](docs/delivery.md)。
 
-![Graph view in LangGraph studio UI](./static/studio_ui.png)
+## 已运行的结果
 
-The core logic, defined in `src/react_agent/graph.py`, demonstrates a flexible ReAct agent that iteratively reasons about user queries and executes actions, showcasing the power of this approach for complex problem-solving tasks.
+- 24 项本地回归通过，覆盖中文检索、引用与设备范围、审批、重复事件、重启、接口和失败状态。
+- 真实 DeepSeek `deepseek-flash` 三个指定样例符合预期：确认后写入、拒绝后不写、依据不足返回待补信息。见 [实际接口记录](reports/live-verification.json)。
+- 真实本地 HTTP 联调通过，包含重复事件复用运行、待审批不写入与报告查看。见 [HTTP记录](reports/http-smoke.json)。
+- 样例结果只描述本地 POC；实际工业客户、MES/ERP 接入与生产运行不属于本次完成范围。
 
-## What it does
+## 技术与工作流
 
-The ReAct agent:
+Python 3.11+、LangGraph、DeepSeek API、FastAPI、Pydantic、SQLite FTS5/BM25、SqliteSaver。
 
-1. Takes a user **query** as input
-2. Reasons about the query and decides on an action
-3. Executes the chosen action using available tools
-4. Observes the result of the action
-5. Repeats steps 2-4 until it can provide a final answer
-
-By default, it's set up with a basic set of tools, but can be easily extended with custom tools to suit various use cases.
-
-## Getting Started
-
-Assuming you have already [installed LangGraph Studio](https://github.com/langchain-ai/langgraph-studio?tab=readme-ov-file#download), to set up:
-
-1. Create a `.env` file.
-
-```bash
-cp .env.example .env
+```mermaid
+flowchart LR
+  A[设备告警] --> B[模型选工具]
+  B --> C[设备 历史工单 手册检索]
+  C --> B
+  B --> D[带引用的草案]
+  D --> E[人工确认与持久化检查点]
+  E -->|确认| F[幂等写入工单]
+  E -->|拒绝| G[保留拒绝状态]
+  B -->|依据不足| H[请求补充信息]
 ```
 
-2. Define required API keys in your `.env` file.
+工具清单：`query_device`、`query_work_orders`、`search_manual`、`draft_work_order`。模型自主选工具和参数；固定图结构负责审批、状态和写入。
 
-The primary [search tool](./src/react_agent/tools.py) [^1] used is [Tavily](https://tavily.com/). Create an API key [here](https://app.tavily.com/sign-in).
+手册检索使用中文重叠二元词组和 FTS5/BM25。返回的片段带原文、ID、来源和版本。草案只接受当前运行真正检索过、且属于当前设备类型的引用。引用校验与语义判断分别处理。
 
-### Setup Model
+## Windows 本地启动
 
-The defaults values for `model` are shown below:
-
-```yaml
-model: claude-sonnet-4-5-20250929
+```powershell
+git clone https://github.com/GuoJianFei666/fde-maintenance-agent.git
+Set-Location fde-maintenance-agent
+py -3 -m venv .venv
+& .venvScriptspython.exe -m pip install -e '.[dev]'
+Copy-Item .env.example .env
+# 在本地 .env 填写 DEEPSEEK_API_KEY；不要提交该文件。
+& .venvScriptspython.exe -m uvicorn react_agent.api:create_app --factory --host 127.0.0.1 --port 8765 --workers 1
 ```
 
-Follow the instructions below to get set up, or pick one of the additional options.
+打开 <http://127.0.0.1:8765/docs> 交互操作 API。仅配置 DeepSeek 密钥即可，模型名默认 `deepseek-flash`；可通过 `.env` 调整接口、模型、超时和最大轮数。完整固定依赖另存于 `requirements-lock.txt`。
 
-#### Anthropic
+## 演示请求
 
-To use Anthropic's chat models:
+在 `/api/alarms` 提交：
 
-1. Sign up for an [Anthropic API key](https://console.anthropic.com/) if you haven't already.
-2. Once you have your API key, add it to your `.env` file:
-
-```
-ANTHROPIC_API_KEY=your-api-key
-```
-#### OpenAI
-
-To use OpenAI's chat models:
-
-1. Sign up for an [OpenAI API key](https://platform.openai.com/signup).
-2. Once you have your API key, add it to your `.env` file:
-```
-OPENAI_API_KEY=your-api-key
+```json
+{
+  "event_id": "demo-pump-001",
+  "device_id": "P-101",
+  "message": "循环泵振动升高并伴随轴承异响，请查手册和历史工单后生成检查草案。",
+  "severity": "warning"
+}
 ```
 
-3. Customize whatever you'd like in the code.
-4. Open the folder LangGraph Studio!
+结果为 `awaiting_approval` 时，查看 `proposal` 和 `report.evidence`。把 `report.proposal_sha256` 与运行编号用于 `/api/runs/{run_id}/approval`，提交 `approved: true` 或 `false`。工单写入只发生在确认分支；草案哈希不匹配返回409。
 
-## How to customize
+同号同内容的事件返回原运行；同号不同内容返回409。重启时保留同一 `OPS_DATA_DIR`，即可继续处理待审批运行。默认运行状态在 `runtime/`，与本地密钥一起排除出 Git。
 
-1. **Add new tools**: Extend the agent's capabilities by adding new tools in [tools.py](./src/react_agent/tools.py). These can be any Python functions that perform specific tasks.
-2. **Select a different model**: We default to Anthropic's Claude 3 Sonnet. You can select a compatible chat model using `provider/model-name` via runtime context. Example: `openai/gpt-4-turbo-preview`.
-3. **Customize the prompt**: We provide a default system prompt in [prompts.py](./src/react_agent/prompts.py). You can easily update this via context in the studio.
+CLI 也支持相同流程：
 
-You can also quickly extend this template by:
+```powershell
+& .venvScriptspython.exe -m react_agent.cli diagnose --event cli-001 --device P-101 --message '循环泵振动升高，请生成检查草案'
+# 阅读输出，复制 run_id 及 proposal_sha256 后再执行：
+& .venvScriptspython.exe -m react_agent.cli decide '<run_id>' --decision approve --proposal-hash '<proposal_sha256>'
+& .venvScriptspython.exe -m react_agent.cli report '<run_id>' --out runtime
+eport.md
+```
 
-- Modifying the agent's reasoning process in [graph.py](./src/react_agent/graph.py).
-- Adjusting the ReAct loop or adding additional steps to the agent's decision-making process.
+## 检查与真实模型验收
 
-## Development
+```powershell
+& .venvScriptspython.exe -m ruff check src tests scripts
+& .venvScriptspython.exe -m pytest -q --junitxml=reportslocal-tests.xml
+# 以下命令会调用本地配置的 DeepSeek，产生该账号的 API 用量：
+& .venvScriptspython.exe scriptserify_live.py --out runtimemy-live-verification.json
+# 先启动本地服务，再检查真实 HTTP：
+& .venvScriptspython.exe scriptserify_http.py
+```
 
-While iterating on your graph, you can edit past state and rerun your app from past states to debug specific nodes. Local changes will be automatically applied via hot reload. Try adding an interrupt before the agent calls tools, updating the default system message in `src/react_agent/context.py` to take on a persona, or adding additional nodes and edges!
+回归使用 `scripted_test` 模型替身，生产 API 和 CLI 只选择真实 DeepSeek。未配置密钥返回503，供应商失败返回502；失败状态和错误类别保留在运行记录。CI 运行回归和静态检查，无需真实模型密钥。
 
-Follow up requests will be appended to the same thread. You can create an entirely new thread, clearing previous history, using the `+` button in the top right.
+## 文件导读
 
-You can find the latest (under construction) docs on [LangGraph](https://github.com/langchain-ai/langgraph) here, including examples and other references. Using those guides can help you pick the right patterns to adapt here for your use case.
+| 文件 | 职责 |
+|---|---|
+| `src/react_agent/graph.py` | 模型与工具循环、人工确认、工单写入节点 |
+| `src/react_agent/tools.py` | 4类工具输入和业务约束 |
+| `src/react_agent/store.py` | 演示业务数据、手册检索、事件去重与工单幂等 |
+| `src/react_agent/llm.py` | DeepSeek Tool Calls 接入与实际用量 |
+| `src/react_agent/service.py` | 持久化运行、审批恢复、轨迹与报告 |
+| `src/react_agent/api.py` | REST接口和交互文档 |
+| `tests/` | 明确区分模型替身的回归检查 |
+| `reports/` | 本次实际验证记录和样例报告 |
+| `docs/resume-and-interview.md` | 真实项目正文、源码讲解及面试参考 |
 
-LangGraph Studio also integrates with [LangSmith](https://smith.langchain.com/) for more in-depth tracing and collaboration with teammates.
-
-[^1]: https://python.langchain.com/docs/concepts/#tools
+没有实测的生产指标不填数字。后续进入真实业务时，应单独确认数据、接口权限、验收场景与部署条件。

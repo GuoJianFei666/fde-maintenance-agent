@@ -1,116 +1,106 @@
-"""Define a custom Reasoning and Action agent.
+"""Adapt the upstream ReAct loop into an approved maintenance workflow.
 
-Works with a chat model with tool calling support.
+Upstream: langchain-ai/react-agent, MIT, commit 087d90d0c876668956b733a104f1708cef0128e2.
+The model chooses read tools and drafts. Fixed nodes own review and database writes.
 """
 
-from datetime import UTC, datetime
-from typing import Dict, List, Literal, cast
+import time
 
-from langchain_core.messages import AIMessage
-from langgraph.graph import StateGraph
-from langgraph.prebuilt import ToolNode
-from langgraph.runtime import Runtime
+from langchain_core.messages import AIMessage, SystemMessage, ToolMessage
+from langgraph.graph import END, START, StateGraph
+from langgraph.types import interrupt
 
-from react_agent.context import Context
-from react_agent.state import InputState, State
-from react_agent.tools import TOOLS
-from react_agent.utils import load_chat_model
-
-# Define the function that calls the model
+from react_agent.models import Approval, ConflictError, ToolInputError
+from react_agent.prompts import SYSTEM_PROMPT
+from react_agent.state import State
+from react_agent.store import canonical_json, content_hash
+from react_agent.tools import TOOL_SCHEMAS, execute_tool
 
 
-async def call_model(
-    state: State, runtime: Runtime[Context]
-) -> Dict[str, List[AIMessage]]:
-    """Call the LLM powering our "agent".
+def build_graph(store, model, checkpointer, max_rounds=6):
+    def call_model(state: State):
+        rounds = state.get("rounds", 0)
+        if rounds >= max_rounds:
+            store.trace(state["run_id"], "limit", {"code": "agent_round_limit", "rounds": rounds})
+            return {"status": "failed", "error_code": "agent_round_limit"}
+        started = time.perf_counter()
+        response = model.invoke([SystemMessage(content=SYSTEM_PROMPT), *state["messages"]], TOOL_SCHEMAS)
+        if not isinstance(response, AIMessage):
+            raise TypeError("Model adapter must return AIMessage")
+        store.trace(state["run_id"], "model", {
+            "round": rounds + 1, "mode": model.mode,
+            "model_name": response.response_metadata.get("model_name"),
+            "tool_names": [t["name"] for t in response.tool_calls],
+            "usage": response.usage_metadata,
+            "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
+        })
+        return {"messages": [response], "rounds": rounds + 1}
 
-    This function prepares the prompt, initializes the model, and processes the response.
+    def route_model(state: State):
+        if state.get("status") == "failed":
+            return END
+        return "tools" if state["messages"][-1].tool_calls else "finish_without_draft"
 
-    Args:
-        state (State): The current state of the conversation.
-        config (RunnableConfig): Configuration for the model run.
+    def run_tools(state: State):
+        calls = state["messages"][-1].tool_calls
+        if len(calls) > 5:
+            return {"status": "failed", "error_code": "too_many_tools_in_one_round"}
+        current = dict(state)
+        updates = {}
+        messages = []
+        for call in calls:
+            started = time.perf_counter()
+            try:
+                result, patch = execute_tool(call["name"], call["args"], current, store)
+                current.update(patch)
+                updates.update(patch)
+            except ToolInputError as exc:
+                result = {"ok": False, "error_code": str(exc)}
+            store.trace(state["run_id"], "tool", {
+                "name": call["name"], "arguments": call["args"], "result": result,
+                "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
+            })
+            messages.append(ToolMessage(content=canonical_json(result), tool_call_id=call["id"]))
+        if current.get("proposal"):
+            updates.update({"status": "awaiting_approval", "proposal_sha256": content_hash(current["proposal"])})
+        return {**updates, "messages": messages}
 
-    Returns:
-        dict: A dictionary containing the model's response message.
-    """
-    # Initialize the model with tool binding. Change the model or add more tools here.
-    model = load_chat_model(runtime.context.model).bind_tools(TOOLS)
+    def route_tools(state: State):
+        if state.get("status") == "failed":
+            return END
+        return "human_review" if state.get("proposal") else "call_model"
 
-    # Format the system prompt. Customize this to change the agent's behavior.
-    system_message = runtime.context.system_prompt.format(
-        system_time=datetime.now(tz=UTC).isoformat()
-    )
+    def human_review(state: State):
+        # No side effects before interrupt: this node starts again when resumed.
+        decision = Approval.model_validate(interrupt({
+            "run_id": state["run_id"], "proposal": state["proposal"],
+            "proposal_sha256": state["proposal_sha256"], "action": "approve_or_reject_work_order",
+        }))
+        if decision.proposal_sha256 != state["proposal_sha256"]:
+            raise ConflictError("stale_proposal_hash")
+        return {"approved": decision.approved, "approval_note": decision.note,
+                "status": "approved" if decision.approved else "rejected"}
 
-    # Get the model's response
-    response = cast(  # type: ignore[redundant-cast]
-        AIMessage,
-        await model.ainvoke(
-            [{"role": "system", "content": system_message}, *state.messages]
-        ),
-    )
+    def commit_order(state: State):
+        if state.get("approved") is not True:
+            raise ConflictError("human_approval_required")
+        order = store.create_order(state["run_id"], state["alarm"]["device_id"], state["proposal"])
+        store.trace(state["run_id"], "commit_order", {"order_id": order["id"], "approved": True})
+        return {"order": order, "status": "completed"}
 
-    # Handle the case when it's the last step and the model still wants to use a tool
-    if state.is_last_step and response.tool_calls:
-        return {
-            "messages": [
-                AIMessage(
-                    id=response.id,
-                    content="Sorry, I could not find an answer to your question in the specified number of steps.",
-                )
-            ]
-        }
+    def finish_without_draft(state: State):
+        return {"status": "needs_information", "answer": state["messages"][-1].content}
 
-    # Return the model's response as a list to be added to existing messages
-    return {"messages": [response]}
-
-
-# Define a new graph
-
-builder = StateGraph(State, input_schema=InputState, context_schema=Context)
-
-# Define the two nodes we will cycle between
-builder.add_node(call_model)
-builder.add_node("tools", ToolNode(TOOLS))
-
-# Set the entrypoint as `call_model`
-# This means that this node is the first one called
-builder.add_edge("__start__", "call_model")
-
-
-def route_model_output(state: State) -> Literal["__end__", "tools"]:
-    """Determine the next node based on the model's output.
-
-    This function checks if the model's last message contains tool calls.
-
-    Args:
-        state (State): The current state of the conversation.
-
-    Returns:
-        str: The name of the next node to call ("__end__" or "tools").
-    """
-    last_message = state.messages[-1]
-    if not isinstance(last_message, AIMessage):
-        raise ValueError(
-            f"Expected AIMessage in output edges, but got {type(last_message).__name__}"
-        )
-    # If there is no tool call, then we finish
-    if not last_message.tool_calls:
-        return "__end__"
-    # Otherwise we execute the requested actions
-    return "tools"
-
-
-# Add a conditional edge to determine the next step after `call_model`
-builder.add_conditional_edges(
-    "call_model",
-    # After call_model finishes running, the next node(s) are scheduled
-    # based on the output from route_model_output
-    route_model_output,
-)
-
-# Add a normal edge from `tools` to `call_model`
-# This creates a cycle: after using tools, we always return to the model
-builder.add_edge("tools", "call_model")
-
-# Compile the builder into an executable graph
-graph = builder.compile(name="ReAct Agent")
+    builder = StateGraph(State)
+    builder.add_node("call_model", call_model)
+    builder.add_node("tools", run_tools)
+    builder.add_node("human_review", human_review)
+    builder.add_node("commit_order", commit_order)
+    builder.add_node("finish_without_draft", finish_without_draft)
+    builder.add_edge(START, "call_model")
+    builder.add_conditional_edges("call_model", route_model)
+    builder.add_conditional_edges("tools", route_tools)
+    builder.add_conditional_edges("human_review", lambda s: "commit_order" if s["approved"] else END)
+    builder.add_edge("commit_order", END)
+    builder.add_edge("finish_without_draft", END)
+    return builder.compile(checkpointer=checkpointer, name="maintenance_agent")
