@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "project": "fde-maintenance-agent",
+  "checked_date": "2026-10-21",
+  "sources": [
+    {
+      "id": "maintie",
+      "title": "MaintIE",
+      "repository": "nlp-tlp/maintie",
+      "commit": "825e7710e4129598da997276a38b3cb40b200bc2",
+      "url": "https://github.com/nlp-tlp/maintie/tree/825e7710e4129598da997276a38b3cb40b200bc2",
+      "license_note": "MIT（README明确覆盖语料、模式和模型）",
+      "used_for": "维修短文本实体与关系标注",
+      "projects": [
+        "fde-maintenance-agent"
+      ],
+      "checked_date": "2026-10-21"
+    },
+    {
+      "id": "react-template",
+      "title": "LangGraph ReAct template",
+      "repository": "langchain-ai/react-agent",
+      "commit": "087d90d0c876668956b733a104f1708cef0128e2",
+      "url": "https://github.com/langchain-ai/react-agent/tree/087d90d0c876668956b733a104f1708cef0128e2",
+      "license_note": "MIT（既有项目保留上游许可）",
+      "used_for": "既有FDE项目的模板来源",
+      "projects": [
+        "fde-maintenance-agent"
+      ],
+      "checked_date": "2026-10-21"
+    }
+  ]
+}

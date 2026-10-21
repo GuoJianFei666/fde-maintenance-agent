@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-10-21T10:14:48.419940+00:00",
+  "method": "Python standard-library read-only data inspection; not model or application evaluation",
+  "maintie": {
+    "gold": {
+      "records": 1076,
+      "normalized_unique_texts": 1074,
+      "duplicate_rows_beyond_first": 2,
+      "duplicate_text_groups": 2,
+      "tokens": 6119,
+      "entities": 3397,
+      "observed_entity_type_count": 155,
+      "top_level_entities": {
+        "Activity": 784,
+        "PhysicalObject": 1994,
+        "Process": 146,
+        "Property": 35,
+        "State": 438
+      },
+      "relations": 2341,
+      "observed_relation_types": {
+        "contains": 38,
+        "hasPart": 533,
+        "hasParticipant/hasAgent": 166,
+        "hasParticipant/hasPatient": 1206,
+        "hasProperty": 34,
+        "isA": 364
+      },
+      "invalid_entity_spans": [],
+      "invalid_relation_row_indices": []
+    },
+    "silver": {
+      "records": 7000,
+      "normalized_unique_texts": 6995,
+      "duplicate_rows_beyond_first": 5,
+      "duplicate_text_groups": 5,
+      "tokens": 37555,
+      "entities": 22122,
+      "observed_entity_type_count": 5,
+      "top_level_entities": {
+        "Activity": 5045,
+        "PhysicalObject": 13472,
+        "Process": 728,
+        "Property": 130,
+        "State": 2747
+      },
+      "relations": 15200,
+      "observed_relation_types": {
+        "contains": 178,
+        "hasAgent": 789,
+        "hasPart": 3837,
+        "hasPatient": 7761,
+        "hasProperty": 123,
+        "isA": 2512
+      },
+      "invalid_entity_spans": [],
+      "invalid_relation_row_indices": []
+    },
+    "normalized_gold_silver_shared_texts": 7,
+    "normalization": "Python str.casefold plus whitespace split/join; exact text match only"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "id": "maintie_gold",
+      "url": "https://raw.githubusercontent.com/nlp-tlp/maintie/825e7710e4129598da997276a38b3cb40b200bc2/data/gold_release.json",
+      "filename": "maintie_gold.json",
+      "kind": "json",
+      "github_blob_sha": "8bad3a0fabc6d33a8f49e99dfef4911ff7da8546",
+      "bytes": 817880,
+      "sha256": "ef811cf4ffd0c90e6a13b1369e24e9d1d08f9a294d873ab4fb1a580096d7d6e0",
+      "github_blob_verified": true
+    },
+    {
+      "id": "maintie_silver",
+      "url": "https://raw.githubusercontent.com/nlp-tlp/maintie/825e7710e4129598da997276a38b3cb40b200bc2/data/silver_release.json",
+      "filename": "maintie_silver.json",
+      "kind": "json",
+      "github_blob_sha": "5ff1932d07113c9c5e23e5ef8804d8a86e3a65a8",
+      "bytes": 4607249,
+      "sha256": "af8f785e5c03fdaefeb9b94dad7d24cbd030c2fa4b53ee452069d035f4bf4877",
+      "github_blob_verified": true
+    }
+  ]
+}
