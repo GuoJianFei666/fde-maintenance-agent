@@ -1,0 +1,22 @@
+[
+  {
+    "asset_id": "Chiller 6",
+    "timestamp": "2020-06-01T00:00:00",
+    "Chiller 6 Condenser Water Return To Tower Temperature": 48.88189585817613,
+    "Chiller 6 Chiller Efficiency": 0.28946467938539056,
+    "Chiller 6 Tonnage": 451.80809212871776,
+    "Chiller 6 Supply Temperature": 46.02305470389098,
+    "Chiller 6 Return Temperature": 34.63936260818742,
+    "Chiller 6 Condenser Water Flow": 6047.8850449535175,
+    "Chiller 6 Schedule": 1.2905024159187255,
+    "Chiller 6 Power Input": 136.36848363585833,
+    "Chiller 6 Chiller % Loaded": 97.29558271478476,
+    "Chiller 6 Liquid Refrigerant Evaporator Temperature": 13.145166962235495,
+    "Chiller 6 Setpoint Temperature": 14.068845930048992
+  },
+  {
+    "asset_id": "Chiller 6",
+    "timestamp": "2020-06-26T11:14:36",
+    "Chiller 6 Run Status": 0.0
+  }
+]

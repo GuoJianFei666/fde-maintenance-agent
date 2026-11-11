@@ -1,9 +1,9 @@
 """Map IoT, FMSR, Workorder, and multiagent utterances onto the four alarm tools.
 
-TSFM rows are excluded. Sensor archives and CouchDB dumps are not downloaded.
-Three existing decision-support utterances still draft against the labelled
-synthetic chiller manuals. Every other mapped utterance expects needs_information.
-The dev/test split is assigned here from ids and categories, before any model run.
+TSFM rows are excluded. The official scenario sample is annotated here. It does
+not change the dev/test split or turn a lookup into a work-order draft. Three
+existing decision-support utterances still draft against the labelled synthetic
+chiller manuals. Every other mapped utterance expects needs_information.
 """
 
 import argparse
@@ -13,6 +13,8 @@ from collections import defaultdict
 from pathlib import Path
 
 import yaml
+
+from evals.assetopsbench.official_sample import apply_official_annotations, official_counts
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
@@ -145,6 +147,7 @@ def build_cases(rows, adaptations, source):
             cases.append(_base_case(row, source))
     assign_splits(cases)
     cases.sort(key=lambda case: case["upstream_id"])
+    apply_official_annotations(cases, adaptations["cases"], MAPPING_NOTE)
     return cases
 
 
@@ -288,6 +291,8 @@ def manifest(cases, guardrails, rows):
         "split_rule": "Within each upstream type and category, sort by utterance id. Even indexes are dev and odd indexes are test. Assigned before any model run.",
         "draft_ids": [case["upstream_id"] for case in cases if case["expected_status"] == "awaiting_approval"],
         "guardrail_ids": [case["id"] for case in guardrails],
+        "official_context": {key: ids for key, ids in official_counts(cases).items()},
+        "official_sample_supports_draft": [],
     }
 
 
@@ -311,9 +316,12 @@ def main():
     (HERE / "cases" / "manifest.json").write_text(json.dumps(info, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     source["selected_ids"] = info["selected_ids"]
     source["excluded_ids"] = info["excluded_ids"]
-    source["note"] = ("Included types are IoT, FMSR, Workorder, and multiagent. TSFM is excluded. "
-                      "The committed sample is no longer only twelve utterances; cases/alarm_subset.jsonl "
-                      "holds the mapped text. CouchDB dumps and sensor archives are not downloaded.")
+    source["note"] = (
+        "Included types are IoT, FMSR, Workorder, and multiagent. TSFM is excluded. "
+        "The official scenario sample is pinned in fixtures/official/MANIFEST.json. "
+        "The full Chiller 6 series is downloaded on demand; Git stores the first and last rows. "
+        "PHMForge scenarios are not imported. Expected drafts remain 416, 417, and 419."
+    )
     SOURCE_PATH.write_text(json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"real_cases": len(cases), "guardrails": len(guards), "by_category": info["by_category"],
                       "draft_ids": info["draft_ids"]}, ensure_ascii=False))

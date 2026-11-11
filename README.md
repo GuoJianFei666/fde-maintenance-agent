@@ -117,7 +117,7 @@ CLI 支持相同流程：
 
 工具服务、传输开关和审批边界见 [docs/mcp.md](docs/mcp.md)。两条评测的命令和口径见 [docs/evals.md](docs/evals.md)。
 
-告警评测映射 AssetOpsBench 里 IoT、FMSR、Workorder、multiagent 共 129 条话语。缺传感器或工单导出时，期望是 `needs_information`，不把数据集里的条数当成答案。另有 5 条标明合成的护栏（审批哈希不符、提示注入、重复事件、不存在的设备），单独计分。英文设备、手册和历史工单在 `evals/assetopsbench/fixtures/english_demo.json`，标明为改编后的合成数据。真实模型分数待本地运行。
+告警评测映射 AssetOpsBench 里 IoT、FMSR、Workorder、multiagent 共 129 条话语。官方场景样本已接入 `query_device`、`query_work_orders` 和 `search_manual`：6 条能据此核对站点或档案，4 条只能部分对照，116 条仍然没有对应记录。这 126 条的期望都是 `needs_information`。416、417、419 仍用合成手册起草。上游条数不当成答案。另有 5 条标明合成的护栏，单独计分。样本出处、哈希和下载命令见 `evals/assetopsbench/README.md`。真实模型分数待本地运行。
 
 MaintNorm 主评测是合并语料的英文 test。指标是词级精确率、召回率和错误下降率。论文表 7 的数字抄在 [evals/maintnorm/BASELINES.md](evals/maintnorm/BASELINES.md)。本项目三列都是“待运行”。配置好本地密钥后再跑，不要把脚本模式的输出填进那一列。
 

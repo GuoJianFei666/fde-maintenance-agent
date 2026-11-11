@@ -20,7 +20,9 @@
 
 MCP 服务使用官方 Python SDK `mcp`，MIT 许可。本项目没有改 SDK 源码，只注册了四个已有工具。
 
-AssetOpsBench 来自 IBM，Apache-2.0，固定提交 `e844f6468c6c68b328022e7ca8e31da140842cc7`。话语来自 Hugging Face 数据集 `ibm-research/AssetOpsBench`，修订 `5e25bb7f2cd37fb68b9a9e1f99d170ca5be7ce17`。映射了 IoT、FMSR、Workorder、multiagent 共 129 条；TSFM 23 条未映射。不收录 CouchDB 或传感器归档。英文演示手册和 5 条护栏是本项目编写的。出处和许可见 `evals/assetopsbench/NOTICE.md`。
+AssetOpsBench 来自 IBM，Apache-2.0，固定提交 `e844f6468c6c68b328022e7ca8e31da140842cc7`。话语来自 Hugging Face 数据集 `ibm-research/AssetOpsBench`，修订 `5e25bb7f2cd37fb68b9a9e1f99d170ca5be7ce17`。映射了 IoT、FMSR、Workorder、multiagent 共 129 条；TSFM 23 条未映射。同一提交里的场景小样本放在 `evals/assetopsbench/fixtures/official/`，冷机 6 全时序按清单哈希下载。英文演示手册和 5 条护栏是本项目编写的。出处和许可见 `evals/assetopsbench/NOTICE.md`。
+
+PHMForge 来自 `ibm-research/PHMForge`，CC BY 4.0，修订 `7a7e8a5f140d89c562c0b2f870f500e259237b8e`。99 条场景文本可按需下载，信号归档和场景本身都没有导入本仓库的四个告警工具。
 
 MaintNorm 来自 [nlp-tlp/maintnorm](https://github.com/nlp-tlp/maintnorm)，MIT，固定提交 `e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8`。语料按脚本下载，不放进 Git。论文基线只抄 W-NUT 2024 表 7，见 `evals/maintnorm/BASELINES.md`。少样本例句是本项目编写的，不是从官方测试集抽出来的。
 

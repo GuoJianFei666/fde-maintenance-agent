@@ -5,7 +5,15 @@ from langchain_core.messages import AIMessage
 
 from evals.assetopsbench.convert import convert, load_jsonl
 from evals.assetopsbench.metrics import order_correct, score_case, summarise
+from evals.assetopsbench.official_sample import (
+    import_official_sample,
+    load_committed,
+    scenario3_inputs,
+    verify_committed_files,
+    work_order_counts,
+)
 from evals.assetopsbench.run import run_eval
+from react_agent.store import Store
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "evals" / "assetopsbench" / "fixtures" / "upstream_sample.jsonl"
@@ -76,6 +84,7 @@ def test_scripted_eval_covers_every_mapped_case_and_the_guardrails(tmp_path):
     assert record["metrics"]["cost_usd"] is None
     assert record["metrics"]["judge"] is None
     assert record["metrics"]["case_count"] == 129
+    assert record["dataset"]["official_context"] == {"lookup": 6, "partial": 4, "absent": 119}
     guards = run_eval(GUARDRAILS, mode="scripted", fixture=FIXTURE, seed=7)
     assert guards["scores_are_model_results"] is False
     assert guards["dataset"]["by_provenance"] == {"synthetic": 5}
@@ -93,6 +102,59 @@ def test_scripted_eval_covers_every_mapped_case_and_the_guardrails(tmp_path):
     target = tmp_path / "scripted.json"
     target.write_text(json.dumps(record), encoding="utf-8")
     assert "DEEPSEEK_API_KEY" not in target.read_text(encoding="utf-8")
+
+
+def test_official_sample_answers_lookups_and_leaves_drafts_unchanged(tmp_path):
+    verify_committed_files()
+    assert MANIFEST["draft_ids"] == [416, 417, 419]
+    assert MANIFEST["official_sample_supports_draft"] == []
+    assert MANIFEST["official_context"]["lookup"] == [1, 2, 3, 4, 5, 47]
+    assert MANIFEST["official_context"]["partial"] == [9, 12, 104, 603]
+    by_id = {case["upstream_id"]: case for case in CASES}
+    for upstream_id in (1, 2, 3, 4, 5, 47, 9, 12, 104, 603):
+        assert by_id[upstream_id]["expected_status"] == "needs_information"
+        assert "draft_work_order" in by_id[upstream_id]["forbidden_tools"]
+        assert by_id[upstream_id]["official_context"]["official_sample_supports_draft"] is False
+    assert by_id[5]["split"] == "dev"
+    assert by_id[12]["split"] == "test"
+    sample = load_committed()
+    counts = work_order_counts(sample["work_orders"])
+    official = ROOT / "evals" / "assetopsbench" / "fixtures" / "official"
+    assert counts["main_site"] == int((official / "scenario_1_groundtruth.txt").read_text().strip())
+    assert counts["main_site_corrective"] == int((official / "scenario_2_groundtruth.txt").read_text().strip())
+    facts = scenario3_inputs(sample, {"coverage": "excerpt"})
+    assert facts == {
+        "work_order": "1000045",
+        "asset": "Chiller 6",
+        "sensor": "Chiller 6 Condenser Water Flow",
+        "sensor_matches": ["Chiller 6 Condenser Water Flow"],
+    }
+    published = json.loads((official / "scenario_3_groundtruth.txt").read_text(encoding="utf-8"))
+    assert published["anomalies_found"] is True
+    assert "anomalies_found" not in facts
+    store = Store(tmp_path / "sample.sqlite")
+    before = store.corpus_sha256
+    store.import_fixture(FIXTURE)
+    imported = import_official_sample(store)
+    assert store.corpus_sha256 == before
+    assert imported["telemetry_coverage"] == "excerpt"
+    device = store.device("CH-6")["official_sample"]
+    assert device["profile"]["siteid"] == "MAIN"
+    assert device["telemetry"]["loaded_rows"] == 2
+    assert device["telemetry"]["full_file"]["loaded"] is False
+    assert {row["siteid"] for row in device["registry"]} == {"MAIN", "NORTH"}
+    chillers = [row["assetnum"] for row in device["registry"] if row["assettype"] == "CHILLER"]
+    assert chillers == ["Chiller 6"]
+    assert store.orders("CH-6")[0]["id"] == "WO-1000045"
+    official_orders = [order for order in store.orders() if order.get("data_kind") == "official_sample"]
+    assert {order["device_id"] for order in official_orders} == {"AHU2", "CH-6", "PUMP3"}
+    for query, evidence in (
+        ("unnamed anomaly inspection", "CHILLER-ANOM-01"),
+        ("cooling load upper bound", "CHILLER-LOAD-01"),
+        ("RUL0014 delta temperature", "CHILLER-DELTAT-01"),
+    ):
+        assert evidence in [hit["id"] for hit in store.search(query, "CH-6", 3)]
+    assert store.search("泵振动升高", "P-101", 3)[0]["id"] == "PUMP-VIB-01"
 
 
 def test_false_refusal_and_judge_are_explicit(tmp_path):

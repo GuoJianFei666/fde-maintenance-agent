@@ -1,0 +1,121 @@
+{
+  "repository": "https://github.com/IBM/AssetOpsBench",
+  "commit": "e844f6468c6c68b328022e7ca8e31da140842cc7",
+  "license": "Apache-2.0",
+  "license_url": "https://github.com/IBM/AssetOpsBench/blob/e844f6468c6c68b328022e7ca8e31da140842cc7/LICENSE",
+  "committed_files": {
+    "workorders.csv": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/work_order/workorders.csv",
+      "bytes": 1374,
+      "sha256": "86ea1dd775361fa42e3a568479b7303525fcec9db21f8237d93cc1cef881c4c1"
+    },
+    "asset_profile_sample.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/iot/asset_profile_sample.json",
+      "bytes": 4099,
+      "sha256": "59affb7ff4e3f23592da059aa33f2da533b0d928b2e37796f9cfa8f3d4f813eb"
+    },
+    "failure_code_sample.csv": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/failure_code/failure_code_sample.csv",
+      "bytes": 415,
+      "sha256": "a1f4b8787029e9f9c6516c61b1cf058a97802ce0615a80bf348ccabd716b6db1"
+    },
+    "failure_modes_sample.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/fmea/failure_modes_sample.json",
+      "bytes": 170,
+      "sha256": "eb0899b5fc231b93c002c17f2b80a8b5cc7d4fa077a5bdb6510630bd10285d20",
+      "upstream_label": "The file itself says source synthetic sample and exhaustive false."
+    },
+    "catalog_assets.csv": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/catalog/assets.csv",
+      "bytes": 249,
+      "sha256": "37a81e3ceb6b791c9977e67c4cea8ec569882aff3842883559d70e971b01c583"
+    },
+    "catalog_failure_modes.csv": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/catalog/failure_modes.csv",
+      "bytes": 194,
+      "sha256": "dc2d62630a802d88d390d62dadbb835275d9384f195093ebb1c57919f7540108"
+    },
+    "catalog_sensors.csv": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/catalog/sensors.csv",
+      "bytes": 144,
+      "sha256": "c7303e70a7fa0d87c44787028402c7fd9559e63454570c3e5850d77151f33ad2"
+    },
+    "scenario_1_question.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_1/question.txt",
+      "bytes": 437,
+      "sha256": "604f1cb3deb924c1e21865a0e580bb7c1fe61e39f0df3993d755b2000ffa066c"
+    },
+    "scenario_1_groundtruth.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_1/groundtruth.txt",
+      "bytes": 1,
+      "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+    },
+    "scenario_2_question.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_2/question.txt",
+      "bytes": 496,
+      "sha256": "6d5dc52dfa51c5332113c7670d0c3a4afa2094d781fa5c2849663fb55875231a"
+    },
+    "scenario_2_groundtruth.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_2/groundtruth.txt",
+      "bytes": 1,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    "scenario_3_question.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_3/question.txt",
+      "bytes": 1636,
+      "sha256": "ab0147071bed7eedfa76659f1f4ee807c006b84e2b5e58d43c77aeb062e70e98"
+    },
+    "scenario_3_groundtruth.txt": {
+      "upstream_path": "src/couchdb/scenarios_data/scenario_3/groundtruth.txt",
+      "bytes": 216,
+      "sha256": "ff1d124863f3cad7c73617723b1780bef3f5128e4c992de48f04d9d7dde667f8"
+    },
+    "chiller_6_excerpt.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/iot/chiller_6.json",
+      "note": "Verbatim first and last records of the official file. Not a substitute for the full series.",
+      "bytes": 825,
+      "sha256": "ea3c74258c8d4d0cf6c4b3192bb0cec0ec2ed660a4ac59cc7cff600c2af4db7a"
+    }
+  },
+  "chiller_6": {
+    "upstream_path": "src/couchdb/scenarios_data/shared/iot/chiller_6.json",
+    "bytes": 1776999,
+    "sha256": "8073af23ea71fc401aee97fd40b47678a80ad0549eb4153b1eb0ab8dc9b246e2",
+    "rows": 2896,
+    "start": "2020-06-01T00:00:00",
+    "end": "2020-06-26T11:14:36",
+    "condenser_water_flow_observations": 2876,
+    "percent_loaded_observations": 2876,
+    "committed": false,
+    "reason": "The full series is the smallest official file that covers Chiller 6. It stays download-on-demand so CI does not fetch 1.7 MB."
+  },
+  "not_imported_iot": {
+    "hydraulic_pump_1.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/iot/hydraulic_pump_1.json",
+      "bytes": 1880617,
+      "sha256": "622bcd1a668a939a2590b1aaf560ecce641731b04d802271b39ef454835918b5"
+    },
+    "metro_pump_1.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/iot/metro_pump_1.json",
+      "bytes": 3866295,
+      "sha256": "363d6daf873c614fcb4a798d4e86aa648d60ae2b6c735ce5d8388b0d4b3c2fdf"
+    },
+    "motor_01.json": {
+      "upstream_path": "src/couchdb/scenarios_data/shared/iot/motor_01.json",
+      "bytes": 460329,
+      "sha256": "e7cd8093ce7842a8be4ec6935084a9ab921b02d7d2d95725a2856e32ba4961f5"
+    },
+    "reason": "No mapped utterance asks for hyd_1, mp_1, or Motor_01 series. Fetch them with --all-iot. They are not committed."
+  },
+  "phmforge": {
+    "dataset": "ibm-research/PHMForge",
+    "revision": "7a7e8a5f140d89c562c0b2f870f500e259237b8e",
+    "license": "cc-by-4.0",
+    "scenarios_file": "data/all.jsonl",
+    "scenarios_bytes": 250674,
+    "scenarios_sha256": "f49066732e91bbc47851c5363496af88f31b85d07599ccf9de67bae70a2e6f03",
+    "scenario_count": 99,
+    "imported": false,
+    "reason": "The 99 scenario questions use tools such as load_dataset, train_rul_model, and predict_rul. None mention Chiller, CWC, or this agent's four tools. Signal archives are not downloaded."
+  }
+}

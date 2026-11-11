@@ -138,7 +138,7 @@
     621,
     622
   ],
-  "note": "Included types are IoT, FMSR, Workorder, and multiagent. TSFM is excluded. The committed sample is no longer only twelve utterances; cases/alarm_subset.jsonl holds the mapped text. CouchDB dumps and sensor archives are not downloaded.",
+  "note": "Included types are IoT, FMSR, Workorder, and multiagent. TSFM is excluded. The official scenario sample is pinned in fixtures/official/MANIFEST.json. The full Chiller 6 series is downloaded on demand; Git stores the first and last rows. PHMForge scenarios are not imported. Expected drafts remain 416, 417, and 419.",
   "excluded_ids": [
     201,
     202,

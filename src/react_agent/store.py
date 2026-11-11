@@ -213,3 +213,33 @@ class Store:
         return {"devices": [item["id"] for item in payload["devices"]],
                 "manuals": [item["id"] for item in payload["manuals"]],
                 "label": payload.get("label", "")}
+
+    def upsert_device(self, device):
+        """Insert or replace one device record. Does not change the packaged corpus hash."""
+        if not device.get("id"):
+            raise ValueError("device_id_required")
+        with self.connection() as conn:
+            conn.execute(
+                "INSERT INTO devices(id, data) VALUES(?, ?) ON CONFLICT(id) DO UPDATE SET data=excluded.data",
+                (device["id"], canonical_json(device)))
+
+    def upsert_history_order(self, order):
+        """Insert or replace a historical order that has no source run."""
+        with self.connection() as conn:
+            conn.execute("""
+                INSERT INTO orders(id, source_run, device_id, summary, status, data)
+                VALUES(?, NULL, ?, ?, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET device_id=excluded.device_id, summary=excluded.summary,
+                  status=excluded.status, data=excluded.data
+            """, (order["id"], order["device_id"], order["summary"], order["status"], canonical_json(order)))
+
+    def insert_manual(self, manual):
+        """Insert one manual chunk. An existing id is left unchanged."""
+        with self.connection() as conn:
+            if conn.execute("SELECT 1 FROM manuals WHERE id=?", (manual["id"],)).fetchone():
+                return False
+            conn.execute("INSERT INTO manuals VALUES(?,?,?,?,?,?)", tuple(manual[k] for k in
+                         ("id", "device_type", "title", "body", "source", "version")))
+            tokens = " ".join(search_tokens(manual["title"] + " " + manual["body"]))
+            conn.execute("INSERT INTO manual_fts(chunk_id,terms) VALUES(?,?)", (manual["id"], tokens))
+        return True

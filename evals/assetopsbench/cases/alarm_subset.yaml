@@ -23,9 +23,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the return value of
@@ -38,6 +39,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: lookup
+    topic: sites
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-2
   upstream_id: 2
   upstream_text: Can you list the IoT sites?
@@ -62,9 +70,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the return value of
@@ -77,6 +86,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: lookup
+    topic: sites
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-3
   upstream_id: 3
   upstream_text: What assets can be found at the MAIN site?
@@ -101,9 +117,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the return value from
@@ -117,6 +134,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: lookup
+    topic: assets_at_main
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-4
   upstream_id: 4
   upstream_text: Which assets are located at the MAIN facility?
@@ -141,9 +165,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the return value from
@@ -157,6 +182,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: lookup
+    topic: assets_at_main
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-5
   upstream_id: 5
   upstream_text: Retrieve metadata for Chiller 6 located at the MAIN site.
@@ -181,7 +213,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the metadata for asset
@@ -195,6 +229,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: lookup
+    topic: chiller_6_metadata
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-6
   upstream_id: 6
   upstream_text: Get the asset details for Chiller 9 at the MAIN site.
@@ -219,7 +260,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: The official Chiller 6 series does not cover the asset or the dates this
+    utterance asks for. Missing readings are not invented.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the details for asset
@@ -233,6 +275,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-7
   upstream_id: 7
   upstream_text: Download the metadata for Chiller 3 at the MAIN facility.
@@ -257,9 +306,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
-    The utterance does not name CWC04009, CWC04013, or Chiller 6. The eval maps it
-    to CH-6 so the tool call has a device id.
+  data_gap: The official Chiller 6 series does not cover the asset or the dates this
+    utterance asks for. Missing readings are not invented. The utterance does not
+    name CWC04009, CWC04013, or Chiller 6. The eval maps it to CH-6 so the tool call
+    has a device id.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the metadata for asset
@@ -273,6 +323,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-8
   upstream_id: 8
   upstream_text: Download sensor data for Chiller 6's Tonnage from the last week of
@@ -299,7 +356,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: The official Chiller 6 series does not cover the asset or the dates this
+    utterance asks for. Missing readings are not invented.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the tonnage data for
@@ -313,6 +371,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-9
   upstream_id: 9
   upstream_text: Retrieve sensor data for Chiller 6's % Loaded from June 2020 at MAIN.
@@ -337,7 +402,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: Official chiller_6.json runs from 2020-06-01T00:00:00 through 2020-06-26T11:14:36
+    (2896 rows). The utterance asks for 1 June 2020 through 30 June 2020 inclusive.
+    27-30 June are absent. Do not invent those readings and do not draft a work order.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the % Loaded measurements
@@ -352,6 +419,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: partial
+    topic: june_2020_window_ends_26
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-10
   upstream_id: 10
   upstream_text: Get sensor data for both Chiller 6 and Chiller 9's Tonnage from first
@@ -378,7 +452,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: The official Chiller 6 series does not cover the asset or the dates this
+    utterance asks for. Missing readings are not invented.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be the Tonnage values
@@ -393,6 +468,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-11
   upstream_id: 11
   upstream_text: Download all sensor data for Chiller 6 from the last week of April
@@ -419,7 +501,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: The official Chiller 6 series does not cover the asset or the dates this
+    utterance asks for. Missing readings are not invented.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be data from all sensors
@@ -433,6 +516,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-12
   upstream_id: 12
   upstream_text: Retrieve sensor data for Chiller 6 from June 2020.
@@ -457,7 +547,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question asks for sensor or telemetry values. No IoT archive is loaded.
+  data_gap: Official chiller_6.json runs from 2020-06-01T00:00:00 through 2020-06-26T11:14:36
+    (2896 rows). The utterance asks for 1 June 2020 through 30 June 2020 inclusive.
+    27-30 June are absent. Do not invent those readings and do not draft a work order.
   upstream_type: IoT
   upstream_category: Data Query
   upstream_characteristic_form: The expected response should be all sensor data for
@@ -471,6 +563,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: partial
+    topic: june_2020_window_ends_26
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-41
   upstream_id: 41
   upstream_text: What was the latest supply humidity from CQPA AHU 1 at site MAIN
@@ -497,9 +596,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the latest value for
@@ -513,6 +613,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-42
   upstream_id: 42
   upstream_text: what was the supply temperature from CQPA AHU 2B on sept 19, 2020
@@ -539,9 +646,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the supply temperature
@@ -555,6 +663,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-43
   upstream_id: 43
   upstream_text: how much power was CQPA AHU 1 (MAIN site) using on 6/14/20?
@@ -579,9 +694,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be either a list of power
@@ -597,6 +713,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-44
   upstream_id: 44
   upstream_text: Can I list all the metrics monitored by CQPA AHU 2B? use site MAIN
@@ -621,9 +744,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be a list of all the
@@ -637,6 +761,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-45
   upstream_id: 45
   upstream_text: What is the power consumption of CQPA AHU 1 on mar 13 '20, site MAIN?
@@ -661,9 +792,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be a list of the power
@@ -678,6 +810,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-46
   upstream_id: 46
   upstream_text: retrieve the supply temperature data recorded last week for Chiller
@@ -704,9 +843,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the supply temperature
@@ -720,6 +860,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-47
   upstream_id: 47
   upstream_text: list all the chillers at site MAIN
@@ -744,9 +891,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official asset profile sample answers this list or metadata question.
+    The question does not ask for a work order, so the expected status stays needs_information
+    and draft_work_order stays forbidden. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be a list of all chiller
@@ -760,6 +908,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: lookup
+    topic: chillers_at_main
+    answers_lookup: true
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-48
   upstream_id: 48
   upstream_text: what was the return temperature from CQPA AHU 2B on sept 19, 2020
@@ -786,9 +941,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The question needs asset metadata or sensor context that the four demo
-    tools do not store. The utterance does not name CWC04009, CWC04013, or Chiller
-    6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official sample registry lists sites MAIN and NORTH and the assets
+    in asset_profile_sample.json. This utterance asks for a site, asset, or reading
+    that registry does not contain. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: IoT
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should be the return temperature
@@ -802,6 +958,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-101
   upstream_id: 101
   upstream_text: List all failure modes of asset Chiller.
@@ -827,9 +990,10 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list. The utterance does not name CWC04009, CWC04013,
-    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The failure modes for Chiller are: [''Compressor
@@ -845,6 +1009,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-102
   upstream_id: 102
   upstream_text: List all failure modes of asset Chiller 6.
@@ -870,8 +1041,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The failure modes of asset Chiller 6 are: [''Compressor
@@ -887,6 +1059,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-103
   upstream_id: 103
   upstream_text: List all failure modes of asset Wind Turbine.
@@ -912,9 +1091,10 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list. The utterance does not name CWC04009, CWC04013,
-    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should contain a list of meaningful failure
@@ -927,6 +1107,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-104
   upstream_id: 104
   upstream_text: List all installed sensors of asset Chiller 6.
@@ -952,8 +1139,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official asset profile lists 12 sensors, including Chiller 6 Setpoint
+    Temperature and Chiller 6 Oil Pressure. The utterance characteristic form lists
+    10 and omits those two. The lists disagree, so this case stays needs_information.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The installed sensors of asset Chiller 6 are: Chiller
@@ -969,6 +1157,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: partial
+    topic: sensor_list_disagrees_with_characteristic_form
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-105
   upstream_id: 105
   upstream_text: Provide some sensors of asset Wind Turbine.
@@ -994,9 +1189,10 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list. The utterance does not name CWC04009, CWC04013,
-    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should contain a list of sensor names for
@@ -1009,6 +1205,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-106
   upstream_id: 106
   upstream_text: List all failure modes of Chiller 6 that can be detected by Chiller
@@ -1036,8 +1239,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1054,6 +1258,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-107
   upstream_id: 107
   upstream_text: List all failure modes of Chiller 6 that can be detected by temperature
@@ -1081,8 +1292,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1099,6 +1311,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-108
   upstream_id: 108
   upstream_text: List all failure modes of Chiller 6 that can be detected by temperature
@@ -1126,8 +1345,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1144,6 +1364,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-109
   upstream_id: 109
   upstream_text: Get failure modes for Chiller 6 and only include in final response
@@ -1171,8 +1398,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1189,6 +1417,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-110
   upstream_id: 110
   upstream_text: Are there any failure modes of Chiller 6 that can be predicted by
@@ -1234,6 +1469,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-111
   upstream_id: 111
   upstream_text: List all sensors of Chiller 6 that are potentially relevant to Compressor
@@ -1261,8 +1503,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1279,6 +1522,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-112
   upstream_id: 112
   upstream_text: ' If compressor overheating occurs for Chiller 6, which sensor should
@@ -1323,6 +1573,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-113
   upstream_id: 113
   upstream_text: ' If Evaporator Water side fouling occurs for Chiller 6, which sensor
@@ -1350,8 +1607,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one of more sensors of
@@ -1368,6 +1626,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-114
   upstream_id: 114
   upstream_text: What are the failure modes of Chiller 6 that can be identified by
@@ -1395,8 +1660,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1413,6 +1679,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-115
   upstream_id: 115
   upstream_text: Purge unit of chiller 6 have possibility to excess purge, what is
@@ -1440,8 +1713,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should be a plan by the maintenance experts
@@ -1455,6 +1729,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-116
   upstream_id: 116
   upstream_text: Generate a machine learning recipe for detecting overheating failure
@@ -1482,8 +1763,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should be a machine learning recipe for
@@ -1497,6 +1779,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-117
   upstream_id: 117
   upstream_text: When compressor motor of Chiller 6 fails, what is the temporal behavior
@@ -1524,8 +1813,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should describe the temporal behavior of
@@ -1538,6 +1828,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-118
   upstream_id: 118
   upstream_text: When power input of Chiller 6 drops, what is the potential failure
@@ -1565,8 +1862,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1583,6 +1881,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-119
   upstream_id: 119
   upstream_text: When the Liquid Refrigerant Evaporator Temperature of Chiller 6 drops,
@@ -1610,8 +1915,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -1628,6 +1934,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-120
   upstream_id: 120
   upstream_text: I want to build an anomaly model for identifying a chiller trip failure
@@ -1657,8 +1970,9 @@ cases:
   manual_query: failure mode
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The AssetOpsBench failure-mode catalog and sensor list are not in this
-    demo. Do not invent that list.
+  data_gap: The official failure-code sample is a generic ten-row list, and failure_modes_sample.json
+    is an upstream synthetic pump sample marked exhaustive false. Neither is the Chiller
+    6 failure-mode catalog.
   upstream_type: FMSR
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should contain how to build an anomaly
@@ -1672,6 +1986,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-400
   upstream_id: 400
   upstream_text: Get the work order of equipment CWC04013 for year 2017.
@@ -1712,6 +2033,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-401
   upstream_id: 401
   upstream_text: I would like to check the work order distribution for the equipment
@@ -1739,8 +2067,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: Work order with primary Code MT010 occurred 3 times
@@ -1755,6 +2084,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-402
   upstream_id: 402
   upstream_text: I would like to retrieve the preventive work order details for the
@@ -1782,8 +2118,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 31 preventive work orders for this utterance.  The
@@ -1797,6 +2134,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-403
   upstream_id: 403
   upstream_text: I would like to retrieve the corrective work order details for the
@@ -1824,8 +2168,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: The output is two corrective work orders. The expected
@@ -1839,6 +2184,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-404
   upstream_id: 404
   upstream_text: Get the events of equipment CWC04009 for year 2019 and provide a
@@ -1882,6 +2234,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-405
   upstream_id: 405
   upstream_text: Get all the events of equipment CWC04009 for the June of 2020 and
@@ -1909,8 +2268,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 3 work order events, 30 alert events, and
@@ -1925,6 +2285,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-406
   upstream_id: 406
   upstream_text: Get the summary of the events of equipment CWC04009 for the June
@@ -1952,8 +2319,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 30 alerts, 30 anomalies, and 3 work orders.
@@ -1968,6 +2336,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-407
   upstream_id: 407
   upstream_text: Get the daily count of the events of alert, anomaly for 2021 for
@@ -2010,6 +2385,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-408
   upstream_id: 408
   upstream_text: Get the daily count of the events of alert, anomaly for the May 2020
@@ -2037,8 +2419,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 26 days have events. The expected response
@@ -2053,6 +2436,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-409
   upstream_id: 409
   upstream_text: Get the daily count of alert, anomaly and work order event for the
@@ -2080,8 +2470,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 26 days with the records. Depending on the
@@ -2098,6 +2489,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-410
   upstream_id: 410
   upstream_text: Get all the events of equipment CWC04009 for the first week of June
@@ -2127,8 +2525,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a work-order extract or count. That CouchDB extract
-    is not loaded.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Knowledge Query
   upstream_characteristic_form: There are 6 alert records. The expected response should
@@ -2144,6 +2543,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-411
   upstream_id: 411
   upstream_text: Which corrective work orders for equipment CWC04009 in year 2017
@@ -2173,8 +2579,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: There are two bundles, one has 10, and another has
@@ -2189,6 +2596,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-412
   upstream_id: 412
   upstream_text: I would like to predict the next work order probability for the equipment
@@ -2216,7 +2630,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: The expected response should be able to identify the
@@ -2231,6 +2646,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-413
   upstream_id: 413
   upstream_text: Assuming that the current date is 2018-01-02, can you predict next
@@ -2260,7 +2682,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: Freon Management (code MT012) under Maintenance and
@@ -2278,6 +2701,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-414
   upstream_id: 414
   upstream_text: Assuming that the current date is 2018-01-02, can you predict next
@@ -2305,7 +2735,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: Failure codes MT012, MT008, and M013 each have a probability
@@ -2323,6 +2754,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-415
   upstream_id: 415
   upstream_text: When an anomaly happens for equipment CWC04009, can you recommend
@@ -2350,8 +2788,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: An possible example is work orders are split evenly
@@ -2364,6 +2803,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-416
   upstream_id: 416
   upstream_text: When an anomaly happens for equipment CWC04009, can you recommend
@@ -2415,6 +2861,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-417
   upstream_id: 417
   upstream_text: Just notice an anomaly 'KPI Cooling Load above upper bound' happens
@@ -2467,6 +2920,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-418
   upstream_id: 418
   upstream_text: Just notice two anomalies 'KPI Cooling Load above upper bound' and
@@ -2496,8 +2956,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be a list of the primilar failure
@@ -2511,6 +2972,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-419
   upstream_id: 419
   upstream_text: Using your knowledge of the industrial asset, can you suggest me
@@ -2564,6 +3032,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-420
   upstream_id: 420
   upstream_text: Assume today is early of July 2020, I would like to review the performance
@@ -2593,8 +3068,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: There were 30 alerts for 'Chiller - Evaporator Approach
@@ -2610,6 +3086,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-421
   upstream_id: 421
   upstream_text: In May and June of 2020, numerous anomalies and alerts have been
@@ -2653,6 +3136,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-422
   upstream_id: 422
   upstream_text: After checking existing work orders, anomalies and alerts in May
@@ -2697,6 +3187,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-423
   upstream_id: 423
   upstream_text: I am using historical work order information upto end of June 2020
@@ -2726,8 +3223,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be zeor or more the primilar failure
@@ -2742,6 +3240,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-424
   upstream_id: 424
   upstream_text: Can you provide guidance on bundling corrective work orders together
@@ -2773,8 +3278,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: There will be three bundles generated with the size
@@ -2789,6 +3295,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-425
   upstream_id: 425
   upstream_text: How can I analyze anomalies across multiple KPIs to better diagnose
@@ -2816,10 +3329,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer. The utterance does not name
-    CWC04009, CWC04013, or Chiller 6. The eval maps it to CH-6 so the tool call has
-    a device id.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Based on the utilzied LLM, the process begins with
@@ -2837,6 +3350,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-426
   upstream_id: 426
   upstream_text: Could you identify any causal linkages between anomalies across KPIs
@@ -2864,10 +3384,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer. The utterance does not name
-    CWC04009, CWC04013, or Chiller 6. The eval maps it to CH-6 so the tool call has
-    a device id.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: 'The LLM ReAct identifies causal relationships between
@@ -2884,6 +3404,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-427
   upstream_id: 427
   upstream_text: Since we know 80% of alerts are likely spurious, can you identify
@@ -2911,10 +3438,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer. The utterance does not name
-    CWC04009, CWC04013, or Chiller 6. The eval maps it to CH-6 so the tool call has
-    a device id.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The results may vary, and the actual outcome depends
@@ -2928,6 +3455,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-428
   upstream_id: 428
   upstream_text: Could you generate rules that help distinguish meaningful alerts
@@ -2955,10 +3489,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer. The utterance does not name
-    CWC04009, CWC04013, or Chiller 6. The eval maps it to CH-6 so the tool call has
-    a device id.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for. The utterance does not name CWC04009, CWC04013, or Chiller
+    6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Depends on the LLM utuilzied, the outcome could be
@@ -2973,6 +3507,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-429
   upstream_id: 429
   upstream_text: How can reasoning on operation alerts help in generating significant
@@ -3002,8 +3543,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be one or more the alter rule codes.
@@ -3017,6 +3559,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-430
   upstream_id: 430
   upstream_text: We are building an early detection and remediation system for potential
@@ -3052,8 +3601,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be one or more the primilar failure
@@ -3068,6 +3618,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-431
   upstream_id: 431
   upstream_text: Assume today is early of July 2020, I would like to review the performance
@@ -3099,8 +3656,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be zero or one the primilar failure
@@ -3115,6 +3673,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-432
   upstream_id: 432
   upstream_text: I would like to review the performance of chiller 9 with equipment
@@ -3146,8 +3711,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output will be zero or more the primilar failure
@@ -3162,6 +3728,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-433
   upstream_id: 433
   upstream_text: We are building an early detection system for a potential failure
@@ -3193,8 +3766,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output could be a description of anomalous for
@@ -3209,6 +3783,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-434
   upstream_id: 434
   upstream_text: We are building an early detection system for a potential failure
@@ -3241,8 +3822,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: The output could be a description of anomalous for
@@ -3257,6 +3839,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-435
   upstream_id: 435
   upstream_text: Assume today is early of July 2020, I would like to review the alerts
@@ -3286,8 +3875,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: 'Two work order recommendations are suggested due
@@ -3302,6 +3892,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-436
   upstream_id: 436
   upstream_text: Build a predictive model from historical alerts and work orders of
@@ -3330,7 +3927,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: 'Leverage ALERT and WORK_ORDER records (features:
@@ -3345,6 +3943,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-437
   upstream_id: 437
   upstream_text: Detect clusters of alerts and work orders on CWC04009 that signal
@@ -3373,8 +3978,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Apply time-series burst or clustering analysis to
@@ -3388,6 +3994,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-438
   upstream_id: 438
   upstream_text: Rank alert descriptions for CWC04009 by how strongly they predict
@@ -3415,8 +4028,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: For each alert description on CWC04009, compute the
@@ -3430,6 +4044,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-439
   upstream_id: 439
   upstream_text: Analyse sequences where alerts precede corrective work orders on
@@ -3457,7 +4078,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: Identify ALERT → CM WORK_ORDER pairs for CWC04009,
@@ -3470,6 +4092,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-440
   upstream_id: 440
   upstream_text: Using historical counts, project how many preventive (PM) and corrective
@@ -3499,7 +4128,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: Aggregate yearly PM and CM WORK_ORDER counts for CWC04009
@@ -3513,6 +4143,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-441
   upstream_id: 441
   upstream_text: Determine which alert or work-order descriptions for CWC04009 exhibit
@@ -3542,7 +4179,8 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for a prediction from history that is not stored.
+  data_gap: The official work-order sample has three rows and no CWC04009 or CWC04013
+    history to predict from.
   upstream_type: Workorder
   upstream_category: Prediction
   upstream_characteristic_form: Compute year-over-year growth rates of event counts
@@ -3555,6 +4193,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-442
   upstream_id: 442
   upstream_text: Examine whether the year-over-year increase in corrective maintenance
@@ -3584,8 +4229,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Plot CM WORK_ORDER counts per year for CWC04009, assess
@@ -3598,6 +4244,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-443
   upstream_id: 443
   upstream_text: Measure typical time gaps between alerts and the corrective work
@@ -3625,8 +4278,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: For each ALERT that is followed by a CM WORK_ORDER
@@ -3640,6 +4294,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-444
   upstream_id: 444
   upstream_text: Quantify how often alerts and corrective work orders cluster together
@@ -3667,8 +4328,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Use rolling windows on event_time to count co-occurrences
@@ -3681,6 +4343,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-445
   upstream_id: 445
   upstream_text: Identify which alert descriptions for CWC04009 show the steepest
@@ -3708,8 +4377,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Group ALERT events for CWC04009 by description, compute
@@ -3723,6 +4393,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-446
   upstream_id: 446
   upstream_text: Determine which alert or work-order descriptions account for the
@@ -3752,8 +4429,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario asks for ranked work orders or an event review that is not
-    in the fixture. Upstream counts are not the answer.
+  data_gap: The official work-order sample has three rows (1000045 on CHILLER6, 1000046
+    on PUMP3, 1000050 on AHU2). It does not include the CWC04009 or CWC04013 history
+    this utterance asks for.
   upstream_type: Workorder
   upstream_category: Decision Support
   upstream_characteristic_form: Aggregate ALERT and WORK_ORDER events for CWC04009
@@ -3767,6 +4445,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-501
   upstream_id: 501
   upstream_text: Is there any anomaly detected in Chiller 6's Tonnage in the week
@@ -3815,6 +4500,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-502
   upstream_id: 502
   upstream_text: What is the forecast for 'Chiller 9 Condenser Water Flow' in the
@@ -3841,8 +4533,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -3865,6 +4559,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-503
   upstream_id: 503
   upstream_text: Have there been any anomalies in Chiller 6's Tonnage in the week
@@ -3891,8 +4592,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -3915,6 +4618,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-504
   upstream_id: 504
   upstream_text: Can you forecast Chiller 6's performance for next week based on the
@@ -3941,8 +4651,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -3961,6 +4673,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-505
   upstream_id: 505
   upstream_text: What's the forecast for Chiller 6's Tonnage for next week based on
@@ -3987,8 +4706,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4006,6 +4727,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-506
   upstream_id: 506
   upstream_text: Is there any anomaly detected in Chiller 9's Condenser Water Flow
@@ -4032,8 +4760,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4055,6 +4785,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-507
   upstream_id: 507
   upstream_text: What is the predicted energy consumption for Chiller 9 in the week
@@ -4081,8 +4818,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4102,6 +4841,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-508
   upstream_id: 508
   upstream_text: Have there been any anomalies in Chiller 6's performance metrics
@@ -4128,8 +4874,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4149,6 +4897,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-509
   upstream_id: 509
   upstream_text: Can you detect any anomalies in Chiller 6's Condenser Water Flow
@@ -4175,8 +4930,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4199,6 +4956,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-510
   upstream_id: 510
   upstream_text: What are the anomaly detection results for Chiller 9's Tonnage and
@@ -4225,8 +4989,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm that the agent
@@ -4244,6 +5010,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-511
   upstream_id: 511
   upstream_text: Can you predict Chiller 9's energy usage for next week based on data
@@ -4270,8 +5043,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4294,6 +5069,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-512
   upstream_id: 512
   upstream_text: Has any anomaly been detected in Chiller 6's Return Temperature in
@@ -4320,8 +5102,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4337,6 +5121,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-513
   upstream_id: 513
   upstream_text: What is the forecast for Chiller 6's Setpoint Temperature for next
@@ -4363,8 +5154,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4385,6 +5178,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-514
   upstream_id: 514
   upstream_text: Can you detect any anomalies in Chiller 9's Condenser Water Flow
@@ -4411,8 +5211,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4431,6 +5233,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-515
   upstream_id: 515
   upstream_text: Can you predict Chiller 9's performance for next week based on data
@@ -4457,8 +5266,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4476,6 +5287,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-516
   upstream_id: 516
   upstream_text: What's the forecast for Chiller 6's future energy consumption for
@@ -4502,8 +5320,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4526,6 +5346,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-517
   upstream_id: 517
   upstream_text: Are there any anomalies detected in Chiller 9's Tonnage in the week
@@ -4552,8 +5379,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4571,6 +5400,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-518
   upstream_id: 518
   upstream_text: Can you forecast energy usage for Chiller 9 for next week using data
@@ -4597,8 +5433,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4617,6 +5455,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-519
   upstream_id: 519
   upstream_text: Is there any anomaly detected in Chiller 9's Power Input in the week
@@ -4643,8 +5488,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4663,6 +5510,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-520
   upstream_id: 520
   upstream_text: What is the forecast for Chiller 6's energy consumption for next
@@ -4689,8 +5543,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The expected response should confirm the successful
@@ -4712,6 +5568,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-601
   upstream_id: 601
   upstream_text: List all failure modes of asset Chiller 6 at MAIN site.
@@ -4736,8 +5599,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The failure modes for Chiller 6 are: [''Compressor
@@ -4753,6 +5618,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-602
   upstream_id: 602
   upstream_text: List all failure modes of asset Chiller 6 at MAIN site.
@@ -4777,8 +5649,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The failure modes of asset Chiller 6 are: [''Compressor
@@ -4794,6 +5668,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-603
   upstream_id: 603
   upstream_text: List all installed sensors of asset Chiller 6 at MAIN site.
@@ -4818,8 +5699,9 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: The official asset profile lists 12 sensors, including Chiller 6 Setpoint
+    Temperature and Chiller 6 Oil Pressure. The utterance characteristic form lists
+    10 and omits those two. The lists disagree, so this case stays needs_information.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'The installed sensors of asset Chiller 6 are: Chiller
@@ -4835,6 +5717,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: partial
+    topic: sensor_list_disagrees_with_characteristic_form
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-604
   upstream_id: 604
   upstream_text: List all failure modes of Chiller 6 at MAIN site that can be detected
@@ -4861,8 +5750,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -4879,6 +5770,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-605
   upstream_id: 605
   upstream_text: List all failure modes of Chiller 6 at MAIN site that can be detected
@@ -4905,8 +5803,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -4923,6 +5823,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-606
   upstream_id: 606
   upstream_text: List all failure modes of Chiller 6 at MAIN site that can be detected
@@ -4949,8 +5856,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -4967,6 +5876,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-607
   upstream_id: 607
   upstream_text: Get failure modes for Chiller 6 at MAIN site and only include in
@@ -4993,8 +5909,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5011,6 +5929,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-608
   upstream_id: 608
   upstream_text: Are there any failure modes of Chiller 6 at MAIN site that can be
@@ -5037,8 +5962,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5055,6 +5982,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-609
   upstream_id: 609
   upstream_text: List all sensors of Chiller 6 at MAIN site that are potentially relevant
@@ -5081,8 +6015,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5099,6 +6035,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-610
   upstream_id: 610
   upstream_text: ' If compressor overheating occurs for Chiller 6 at MAIN site, which
@@ -5125,8 +6068,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one of more sensors of
@@ -5143,6 +6088,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-611
   upstream_id: 611
   upstream_text: ' If Evaporator Water side fouling occurs for Chiller 6 at MAIN site,
@@ -5169,8 +6121,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one of more sensors of
@@ -5187,6 +6141,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-612
   upstream_id: 612
   upstream_text: What are the failure modes of Chiller 6 at MAIN site that can be
@@ -5213,8 +6174,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5231,6 +6194,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-613
   upstream_id: 613
   upstream_text: Generate an anomaly detection recipe for detecting compressor motor
@@ -5257,8 +6227,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should be a detailed anomaly detection
@@ -5271,6 +6243,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-614
   upstream_id: 614
   upstream_text: Purge unit of chiller 6 at MAIN site have possibility to excess purge,
@@ -5297,8 +6276,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should be a plan by the maintenance experts
@@ -5312,6 +6293,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-615
   upstream_id: 615
   upstream_text: Generate a machine learning recipe for detecting overheating failure
@@ -5338,8 +6326,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should be a machine learning recipe for
@@ -5353,6 +6343,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-616
   upstream_id: 616
   upstream_text: List all failure modes of Chiller 6 at MAIN site that can be detected
@@ -5379,8 +6376,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5397,6 +6396,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-617
   upstream_id: 617
   upstream_text: When compressor motor of Chiller 6 at MAIN site fails, what is the
@@ -5423,8 +6429,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should describe the temporal behavior of
@@ -5437,6 +6445,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-618
   upstream_id: 618
   upstream_text: When power input of Chiller 6 at MAIN site drops, what is the potential
@@ -5463,8 +6478,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5481,6 +6498,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-619
   upstream_id: 619
   upstream_text: When the Liquid Refrigerant Evaporator Temperature of Chiller 6 at
@@ -5507,8 +6531,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: 'the answer should contain one or more failure modes
@@ -5525,6 +6551,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-620
   upstream_id: 620
   upstream_text: I want to build an anomaly model for identifying a chiller trip failure
@@ -5553,8 +6586,10 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: the answer should contain how to build an anomaly
@@ -5568,6 +6603,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-621
   upstream_id: 621
   upstream_text: Can you check if there are any anomalies for chiller tonnage, and
@@ -5610,6 +6652,13 @@ cases:
   protocol: single
   provenance: real_utterance
   split: dev
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0
 - id: aob-622
   upstream_id: 622
   upstream_text: Here is an output of anomaly model in file with absolute path '/tmp/tsad_conformal.csv',
@@ -5638,9 +6687,11 @@ cases:
   manual_query: null
   summary: null
   adaptation: adapted_to_local_tools
-  data_gap: The scenario is a multi-agent workflow. This agent only has the four alarm
-    tools. The utterance does not name CWC04009, CWC04013, or Chiller 6. The eval
-    maps it to CH-6 so the tool call has a device id.
+  data_gap: This utterance needs a multi-agent or anomaly-detector result. The official
+    Chiller 6 series starts on 2020-06-01, so the week of 2020-04-27 is outside the
+    file. Scenario 3's anomalies_found flag is an upstream detector output and is
+    not copied into the device record. The utterance does not name CWC04009, CWC04013,
+    or Chiller 6. The eval maps it to CH-6 so the tool call has a device id.
   upstream_type: multiagent
   upstream_category: Knowledge Query
   upstream_characteristic_form: The problem is solved by first checking if the anomaly
@@ -5654,3 +6705,10 @@ cases:
   protocol: single
   provenance: real_utterance
   split: test
+  official_context:
+    context_class: absent
+    topic: null
+    answers_lookup: false
+    official_sample_supports_draft: false
+    github_commit: e844f6468c6c68b328022e7ca8e31da140842cc7
+    license: Apache-2.0

@@ -10,6 +10,7 @@ from langchain_core.messages import AIMessage
 
 from evals.assetopsbench.convert import load_jsonl
 from evals.assetopsbench.metrics import score_case, summarise, token_cost_from_env
+from evals.assetopsbench.official_sample import import_official_sample
 from evals.common import file_sha256, run_record
 from react_agent.config import Settings
 from react_agent.llm import DeepSeekModel
@@ -73,7 +74,15 @@ def scripted_responses(case):
     if goal == "awaiting_approval":
         responses.append(_calls(("draft_work_order", draft_args(case))))
     else:
-        responses.append(AIMessage(content="The demo fixture does not contain the records this request needs."))
+        kind = (case.get("official_context") or {}).get("context_class")
+        if kind == "lookup":
+            text = "The official sample record was read. This request asks for a list or metadata, so no work order is drafted."
+        elif kind == "partial":
+            text = ("The official sample does not cover the full requested window or the published characteristic form, "
+                    "so no work order is drafted.")
+        else:
+            text = "The demo fixture does not contain the records this request needs."
+        responses.append(AIMessage(content=text))
     return responses
 
 
@@ -99,6 +108,7 @@ def execute_case(case, model, fixture):
         )
         try:
             service.store.import_fixture(fixture)
+            import_official_sample(service.store)
             started = time.perf_counter()
             if protocol == "missing_device":
                 try:
@@ -191,7 +201,18 @@ def inventory(cases):
             slot[split] += 1
         else:
             slot["other"] += 1
-    return {"by_category": categories, "by_split": splits, "by_provenance": provenance}
+    official = {"lookup": 0, "partial": 0, "absent": 0}
+    labelled = False
+    for case in cases:
+        context = case.get("official_context")
+        if not context:
+            continue
+        labelled = True
+        official[context["context_class"]] += 1
+    result = {"by_category": categories, "by_split": splits, "by_provenance": provenance}
+    if labelled:
+        result["official_context"] = official
+    return result
 
 
 def run_eval(cases, *, mode, fixture, judge_model=None, seed=7):
@@ -228,6 +249,7 @@ def run_eval(cases, *, mode, fixture, judge_model=None, seed=7):
                "case_count": len(cases), "language": "en",
                "fixture": "evals/assetopsbench/fixtures/english_demo.json",
                "fixture_kind": "adapted_synthetic_demo",
+               "official_sample": "evals/assetopsbench/fixtures/official/MANIFEST.json",
                **inventory(cases)}
     record = run_record(
         root=ROOT, model_id=model_id, prompt_version=PROMPT_VERSION_EN,
