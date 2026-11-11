@@ -110,3 +110,27 @@ python evals/retrieval/run_public.py --dataset techqa --split test --embedder se
 ~~~
 
 测试切分拒绝 `--rrf-k`、`--model`、`--reranker`、`--candidates`、`--top-k`。真实模型的结果文件已存在时不覆盖。`fake` 的分数不是模型结果。
+
+下面两张表各是测试切分的一次运行。嵌入模型 `intfloat/multilingual-e5-small`，重排序模型 `BAAI/bge-reranker-base`，k=60，融合前 20，保留 10。`config_sha256` 为 `d6ba80db466ffbe2b056d7461050686baa2a5e6a0dded62913e9f3723248bb87`，`frozen_config_sha256` 为 `4925914e469a531b4f46192c9d87bdb036a67a8b24dea90de211febde0c2b941`，`config_matches_frozen` 为 true。排序指标只统计可回答问题。延迟把该切分里的不可回答问题也算进去：TechManualQA 是 350 条，TechQA 是 600 条。计时在模型加载和建索引之后。这是 Linux CPU 上的数字。
+
+TechManualQA 跑完时 git HEAD 还是 `7fad097ea8980ef1ef664e2a7b1dadf958c2a677`，评测脚本尚未提交，所以 JSON 里写的是这个提交。脚本内容与随后的 `5c998224fb2f17a71bfe107fa2c79dfe59b6d5e0` 一致。时间 2026-11-11T10:21:58Z。段落 559 个。文件 `reports/retrieval-techmanualqa-test.json`。
+
+| 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
+| --- | --- | --- | --- | --- | --- |
+| bm25 | 0.360 | 0.483 | 0.436 | 0.433 | 1.803 |
+| dense | 0.500 | 0.683 | 0.610 | 0.609 | 16.581 |
+| hybrid | 0.427 | 0.627 | 0.544 | 0.546 | 18.428 |
+| hybrid_rerank | 0.543 | 0.697 | 0.634 | 0.633 | 608.182 |
+
+片段和问题经常不是同一组词，所以词面检索低于稠密检索。RRF 在这个片段库上没有超过单独的稠密检索。交叉编码器把 Recall@1 提到 0.543。这是片段检索，不是 `retrieval_benchmark.py` 的整页检索。
+
+TechQA 结束于 2026-11-11T11:22:09Z，git `5c998224fb2f17a71bfe107fa2c79dfe59b6d5e0`。语料 28481 段。文件 `reports/retrieval-techqa-test.json`。
+
+| 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
+| --- | --- | --- | --- | --- | --- |
+| bm25 | 0.409 | 0.500 | 0.464 | 0.463 | 138.110 |
+| dense | 0.398 | 0.516 | 0.469 | 0.467 | 232.464 |
+| hybrid | 0.431 | 0.536 | 0.502 | 0.494 | 373.009 |
+| hybrid_rerank | 0.420 | 0.571 | 0.504 | 0.508 | 3529.178 |
+
+在这 28481 篇技术说明上，RRF 的 Recall@1 高于单独的 BM25 和稠密检索。交叉编码器把 Recall@3 从 0.536 提到 0.571，Recall@1 略降到 0.420。很多说明长于嵌入模型的 512 token 窗口，黄金段落若在后半篇，稠密检索看不到。重排序要看融合后的 20 篇原文，CPU 上每条查询大约 3.5 秒。
