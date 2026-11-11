@@ -3,6 +3,7 @@
 from pydantic import ValidationError
 
 from react_agent.models import DeviceQuery, ManualQuery, ToolInputError, WorkOrderDraft
+from react_agent.retrieval import IndexNotReady
 
 TOOL_MODELS = {
     "query_device": DeviceQuery,
@@ -21,7 +22,7 @@ TOOL_SCHEMAS = [{"type": "function", "function": {
 }} for name, model in TOOL_MODELS.items()]
 
 
-def execute_tool(name, arguments, state, store):
+def execute_tool(name, arguments, state, store, retriever=None):
     if name not in TOOL_MODELS:
         raise ToolInputError("tool_not_allowed")
     try:
@@ -37,9 +38,15 @@ def execute_tool(name, arguments, state, store):
     if name == "query_work_orders":
         return {"ok": True, "orders": store.orders(device_id)}, {"history_read": True}
     if name == "search_manual":
-        hits = store.search(params.query, device_id, params.top_k)
+        try:
+            if retriever is None:
+                hits, label = store.search(params.query, device_id, params.top_k), "SQLite FTS5 / BM25"
+            else:
+                hits, label = retriever.search(params.query, device_id, params.top_k)
+        except IndexNotReady as exc:
+            return {"ok": False, "error_code": str(exc)}, {}
         seen = list(dict.fromkeys([*state.get("retrieved_ids", []), *[hit["id"] for hit in hits]]))
-        return {"ok": True, "retrieval": "SQLite FTS5 / BM25", "hits": hits}, {"retrieved_ids": seen}
+        return {"ok": True, "retrieval": label, "hits": hits}, {"retrieved_ids": seen}
     if not state.get("device_read") or not state.get("history_read"):
         raise ToolInputError("read_device_and_history_before_drafting")
     evidence_ids = list(dict.fromkeys(params.evidence_ids))

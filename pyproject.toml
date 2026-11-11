@@ -20,6 +20,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "httpx>=0.28,<1", "ruff>=0.11,<1"]
+retrieval = ["sentence-transformers>=3,<6"]
 
 [project.scripts]
 maintenance-agent = "react_agent.cli:main"

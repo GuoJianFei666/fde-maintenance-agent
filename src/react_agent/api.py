@@ -56,6 +56,7 @@ def create_app(settings: Settings | None = None, model=None):
         return {"status": "ok", "model_configured": bool(config.api_key), "model": config.model,
                 "execution_mode": service.model.mode, "data_kind": "synthetic_demo",
                 "tool_transport": config.tool_transport, "text_normaliser": config.text_normaliser,
+                "retriever": config.retriever,
                 "available_workflows": ["alarm", "maintenance_text"], "public_corpus": "MaintIE gold"}
 
     @app.get("/api/devices", tags=["演示业务数据"])
@@ -69,7 +70,8 @@ def create_app(settings: Settings | None = None, model=None):
     @app.get("/api/manuals/search", tags=["演示业务数据"])
     def manuals(device_id: str, q: str = Query(min_length=2, max_length=160),
                 top_k: int = Query(default=3, ge=1, le=5)):
-        return service.store.search(q, device_id, top_k)
+        hits, _label = service.retriever.search(q, device_id, top_k)
+        return hits
 
     @app.get("/api/work-orders", tags=["演示业务数据"])
     def orders(device_id: str | None = None):

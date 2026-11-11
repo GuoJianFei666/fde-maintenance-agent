@@ -96,11 +96,23 @@ class McpSession:
         self._thread.join(timeout=5)
 
 
+def _retrieval_env(settings):
+    return {
+        "RETRIEVER": settings.retriever,
+        "RRF_K": str(settings.rrf_k),
+        "RETRIEVAL_CANDIDATES": str(settings.retrieval_candidates),
+        "EMBEDDING_MODEL": settings.embedding_model,
+        "RERANKER_MODEL": settings.reranker_model,
+        "EMBEDDER": settings.embedder,
+    }
+
+
 @asynccontextmanager
-async def _stdio(database, device_id):
+async def _stdio(database, device_id, settings):
     params = StdioServerParameters(
         command=sys.executable, args=["-m", "mcp_server"], cwd=str(_ROOT),
-        env={"PYTHONPATH": _pythonpath(), "MAINT_BUSINESS_DB": str(database), "MAINT_DEVICE_ID": device_id},
+        env={"PYTHONPATH": _pythonpath(), "MAINT_BUSINESS_DB": str(database),
+             "MAINT_DEVICE_ID": device_id, **_retrieval_env(settings)},
     )
     async with stdio_client(params) as (read, write):
         yield read, write
@@ -128,7 +140,8 @@ class McpToolHub:
             key, opener = "http", (lambda url=url: _http(url))
         else:
             device_id = state["alarm"]["device_id"]
-            key, opener = state["run_id"], (lambda device_id=device_id: _stdio(self.database, device_id))
+            key, opener = state["run_id"], (
+                lambda device_id=device_id: _stdio(self.database, device_id, self.settings))
         with self._lock:
             if key not in self._sessions:
                 self._sessions[key] = McpSession(opener)

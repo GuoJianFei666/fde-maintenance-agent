@@ -19,12 +19,12 @@ from react_agent.tools import TOOL_SCHEMAS, execute_tool, patch_from_result
 
 
 def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None, tool_executor=None,
-                system_prompt=None, normaliser="rules"):
+                system_prompt=None, normaliser="rules", retriever=None):
     prompt = system_prompt or SYSTEM_PROMPT
 
     def execute(name, args, current):
         if tool_executor is None:
-            return execute_tool(name, args, current, store)
+            return execute_tool(name, args, current, store, retriever=retriever)
         result = tool_executor(name, args, current)
         if not isinstance(result, dict):
             raise TypeError("Tool executor must return an object")

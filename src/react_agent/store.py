@@ -101,6 +101,10 @@ class Store:
             raise NotFoundError("device_not_found")
         return json.loads(row["data"])
 
+    def manuals(self):
+        with self.connection() as conn:
+            return [dict(row) for row in conn.execute("SELECT * FROM manuals ORDER BY id")]
+
     def manual(self, chunk_id):
         with self.connection() as conn:
             row = conn.execute("SELECT * FROM manuals WHERE id=?", (chunk_id,)).fetchone()

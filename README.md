@@ -23,7 +23,7 @@ micro-F1 是 24 条指定文本上“跨度和顶层类别同时一致”的实�
 
 ## 技术与工作流
 
-Python 3.11+、LangGraph、DeepSeek API、FastAPI、Pydantic、SQLite FTS5/BM25、SqliteSaver。
+Python 3.11+、LangGraph、DeepSeek API、FastAPI、Pydantic、SQLite FTS5/BM25、可选的 sqlite-vec 混合检索、SqliteSaver。
 
 ~~~mermaid
 flowchart TD
@@ -131,6 +131,14 @@ python evals/maintnorm/evaluate.py --data runtime/maintnorm --subset combined --
 
 `live` 和 `llm` 需要本地 `.env` 里的 `DEEPSEEK_API_KEY`。没有密钥时命令退出，不写分数。CI 不跑这两条。
 
+手册检索默认还是 BM25。`RETRIEVER=hybrid_rerank` 时，BM25 和稠密检索用 RRF（k=60）融合，再用交叉编码器重排。模型选择、公式、开发集调参和测试集冻结见 [docs/retrieval.md](docs/retrieval.md)。CI 使用 `EMBEDDER=fake`，不下载权重。
+
+~~~powershell
+python evals/retrieval/run.py --split dev --embedder fake --out runtime/retrieval-dev-fake.json
+python evals/retrieval/run.py --split test --embedder fake --out runtime/retrieval-test-fake.json
+python evals/retrieval/run.py --split test --embedder sentence-transformers --out runtime/retrieval-test.json
+~~~
+
 ## 文件导读
 
 | 文件 | 职责 |
@@ -145,6 +153,7 @@ python evals/maintnorm/evaluate.py --data runtime/maintnorm --subset combined --
 | mcp_server/ | 四个工具的 MCP 服务，草案不写库 |
 | evals/assetopsbench/ | AssetOpsBench 子集转换和告警评测 |
 | evals/maintnorm/ | MaintNorm 下载、词级指标和论文对照表 |
+| evals/retrieval/ | BM25、稠密、RRF 和重排序的手册检索评测 |
 | src/react_agent/api.py、cli.py | REST 与命令行入口 |
 | docs/maintie.md | 数据接入、评估口径、误差与复查方法 |
 | docs/resume-and-interview.md | 项目正文、源码路线与面试参考 |

@@ -11,6 +11,7 @@ from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 
 from react_agent.models import NotFoundError, ToolInputError
+from react_agent.retrieval import ManualRetriever
 from react_agent.store import Store, canonical_json
 from react_agent.tools import DESCRIPTIONS, execute_tool
 
@@ -24,7 +25,8 @@ def session():
         device_id = os.environ.get("MAINT_DEVICE_ID", "")
         if not database or not device_id:
             raise RuntimeError("MAINT_BUSINESS_DB and MAINT_DEVICE_ID are required")
-        _SESSION = {"store": Store(Path(database)), "view": {
+        store = Store(Path(database))
+        _SESSION = {"store": store, "retriever": ManualRetriever.from_env(store), "view": {
             "alarm": {"device_id": device_id}, "device_read": False, "history_read": False,
             "retrieved_ids": [],
         }}
@@ -34,7 +36,8 @@ def session():
 def run_tool(name, arguments):
     current = session()
     try:
-        result, patch = execute_tool(name, arguments, current["view"], current["store"])
+        result, patch = execute_tool(name, arguments, current["view"], current["store"],
+                                     retriever=current["retriever"])
         current["view"].update(patch)
     except ToolInputError as exc:
         result = {"ok": False, "error_code": str(exc)}

@@ -15,6 +15,7 @@ from react_agent.maintie import MaintIEIndex
 from react_agent.mcp_client import McpToolHub
 from react_agent.models import AlarmEvent, Approval, ConflictError, MaintenanceText, ModelCallError
 from react_agent.prompts import PROMPT_VERSION, SYSTEM_PROMPT
+from react_agent.retrieval import ManualRetriever
 from react_agent.store import Store, canonical_json, content_hash
 
 
@@ -29,6 +30,7 @@ class AgentService:
         self.system_prompt = system_prompt or SYSTEM_PROMPT
         self.prompt_version = prompt_version or PROMPT_VERSION
         self._lock = threading.RLock()
+        self.retriever = ManualRetriever(settings, self.store)
         self._tools = McpToolHub(settings, self.store.path) if settings.tool_transport == "mcp" else None
         self._checkpoint_connection = sqlite3.connect(settings.data_dir / "checkpoints.db", check_same_thread=False)
         self.checkpointer = SqliteSaver(self._checkpoint_connection)
@@ -37,6 +39,7 @@ class AgentService:
             self.store, self.model, self.checkpointer, settings.max_rounds, cases=self.cases,
             tool_executor=None if self._tools is None else self._tools.call,
             system_prompt=self.system_prompt, normaliser=settings.text_normaliser,
+            retriever=self.retriever,
         )
 
     def close(self):

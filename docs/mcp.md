@@ -8,6 +8,8 @@
 
 客户端使用官方 SDK 的 `ClientSession`。`langchain-mcp-adapters` 包的是同一套会话接口；这里直接调用 SDK，避免再装一套代理依赖。
 
+`search_manual` 的检索模式由 `RETRIEVER` 决定，stdio 子进程会收到这个值以及 `RRF_K`、`EMBEDDER` 和模型名，不会收到 API 密钥。默认 `bm25`。混合检索的建索引和公式见 [retrieval.md](retrieval.md)。
+
 单独启动服务：
 
 ~~~powershell

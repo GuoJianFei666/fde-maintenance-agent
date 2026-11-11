@@ -23,3 +23,5 @@ MCP 服务使用官方 Python SDK `mcp`，MIT 许可。本项目没有改 SDK �
 AssetOpsBench 来自 IBM，Apache-2.0，固定提交 `e844f6468c6c68b328022e7ca8e31da140842cc7`。话语样本来自 Hugging Face 数据集 `ibm-research/AssetOpsBench`，修订 `5e25bb7f2cd37fb68b9a9e1f99d170ca5be7ce17`。本仓库只保留 12 条话语和一条标明的合成探针，不收录 CouchDB 或传感器归档。英文演示手册是本项目编写的。出处和许可见 `evals/assetopsbench/NOTICE.md`。
 
 MaintNorm 来自 [nlp-tlp/maintnorm](https://github.com/nlp-tlp/maintnorm)，MIT，固定提交 `e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8`。语料按脚本下载，不放进 Git。论文基线只抄 W-NUT 2024 表 7，见 `evals/maintnorm/BASELINES.md`。少样本例句是本项目编写的，不是从官方测试集抽出来的。
+
+手册稠密检索使用 `intfloat/multilingual-e5-small`（MIT）和 `BAAI/bge-reranker-base`（MIT）。权重由本地脚本下载，不放进 Git。向量索引使用已经列入锁定依赖的 `sqlite-vec`，没有再引入 FAISS。RRF 的定义来自 Cormack、Clarke 与 Buettcher，SIGIR 2009。

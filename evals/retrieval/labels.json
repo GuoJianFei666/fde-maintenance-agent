@@ -1,0 +1,16 @@
+{
+  "version": "manual-retrieval-v2",
+  "description": "Labels for the packaged Chinese manuals and the adapted English chiller manuals. Each query has one relevant chunk. paraphrase_no_overlap shares no FTS token with that chunk. The only exact identifier, RUL0014, is in dev so tuning can see it. The split was assigned by kind and language, not by score.",
+  "queries": [
+    {"id": "zh-vib-lexical", "split": "dev", "device_id": "P-101", "query": "泵振动升高", "relevant_ids": ["PUMP-VIB-01"], "kind": "lexical"},
+    {"id": "zh-belt-paraphrase", "split": "dev", "device_id": "C-301", "query": "带子跑到一边去了", "relevant_ids": ["BELT-SLIP-01"], "kind": "paraphrase_no_overlap"},
+    {"id": "zh-current-lexical", "split": "dev", "device_id": "M-201", "query": "电流异常", "relevant_ids": ["MOTOR-CURRENT-02"], "kind": "lexical"},
+    {"id": "en-code", "split": "dev", "device_id": "CH-6", "query": "RUL0014", "relevant_ids": ["CHILLER-DELTAT-01"], "kind": "error_code"},
+    {"id": "en-load-paraphrase", "split": "dev", "device_id": "CH-6", "query": "refrigeration capacity exceeded permitted ceiling", "relevant_ids": ["CHILLER-LOAD-01"], "kind": "paraphrase_no_overlap"},
+    {"id": "zh-vib-paraphrase", "split": "test", "device_id": "P-101", "query": "机器抖得厉害", "relevant_ids": ["PUMP-VIB-01"], "kind": "paraphrase_no_overlap"},
+    {"id": "zh-temp-lexical", "split": "test", "device_id": "P-101", "query": "轴承温升", "relevant_ids": ["PUMP-TEMP-02"], "kind": "lexical"},
+    {"id": "zh-belt-lexical", "split": "test", "device_id": "C-301", "query": "输送带打滑", "relevant_ids": ["BELT-SLIP-01"], "kind": "lexical"},
+    {"id": "zh-motor-paraphrase", "split": "test", "device_id": "M-201", "query": "马达转起来发烫", "relevant_ids": ["MOTOR-HEAT-01"], "kind": "paraphrase_no_overlap"},
+    {"id": "en-vib-lexical", "split": "test", "device_id": "CH-6", "query": "vibration spectrum", "relevant_ids": ["CHILLER-VIB-01"], "kind": "lexical"}
+  ]
+}
