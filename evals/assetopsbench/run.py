@@ -13,7 +13,7 @@ from evals.assetopsbench.metrics import score_case, summarise, token_cost_from_e
 from evals.common import file_sha256, run_record
 from react_agent.config import Settings
 from react_agent.llm import DeepSeekModel
-from react_agent.models import AlarmEvent, MissingModelConfig
+from react_agent.models import AlarmEvent, Approval, ConflictError, MissingModelConfig, NotFoundError
 from react_agent.prompts import PROMPT_VERSION_EN, SYSTEM_PROMPT_EN
 from react_agent.service import AgentService
 from react_agent.store import content_hash
@@ -69,14 +69,29 @@ def scripted_responses(case):
     responses = []
     if reads:
         responses.append(_calls(*reads))
-    if case["expected_status"] == "awaiting_approval":
+    goal = case.get("first_status") or case["expected_status"]
+    if goal == "awaiting_approval":
         responses.append(_calls(("draft_work_order", draft_args(case))))
     else:
         responses.append(AIMessage(content="The demo fixture does not contain the records this request needs."))
     return responses
 
 
+def _alarm(case, message=None):
+    return AlarmEvent(event_id=case["id"], device_id=case["device_id"], message=message or case["message"],
+                      severity=case["severity"])
+
+
+def _finish(service, run, started, status):
+    elapsed = round((time.perf_counter() - started) * 1000, 2)
+    traces = [] if run is None else service.store.traces(run["id"])
+    wrote = False if run is None else any(
+        order.get("source_run") == run["id"] for order in service.store.orders())
+    return {"run": run, "traces": traces, "wrote": wrote, "elapsed": elapsed, "status": status}
+
+
 def execute_case(case, model, fixture):
+    protocol = case.get("protocol", "single")
     with tempfile.TemporaryDirectory() as directory:
         service = AgentService(
             Settings(data_dir=Path(directory), tool_transport="inprocess", text_normaliser="off"),
@@ -85,26 +100,52 @@ def execute_case(case, model, fixture):
         try:
             service.store.import_fixture(fixture)
             started = time.perf_counter()
-            run = service.diagnose(AlarmEvent(
-                event_id=case["id"], device_id=case["device_id"], message=case["message"],
-                severity=case["severity"]))
-            elapsed = round((time.perf_counter() - started) * 1000, 2)
-            traces = service.store.traces(run["id"])
-            wrote = any(order.get("source_run") == run["id"] for order in service.store.orders())
-            return run, traces, wrote, elapsed
+            if protocol == "missing_device":
+                try:
+                    service.diagnose(_alarm(case))
+                except NotFoundError as exc:
+                    if str(exc) != "device_not_found":
+                        raise
+                    return _finish(service, None, started, "device_not_found")
+                raise AssertionError("expected device_not_found")
+            run = service.diagnose(_alarm(case))
+            if protocol == "duplicate_same":
+                again = service.diagnose(_alarm(case))
+                status = "original_run" if again["id"] == run["id"] else "duplicate_new_run"
+                return _finish(service, again, started, status)
+            if protocol == "duplicate_conflict":
+                try:
+                    service.diagnose(_alarm(case, case["conflict_message"]))
+                except ConflictError as exc:
+                    if str(exc) != "event_id_reused_with_different_payload":
+                        raise
+                    return _finish(service, run, started, str(exc))
+                raise AssertionError("expected event_id conflict")
+            if protocol == "approval_mismatch":
+                try:
+                    service.decide(run["id"], Approval(
+                        approved=True, proposal_sha256="0" * 64, note="hash does not match the draft"))
+                except ConflictError as exc:
+                    if str(exc) != "stale_or_missing_proposal":
+                        raise
+                    return _finish(service, run, started, str(exc))
+                raise AssertionError("expected proposal hash mismatch")
+            return _finish(service, run, started, run["status"])
         finally:
             service.close()
 
 
-def outcome_from_run(case, run, traces, wrote, elapsed):
+def outcome_from_run(case, result):
+    run = result["run"] or {}
+    traces = result["traces"]
     tool_rows = [item for item in traces if item["node"] == "tool"]
     names = [item["data"]["name"] for item in tool_rows]
     successful = [item["data"]["name"] for item in tool_rows if item["data"]["result"].get("ok")]
-    usage = (run.get("report") or {}).get("usage")
+    usage = (run.get("report") or {}).get("usage") if run else None
     return score_case(
-        case, status=run["status"], tool_names=names, successful_tools=successful,
-        citations=(run.get("proposal") or {}).get("evidence_ids", []), wrote_order=wrote,
-        latency_ms=elapsed, usage=usage,
+        case, status=result["status"], tool_names=names, successful_tools=successful,
+        citations=(run.get("proposal") or {}).get("evidence_ids", []) if run else [],
+        wrote_order=result["wrote"], latency_ms=result["elapsed"], usage=usage,
     )
 
 
@@ -134,6 +175,25 @@ def judge_case(model, case, outcome):
             "mode": model.mode}
 
 
+def inventory(cases):
+    categories = {}
+    splits = {}
+    provenance = {}
+    for case in cases:
+        split = case.get("split", "unassigned")
+        source = case.get("provenance", "unlabelled")
+        splits[split] = splits.get(split, 0) + 1
+        provenance[source] = provenance.get(source, 0) + 1
+        slot = categories.setdefault(case.get("category", "unlabelled"),
+                                     {"total": 0, "dev": 0, "test": 0, "other": 0})
+        slot["total"] += 1
+        if split in {"dev", "test"}:
+            slot[split] += 1
+        else:
+            slot["other"] += 1
+    return {"by_category": categories, "by_split": splits, "by_provenance": provenance}
+
+
 def run_eval(cases, *, mode, fixture, judge_model=None, seed=7):
     if mode == "live":
         base = Settings.from_env()
@@ -152,8 +212,8 @@ def run_eval(cases, *, mode, fixture, judge_model=None, seed=7):
     judgements = []
     for case in cases:
         model = model_factory() if model_factory else ScriptedModel(scripted_responses(case))
-        run, traces, wrote, elapsed = execute_case(case, model, fixture)
-        outcome = outcome_from_run(case, run, traces, wrote, elapsed)
+        result = execute_case(case, model, fixture)
+        outcome = outcome_from_run(case, result)
         scored.append(outcome)
         if judge_model is not None:
             judgements.append({"id": case["id"], **judge_case(judge_model, case, outcome)})
@@ -167,7 +227,8 @@ def run_eval(cases, *, mode, fixture, judge_model=None, seed=7):
                "github_commit": SOURCE["github_commit"], "license": SOURCE["license"],
                "case_count": len(cases), "language": "en",
                "fixture": "evals/assetopsbench/fixtures/english_demo.json",
-               "fixture_kind": "adapted_synthetic_demo"}
+               "fixture_kind": "adapted_synthetic_demo",
+               **inventory(cases)}
     record = run_record(
         root=ROOT, model_id=model_id, prompt_version=PROMPT_VERSION_EN,
         prompt_sha256=content_hash(SYSTEM_PROMPT_EN), dataset=dataset, seed=seed, split="adapted_subset",

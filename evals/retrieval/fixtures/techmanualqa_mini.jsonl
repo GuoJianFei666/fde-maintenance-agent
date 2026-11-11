@@ -1,0 +1,6 @@
+{"question_id":"mini_A_Q001","doc_id":"mini_a.pdf","question_text":"Where is the alpha seal located","gt_answer_snippet":"The alpha seal sits on the left housing","gt_page_number":"2","category":"Location/Definition","language":"en"}
+{"question_id":"mini_A_Q002","doc_id":"mini_a.pdf","question_text":"Where is the beta filter located","gt_answer_snippet":"The beta filter sits under the tray","gt_page_number":"3","category":"Location/Definition","language":"en"}
+{"question_id":"mini_B_Q001","doc_id":"mini_b.pdf","question_text":"How do I reset the gamma latch","gt_answer_snippet":"Turn the gamma latch clockwise until it clicks","gt_page_number":"4","category":"Procedural Step Inquiry","language":"en"}
+{"question_id":"mini_B_Q002","doc_id":"mini_b.pdf","question_text":"How do I open the delta cover","gt_answer_snippet":"Lift the delta cover from the front edge","gt_page_number":"5","category":"Procedural Step Inquiry","language":"en"}
+{"question_id":"mini_U_Q001","doc_id":"mini_a.pdf","question_text":"What processor model does this guide specify","gt_answer_snippet":"Not Answered","gt_page_number":"None","category":"Unanswerable","language":"en"}
+{"question_id":"mini_U_Q002","doc_id":"mini_b.pdf","question_text":"What is the unpublished firmware checksum","gt_answer_snippet":"Not Answered","gt_page_number":"None","category":"Unanswerable","language":"en"}

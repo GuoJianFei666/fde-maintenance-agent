@@ -80,3 +80,33 @@ py -3 evals/retrieval/run.py --split test --embedder sentence-transformers --out
 ~~~
 
 后两条在未安装 `sentence-transformers` 或模型下载失败时直接退出，不写分数。
+
+域内这 10 条没有再扩写。没有往 `labels.json` 里加合成查询。上面的 5 条测试结果留在 `reports/retrieval-test.json`，作为这次冻结配置在小集上的历史记录。下面两个公开数据集用同一份冻结配置，各跑一次测试切分，不改 k、N、模型或 top-k。
+
+## 公开英文数据集
+
+两套数据都是英文。抓取脚本校验哈希，不把压缩包提交进仓库。CI 只用 `evals/retrieval/fixtures/` 里的小样和 `EMBEDDER=fake`。
+
+TechManualQA-700，CC BY 4.0。Zenodo 记录 `17410809`，DOI `10.5281/zenodo.17410809`，版本 v1。问题文件 SHA256 `775d776cf5e40815f2e0a80e5d02987d4ff9b2265ab728c20181d81fe3f9af9e`。生成代码在 <https://github.com/tduricic/techmanualqa>，提交 `eda57bdebfc3d4d165417d05c0dc45849e4f4c7d`。700 条人工核过的问答，20 本手册，7 个类别各 100 条，其中不可回答 100 条。档案里没有官方 dev/test。划分只看类别和问题编号：每个类别内按编号排序，偶数下标 dev，奇数下标 test，各 350 条。这个规则写在代码里，跑分之前就定了。
+
+Zenodo 发布的是问题、答案片段和页码，没有手册的页文本。`retrieval_benchmark.py` 要的是本地解析出的整页，那些页文件不在这个档案里。这里的段落是「手册名 + 答案片段」。不可回答的问题没有相关段落，不进入 Recall、MRR、nDCG，只单独计数。所以测试切分的排序指标覆盖 300 条可回答问题，另外 50 条不可回答。
+
+TechQA-RAG-Eval，Apache-2.0，Hugging Face `nvidia/TechQA-RAG-Eval`，修订 `0b5bbc84b7f07d6d09d063130e90b716d8d4a32a`。`train.json` SHA256 `69d97231509482ed6bd5ec1c4bc0607acb82a88d11169eb8383592d0ca8b93c7`，910 行。数据集卡片写 908，以这个文件为准。`corpus.zip` SHA256 `c06aa287dcc1abf8db6b49b8495df095db73342d729f6451ac330785245d10be`，28481 个技术说明文件。可回答问题各有一个黄金文件，496 个黄金文件都在语料里。查看器只有一个名叫 train 的切分，但问题编号自带原来的前缀：`DEV_` 310 条当作 dev，`TRAIN_` 600 条当作 test。没有在看分数之后挪过任何一条。测试切分里 450 条可回答、150 条 `is_impossible`。排序指标只用那 450 条。
+
+冻结的五项和域内测试相同：`intfloat/multilingual-e5-small`、`BAAI/bge-reranker-base`、k=60、融合前 20、保留 10。没有因为这两个数据集改配置。
+
+和域内 `search_manual` 有两处实现差别，结果文件里写了：
+
+- sqlite-vec 0.1.9 的 KNN 不允许 k 大于 4096。TechQA 有 28481 段，做不到把全库精确扫进那条 SQL。稠密名次改为对同一套 L2 归一化向量做精确点积，排序和由 L2 还原的余弦一致。域内小库仍走 sqlite-vec。
+- 演示库的 FTS 词条上限是 80。公开文档的索引保留全部词，否则技术说明后半段的编号进不了 BM25。查询仍走生产分词，最多 80 个词。嵌入模型自己的窗口是 512 个 token，更长的说明会被截断。
+
+~~~powershell
+python evals/retrieval/fetch_public.py --dataset techmanualqa --out runtime/techmanualqa
+python evals/retrieval/fetch_public.py --dataset techqa --out runtime/techqa
+python evals/retrieval/run_public.py --dataset techmanualqa --split test --embedder fake --fixture --out runtime/techmanualqa-test-fake.json
+python evals/retrieval/run_public.py --dataset techqa --split test --embedder fake --fixture --out runtime/techqa-test-fake.json
+python evals/retrieval/run_public.py --dataset techmanualqa --split test --embedder sentence-transformers --questions runtime/techmanualqa/TechManualQA_700.jsonl --out runtime/retrieval-techmanualqa-test.json
+python evals/retrieval/run_public.py --dataset techqa --split test --embedder sentence-transformers --questions runtime/techqa/train.json --corpus runtime/techqa/corpus.zip --out runtime/retrieval-techqa-test.json
+~~~
+
+测试切分拒绝 `--rrf-k`、`--model`、`--reranker`、`--candidates`、`--top-k`。真实模型的结果文件已存在时不覆盖。`fake` 的分数不是模型结果。

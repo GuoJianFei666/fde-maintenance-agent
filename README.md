@@ -117,12 +117,13 @@ CLI 支持相同流程：
 
 工具服务、传输开关和审批边界见 [docs/mcp.md](docs/mcp.md)。两条评测的命令和口径见 [docs/evals.md](docs/evals.md)。
 
-告警评测从 AssetOpsBench 选出 12 条与告警、手册或工单有关的话语，并加 1 条标明的合成探针，共 13 条。上游计数没有对应的本地数据时，期望是 `needs_information`，不把论文或数据集里的条数当成答案。英文设备、手册和历史工单在 `evals/assetopsbench/fixtures/english_demo.json`，标明为改编后的合成数据。
+告警评测映射 AssetOpsBench 里 IoT、FMSR、Workorder、multiagent 共 129 条话语。缺传感器或工单导出时，期望是 `needs_information`，不把数据集里的条数当成答案。另有 5 条标明合成的护栏（审批哈希不符、提示注入、重复事件、不存在的设备），单独计分。英文设备、手册和历史工单在 `evals/assetopsbench/fixtures/english_demo.json`，标明为改编后的合成数据。真实模型分数待本地运行。
 
 MaintNorm 主评测是合并语料的英文 test。指标是词级精确率、召回率和错误下降率。论文表 7 的数字抄在 [evals/maintnorm/BASELINES.md](evals/maintnorm/BASELINES.md)。本项目三列都是“待运行”。配置好本地密钥后再跑，不要把脚本模式的输出填进那一列。
 
 ~~~powershell
 python evals/assetopsbench/run.py --mode scripted --out runtime/assetopsbench-scripted.json
+python evals/assetopsbench/run.py --mode scripted --cases evals/assetopsbench/cases/guardrails.jsonl --out runtime/assetopsbench-guardrails.json
 python evals/assetopsbench/run.py --mode live --out runtime/assetopsbench-live.json
 python evals/maintnorm/fetch.py --out runtime/maintnorm
 python evals/maintnorm/evaluate.py --data runtime/maintnorm --subset combined --split test --method rules --out runtime/maintnorm-test-rules.json

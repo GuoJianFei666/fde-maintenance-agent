@@ -10,4 +10,11 @@ py -3 evals/retrieval/run.py --split dev --embedder sentence-transformers --out 
 py -3 evals/retrieval/run.py --split test --embedder sentence-transformers --out runtime/retrieval-test.json
 ~~~
 
-`fake` 的 JSON 里 `scores_are_model_results` 为 false。测试集结果里的 `config_sha256` 和 `frozen_config_sha256` 用来核对冻结配置。已经跑过的一次真实测试在 `reports/retrieval-test.json`，表见 [docs/retrieval.md](../../docs/retrieval.md)。同一路径已有文件时，脚本不会覆盖。
+`fake` 的 JSON 里 `scores_are_model_results` 为 false。测试集结果里的 `config_sha256` 和 `frozen_config_sha256` 用来核对冻结配置。域内 10 条里那次 5 条测试在 `reports/retrieval-test.json`，表见 [docs/retrieval.md](../../docs/retrieval.md)。同一路径已有文件时，脚本不会覆盖。
+
+公开英文集用同一份冻结配置，说明和命令也在那一页。小样：
+
+~~~powershell
+py -3 evals/retrieval/run_public.py --dataset techmanualqa --split test --embedder fake --fixture --out runtime/techmanualqa-fake.json
+py -3 evals/retrieval/run_public.py --dataset techqa --split test --embedder fake --fixture --out runtime/techqa-fake.json
+~~~

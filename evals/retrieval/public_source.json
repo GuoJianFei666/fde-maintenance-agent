@@ -1,0 +1,34 @@
+{
+  "techmanualqa": {
+    "name": "TechManualQA-700",
+    "license": "CC-BY-4.0",
+    "zenodo_record": "17410809",
+    "zenodo_doi": "10.5281/zenodo.17410809",
+    "zenodo_version": "v1",
+    "zip_md5": "cbd7984bd8506777d3d805c7acff4e4f",
+    "jsonl_sha256": "775d776cf5e40815f2e0a80e5d02987d4ff9b2265ab728c20181d81fe3f9af9e",
+    "jsonl_bytes": 693107,
+    "github_repository": "https://github.com/tduricic/techmanualqa",
+    "github_commit": "eda57bdebfc3d4d165417d05c0dc45849e4f4c7d",
+    "question_count": 700,
+    "manual_count": 20,
+    "split_rule": "No official dev/test split is published. Within each category, sort question_id by its numeric suffix and assign even indexes to dev and odd indexes to test. This assignment uses only ids and categories.",
+    "passage_rule": "Zenodo publishes question, answer snippet, and page number. It does not publish page text. Each distinct (manual, snippet) pair is one passage. Unanswerable rows have page number None and are not passages.",
+    "note": "retrieval_benchmark.py in the GitHub repo scores page retrieval against locally parsed manuals. Those page files are not in the Zenodo archive. This evaluation retrieves the released answer snippet."
+  },
+  "techqa": {
+    "name": "nvidia/TechQA-RAG-Eval",
+    "license": "Apache-2.0",
+    "huggingface_revision": "0b5bbc84b7f07d6d09d063130e90b716d8d4a32a",
+    "train_json_sha256": "69d97231509482ed6bd5ec1c4bc0607acb82a88d11169eb8383592d0ca8b93c7",
+    "train_json_bytes": 4019332,
+    "corpus_zip_sha256": "c06aa287dcc1abf8db6b49b8495df095db73342d729f6451ac330785245d10be",
+    "corpus_zip_bytes": 45814227,
+    "row_count": 910,
+    "readme_record_count": 908,
+    "corpus_files": 28481,
+    "split_rule": "The Hugging Face viewer exposes one split named train. Question ids already carry the original TechQA prefixes: DEV_ is dev (310) and TRAIN_ is test (600). No question was moved after a retrieval score.",
+    "passage_rule": "One passage per corpus file. A question is relevant to the filenames listed in contexts. is_impossible questions have an empty context list and no relevant passage.",
+    "note": "The dataset card says 908 pairs. The pinned train.json contains 910 rows. Counts below use the file."
+  }
+}

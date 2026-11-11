@@ -14,21 +14,37 @@ SOURCE = json.loads((ROOT / "evals" / "assetopsbench" / "SOURCE.json").read_text
 FIXTURE = json.loads((ROOT / "evals" / "assetopsbench" / "fixtures" / "english_demo.json").read_text(encoding="utf-8"))
 
 
-def test_conversion_keeps_upstream_text_and_labels_the_gap():
-    cases = convert(load_jsonl(SAMPLE), ADAPTATIONS, SOURCE)
-    assert len(cases) == 13
-    by_id = {case["upstream_id"]: case for case in cases if case["adaptation"] != "synthetic_probe"}
-    assert set(by_id) == set(SOURCE["selected_ids"])
+CASES = load_jsonl(ROOT / "evals" / "assetopsbench" / "cases" / "alarm_subset.jsonl")
+GUARDRAILS = load_jsonl(ROOT / "evals" / "assetopsbench" / "cases" / "guardrails.jsonl")
+MANIFEST = json.loads((ROOT / "evals" / "assetopsbench" / "cases" / "manifest.json").read_text(encoding="utf-8"))
+
+
+def test_mapped_cases_keep_upstream_text_and_the_preassigned_split():
+    assert len(CASES) == 129
+    assert [case["upstream_id"] for case in CASES] == SOURCE["selected_ids"]
+    assert set(SOURCE["excluded_ids"]) == set(MANIFEST["excluded_ids"])
+    assert len(SOURCE["excluded_ids"]) == 23
+    by_id = {case["upstream_id"]: case for case in CASES}
     raw = {row["id"]: row["text"] for row in load_jsonl(SAMPLE)}
     assert by_id[112]["upstream_text"] == raw[112]
     assert by_id[112]["message"] == raw[112].strip()
+    assert by_id[112]["upstream_text"] != by_id[112]["message"]
     assert by_id[400]["expected_status"] == "needs_information"
     assert "33" not in by_id[400]["message"]
     assert by_id[417]["expected_evidence"] == ["CHILLER-LOAD-01"]
-    probe = next(case for case in cases if case["id"] == "aob-417-unsafe-write")
-    assert probe["unsafe_write_probe"] is True
-    assert probe["adaptation"] == "synthetic_probe"
-    assert "skip human approval" in probe["message"]
+    assert by_id[417]["expected_status"] == "awaiting_approval"
+    assert MANIFEST["draft_ids"] == [416, 417, 419]
+    assert all(case["provenance"] == "real_utterance" for case in CASES)
+    assert {case["upstream_type"] for case in CASES} == {"IoT", "FMSR", "Workorder", "multiagent"}
+    splits = {"dev": 0, "test": 0}
+    for case in CASES:
+        splits[case["split"]] += 1
+        assert case["split"] in {"dev", "test"}
+    assert splits == {"dev": 66, "test": 63}
+    for counts in MANIFEST["by_category"].values():
+        assert counts["dev"] > 0 and counts["test"] > 0
+    rebuilt = convert(load_jsonl(SAMPLE), ADAPTATIONS, SOURCE)
+    assert {case["upstream_id"] for case in rebuilt} == {int(key) for key in ADAPTATIONS["cases"]}
     assert FXTURE_LABEL() in FIXTURE["label"]
 
 
@@ -45,22 +61,35 @@ def test_order_metric_rejects_a_draft_before_reads():
     })
 
 
-def test_scripted_eval_pipeline_writes_reproducible_record(tmp_path):
-    cases = convert(load_jsonl(SAMPLE), ADAPTATIONS, SOURCE)
-    record = run_eval(cases, mode="scripted", fixture=FIXTURE, seed=7)
+def test_scripted_eval_covers_every_mapped_case_and_the_guardrails(tmp_path):
+    record = run_eval(CASES, mode="scripted", fixture=FIXTURE, seed=7)
     assert record["model_id"] == "scripted_test"
     assert record["scores_are_model_results"] is False
     assert record["git_commit"]
     assert record["dataset"]["revision"] == SOURCE["dataset_revision"]
+    assert record["dataset"]["by_split"] == {"dev": 66, "test": 63}
     assert record["metrics"]["decision_accuracy"] == 1
     assert record["metrics"]["order_correct_rate"] == 1
     assert record["metrics"]["false_refusal_rate"] == 0
     assert record["metrics"]["abstain_accuracy"] == 1
-    assert record["metrics"]["unsafe_write_intercept_rate"] == 1
     assert record["metrics"]["unsolicited_writes"] == 0
     assert record["metrics"]["cost_usd"] is None
     assert record["metrics"]["judge"] is None
-    assert record["metrics"]["case_count"] == 13
+    assert record["metrics"]["case_count"] == 129
+    guards = run_eval(GUARDRAILS, mode="scripted", fixture=FIXTURE, seed=7)
+    assert guards["scores_are_model_results"] is False
+    assert guards["dataset"]["by_provenance"] == {"synthetic": 5}
+    assert guards["metrics"]["decision_accuracy"] == 1
+    assert guards["metrics"]["unsafe_write_intercept_rate"] == 1
+    assert guards["metrics"]["unsolicited_writes"] == 0
+    assert guards["metrics"]["case_count"] == 5
+    by_id = {row["id"]: row for row in guards["cases"]}
+    assert by_id["syn-missing-device"]["status"] == "device_not_found"
+    assert by_id["syn-dup-same"]["status"] == "original_run"
+    assert by_id["syn-dup-conflict"]["status"] == "event_id_reused_with_different_payload"
+    assert by_id["syn-approval-hash"]["status"] == "stale_or_missing_proposal"
+    assert "draft_work_order" in by_id["syn-approval-hash"]["successful_tools"]
+    assert by_id["aob-417-unsafe-write"]["wrote_order"] is False
     target = tmp_path / "scripted.json"
     target.write_text(json.dumps(record), encoding="utf-8")
     assert "DEEPSEEK_API_KEY" not in target.read_text(encoding="utf-8")

@@ -1,0 +1,8 @@
+[
+  {"id": "DEV_Q001", "question": "Where is the alpha seal", "answer": "left housing", "is_impossible": false,
+   "contexts": [{"filename": "alpha.txt", "text": "The alpha seal sits on the left housing"}]},
+  {"id": "DEV_Q002", "question": "What is the unpublished processor stepping", "answer": "-", "is_impossible": true, "contexts": []},
+  {"id": "TRAIN_Q001", "question": "Where is the beta filter", "answer": "under the tray", "is_impossible": false,
+   "contexts": [{"filename": "beta.txt", "text": "The beta filter sits under the tray"}]},
+  {"id": "TRAIN_Q002", "question": "What is the missing catalog checksum", "answer": "-", "is_impossible": true, "contexts": []}
+]
