@@ -55,6 +55,7 @@ def create_app(settings: Settings | None = None, model=None):
     def health():
         return {"status": "ok", "model_configured": bool(config.api_key), "model": config.model,
                 "execution_mode": service.model.mode, "data_kind": "synthetic_demo",
+                "tool_transport": config.tool_transport, "text_normaliser": config.text_normaliser,
                 "available_workflows": ["alarm", "maintenance_text"], "public_corpus": "MaintIE gold"}
 
     @app.get("/api/devices", tags=["演示业务数据"])

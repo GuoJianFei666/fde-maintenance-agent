@@ -41,7 +41,7 @@ flowchart TD
   G -->|缺少对象 事项或参考| K[请求补充信息]
 ~~~
 
-告警工具：query_device、query_work_orders、search_manual、draft_work_order。维修文本路径使用单次 submit_extraction 工具调用；实体抽取后的检索、草稿与审批由固定节点执行。案例不是设备履历或维修操作规程。
+告警工具：query_device、query_work_orders、search_manual、draft_work_order。默认在进程内调用。`TOOL_TRANSPORT=mcp` 时改由 MCP 服务执行，草案仍然不写库，人工确认和幂等插入不变。维修文本在抽取前有一个归一化节点，默认走规则，不额外调用模型；`TEXT_NORMALISER=llm` 才使用冻结的少样本提示。实体抽取后的检索、草稿与审批仍由固定节点执行。案例不是设备履历或维修操作规程。
 
 ## Windows 本地启动
 
@@ -113,6 +113,24 @@ CLI 支持相同流程：
 
 回归的模型替身明确标为 scripted_test；生产 API/CLI 使用真实 DeepSeek。缺少密钥返回 503，供应商或模型输出协议错误返回 502，失败记录保留。验收脚本中的确认动作标为 acceptance_script，不代表用户已完成现场维护。
 
+## MCP、AssetOpsBench 与 MaintNorm
+
+工具服务、传输开关和审批边界见 [docs/mcp.md](docs/mcp.md)。两条评测的命令和口径见 [docs/evals.md](docs/evals.md)。
+
+告警评测从 AssetOpsBench 选出 12 条与告警、手册或工单有关的话语，并加 1 条标明的合成探针，共 13 条。上游计数没有对应的本地数据时，期望是 `needs_information`，不把论文或数据集里的条数当成答案。英文设备、手册和历史工单在 `evals/assetopsbench/fixtures/english_demo.json`，标明为改编后的合成数据。
+
+MaintNorm 主评测是合并语料的英文 test。指标是词级精确率、召回率和错误下降率。论文表 7 的数字抄在 [evals/maintnorm/BASELINES.md](evals/maintnorm/BASELINES.md)。本项目三列都是“待运行”。配置好本地密钥后再跑，不要把脚本模式的输出填进那一列。
+
+~~~powershell
+python evals/assetopsbench/run.py --mode scripted --out runtime/assetopsbench-scripted.json
+python evals/assetopsbench/run.py --mode live --out runtime/assetopsbench-live.json
+python evals/maintnorm/fetch.py --out runtime/maintnorm
+python evals/maintnorm/evaluate.py --data runtime/maintnorm --subset combined --split test --method rules --out runtime/maintnorm-test-rules.json
+python evals/maintnorm/evaluate.py --data runtime/maintnorm --subset combined --split test --method llm --out runtime/maintnorm-test-llm.json
+~~~
+
+`live` 和 `llm` 需要本地 `.env` 里的 `DEEPSEEK_API_KEY`。没有密钥时命令退出，不写分数。CI 不跑这两条。
+
 ## 文件导读
 
 | 文件 | 职责 |
@@ -124,6 +142,9 @@ CLI 支持相同流程：
 | src/react_agent/graph.py | 两条路径路由、人工确认及工单写入 |
 | src/react_agent/service.py | 持久化运行、审批恢复、轨迹和报告 |
 | src/react_agent/tools.py、store.py | 原告警业务工具、手册检索与工单幂等 |
+| mcp_server/ | 四个工具的 MCP 服务，草案不写库 |
+| evals/assetopsbench/ | AssetOpsBench 子集转换和告警评测 |
+| evals/maintnorm/ | MaintNorm 下载、词级指标和论文对照表 |
 | src/react_agent/api.py、cli.py | REST 与命令行入口 |
 | docs/maintie.md | 数据接入、评估口径、误差与复查方法 |
 | docs/resume-and-interview.md | 项目正文、源码路线与面试参考 |

@@ -1,0 +1,12 @@
+{
+  "dataset": "ibm-research/AssetOpsBench",
+  "dataset_revision": "5e25bb7f2cd37fb68b9a9e1f99d170ca5be7ce17",
+  "dataset_file": "data/scenarios/all_utterance.jsonl",
+  "dataset_sha256": "1e015de054b6e4f493bbceca2d5ebd7b464c91b7271cb3804679e2d40b56770a",
+  "github_repository": "https://github.com/IBM/AssetOpsBench",
+  "github_commit": "e844f6468c6c68b328022e7ca8e31da140842cc7",
+  "license": "Apache-2.0",
+  "paper": "https://arxiv.org/abs/2506.03828",
+  "selected_ids": [110, 112, 400, 404, 407, 416, 417, 419, 421, 422, 501, 621],
+  "note": "The committed sample is only those twelve utterances. The fetch script downloads the full utterance file and checks this sha256. CouchDB work-order dumps and sensor archives are not downloaded."
+}

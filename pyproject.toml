@@ -14,6 +14,8 @@ dependencies = [
   "uvicorn>=0.30,<1",
   "python-dotenv>=1,<2",
   "pydantic>=2.10,<3",
+  "mcp>=1.9,<2",
+  "PyYAML>=6,<7",
 ]
 
 [project.optional-dependencies]
@@ -27,13 +29,15 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["src", "."]
+include = ["react_agent*", "mcp_server*"]
 
 [tool.setuptools.package-data]
 react_agent = ["data/*.json", "data/maintie/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src", "."]
 addopts = "-ra"
 markers = ["live: calls the configured DeepSeek service; run explicitly"]
 

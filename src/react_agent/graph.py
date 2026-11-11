@@ -15,17 +15,28 @@ from react_agent.models import Approval, ConflictError, ToolInputError
 from react_agent.prompts import SYSTEM_PROMPT
 from react_agent.state import State
 from react_agent.store import canonical_json, content_hash
-from react_agent.tools import TOOL_SCHEMAS, execute_tool
+from react_agent.tools import TOOL_SCHEMAS, execute_tool, patch_from_result
 
 
-def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None):
+def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None, tool_executor=None,
+                system_prompt=None, normaliser="rules"):
+    prompt = system_prompt or SYSTEM_PROMPT
+
+    def execute(name, args, current):
+        if tool_executor is None:
+            return execute_tool(name, args, current, store)
+        result = tool_executor(name, args, current)
+        if not isinstance(result, dict):
+            raise TypeError("Tool executor must return an object")
+        return result, patch_from_result(name, result, current)
+
     def call_model(state: State):
         rounds = state.get("rounds", 0)
         if rounds >= max_rounds:
             store.trace(state["run_id"], "limit", {"code": "agent_round_limit", "rounds": rounds})
             return {"status": "failed", "error_code": "agent_round_limit"}
         started = time.perf_counter()
-        response = model.invoke([SystemMessage(content=SYSTEM_PROMPT), *state["messages"]], TOOL_SCHEMAS)
+        response = model.invoke([SystemMessage(content=prompt), *state["messages"]], TOOL_SCHEMAS)
         if not isinstance(response, AIMessage):
             raise TypeError("Model adapter must return AIMessage")
         store.trace(state["run_id"], "model", {
@@ -52,7 +63,7 @@ def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None):
         for call in calls:
             started = time.perf_counter()
             try:
-                result, patch = execute_tool(call["name"], call["args"], current, store)
+                result, patch = execute(call["name"], call["args"], current)
                 current.update(patch)
                 updates.update(patch)
             except ToolInputError as exc:
@@ -100,11 +111,14 @@ def build_graph(store, model, checkpointer, max_rounds=6, *, cases=None):
     builder.add_node("commit_order", commit_order)
     builder.add_node("finish_without_draft", finish_without_draft)
     if cases is not None:
-        extract, retrieve, draft = text_nodes(store, model, cases)
+        normalise, extract, retrieve, draft = text_nodes(store, model, cases, normaliser=normaliser)
+        builder.add_node("normalise_text", normalise)
         builder.add_node("extract_text", extract)
         builder.add_node("retrieve_cases", retrieve)
         builder.add_node("draft_text_intake", draft)
-        builder.add_conditional_edges(START, lambda s: "extract_text" if s.get("workflow") == "maintenance_text" else "call_model")
+        builder.add_conditional_edges(
+            START, lambda s: "normalise_text" if s.get("workflow") == "maintenance_text" else "call_model")
+        builder.add_edge("normalise_text", "extract_text")
         builder.add_edge("extract_text", "retrieve_cases")
         builder.add_edge("retrieve_cases", "draft_text_intake")
         builder.add_conditional_edges("draft_text_intake", lambda s: "human_review" if s.get("proposal") else END)

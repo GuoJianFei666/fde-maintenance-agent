@@ -52,3 +52,23 @@ def execute_tool(name, arguments, state, store):
     proposal = params.model_dump()
     proposal["evidence_ids"] = evidence_ids
     return {"ok": True, "status": "draft_only", "proposal": proposal}, {"proposal": proposal}
+
+
+def patch_from_result(name, result, state):
+    """Rebuild the graph patch from the public tool payload.
+
+    The MCP server applies the same patch inside its own session. This function
+    keeps the in-process graph state aligned with that payload.
+    """
+    if not result.get("ok"):
+        return {}
+    if name == "query_device":
+        return {"device_read": True}
+    if name == "query_work_orders":
+        return {"history_read": True}
+    if name == "search_manual":
+        seen = list(dict.fromkeys([*state.get("retrieved_ids", []), *[hit["id"] for hit in result.get("hits", [])]]))
+        return {"retrieved_ids": seen}
+    if name == "draft_work_order":
+        return {"proposal": result["proposal"]}
+    return {}
