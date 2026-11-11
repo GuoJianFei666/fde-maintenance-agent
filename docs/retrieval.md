@@ -57,14 +57,18 @@ MCP 子进程会收到 `RETRIEVER`、`RRF_K`、`RETRIEVAL_CANDIDATES`、`EMBEDDI
 
 划分写进文件之前，这 10 条曾经放在一起跑过。那次数字已经撤回，不作为测试成绩。测试集只在冻结之后单独跑一次。真实模型的测试结果文件若已存在，脚本不会覆盖。
 
+下表是测试集的一次运行，时间 2026-11-11T09:49:54Z，git 提交 `6b4e1e5cb9d0a7ce666c08449bbd7bae7488264d`。嵌入模型 `intfloat/multilingual-e5-small`，重排序模型 `BAAI/bge-reranker-base`，k=60，融合前 N=20，保留 10 条。`config_sha256` 为 `d6ba80db466ffbe2b056d7461050686baa2a5e6a0dded62913e9f3723248bb87`，`frozen_config_sha256` 为 `4925914e469a531b4f46192c9d87bdb036a67a8b24dea90de211febde0c2b941`。原始文件是 `reports/retrieval-test.json`。计时在模型加载之后，不含下载。这是 Linux CPU 上的延迟，不是 Windows 上的数字。5 条查询不能外推到更大的手册库。
+
 | 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
 | --- | --- | --- | --- | --- | --- |
-| bm25 | 待运行 | 待运行 | 待运行 | 待运行 | 待运行 |
-| dense | 待运行 | 待运行 | 待运行 | 待运行 | 待运行 |
-| hybrid | 待运行 | 待运行 | 待运行 | 待运行 | 待运行 |
-| hybrid_rerank | 待运行 | 待运行 | 待运行 | 待运行 | 待运行 |
+| bm25 | 0.600 | 0.600 | 0.600 | 0.600 | 0.630 |
+| dense | 1.000 | 1.000 | 1.000 | 1.000 | 9.296 |
+| hybrid | 1.000 | 1.000 | 1.000 | 1.000 | 9.191 |
+| hybrid_rerank | 0.800 | 1.000 | 0.900 | 0.926 | 97.223 |
 
-上表只留给测试集的真实模型运行。CI 用 `EMBEDDER=fake` 检查开发集和测试集的流程，假嵌入的分数不填进这张表。
+测试集里的两条没有共同词的改写，BM25 没有命中。稠密检索和 RRF 把 5 条都排在第一位。交叉编码器把「机器抖得厉害」从第 1 名放到第 2 名，Recall@3 仍是 1。这一次 RRF 的名次和单独的稠密检索相同。
+
+CI 用 `EMBEDDER=fake` 检查开发集和测试集的流程。假嵌入的分数不在这张表里。
 
 ~~~powershell
 py -3 evals/retrieval/run.py --split dev --embedder fake --out runtime/retrieval-dev-fake.json
