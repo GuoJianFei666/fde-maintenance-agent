@@ -27,3 +27,4 @@ class State(TypedDict, total=False):
     case_evidence: list[dict[str, Any]]
     dataset: dict[str, Any]
     input_source: dict[str, Any] | None
+    normalisation: dict[str, Any]

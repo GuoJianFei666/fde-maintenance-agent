@@ -12,27 +12,44 @@ from react_agent.extraction import EXTRACTION_VERSION
 from react_agent.graph import build_graph
 from react_agent.llm import DeepSeekModel
 from react_agent.maintie import MaintIEIndex
+from react_agent.mcp_client import McpToolHub
 from react_agent.models import AlarmEvent, Approval, ConflictError, MaintenanceText, ModelCallError
 from react_agent.prompts import PROMPT_VERSION, SYSTEM_PROMPT
+from react_agent.retrieval import ManualRetriever
 from react_agent.store import Store, canonical_json, content_hash
 
 
 class AgentService:
     """Use one local worker; SQLite uniqueness protects repeated business writes."""
 
-    def __init__(self, settings: Settings, model=None):
+    def __init__(self, settings: Settings, model=None, *, system_prompt=None, prompt_version=None):
         self.settings = settings
         self.store = Store(settings.data_dir / "business.db")
         self.cases = MaintIEIndex(settings.data_dir / "maintie.db")
         self.model = model if model is not None else DeepSeekModel(settings)
+        self.system_prompt = system_prompt or SYSTEM_PROMPT
+        self.prompt_version = prompt_version or PROMPT_VERSION
         self._lock = threading.RLock()
+        self.retriever = ManualRetriever(settings, self.store)
+        self._tools = McpToolHub(settings, self.store.path) if settings.tool_transport == "mcp" else None
         self._checkpoint_connection = sqlite3.connect(settings.data_dir / "checkpoints.db", check_same_thread=False)
         self.checkpointer = SqliteSaver(self._checkpoint_connection)
         self.checkpointer.setup()
-        self.graph = build_graph(self.store, self.model, self.checkpointer, settings.max_rounds, cases=self.cases)
+        self.graph = build_graph(
+            self.store, self.model, self.checkpointer, settings.max_rounds, cases=self.cases,
+            tool_executor=None if self._tools is None else self._tools.call,
+            system_prompt=self.system_prompt, normaliser=settings.text_normaliser,
+            retriever=self.retriever,
+        )
 
     def close(self):
+        if self._tools is not None:
+            self._tools.close()
         self._checkpoint_connection.close()
+
+    def _release_run(self, run_id):
+        if self._tools is not None:
+            self._tools.close_run(run_id)
 
     @staticmethod
     def config(run_id):
@@ -44,16 +61,20 @@ class AgentService:
             run_id, created = self.store.create_run(alarm)
             if not created:
                 return self.store.run(run_id)
-            self.store.trace(run_id, "intake", {"data_kind": "synthetic_demo", "event_id": alarm.event_id})
+            self.store.trace(run_id, "intake", {"data_kind": "synthetic_demo", "event_id": alarm.event_id,
+                                                 "tool_transport": self.settings.tool_transport})
             try:
-                self.graph.invoke({"messages": [HumanMessage(content=canonical_json(alarm.model_dump()))],
-                                   "run_id": run_id, "alarm": alarm.model_dump(), "rounds": 0,
-                                   "status": "running", "retrieved_ids": [],
-                                   "device_read": False, "history_read": False}, self.config(run_id))
-            except Exception as exc:
-                self._record_failure(run_id, exc)
-                raise
-            return self._sync(run_id)
+                try:
+                    self.graph.invoke({"messages": [HumanMessage(content=canonical_json(alarm.model_dump()))],
+                                       "run_id": run_id, "alarm": alarm.model_dump(), "rounds": 0,
+                                       "status": "running", "retrieved_ids": [],
+                                       "device_read": False, "history_read": False}, self.config(run_id))
+                except Exception as exc:
+                    self._record_failure(run_id, exc)
+                    raise
+                return self._sync(run_id)
+            finally:
+                self._release_run(run_id)
 
     def submit_text(self, request: MaintenanceText):
         with self._lock:
@@ -122,8 +143,9 @@ class AgentService:
         report = {
             "data_kind": "public_corpus_demo_intake" if is_text else "synthetic_demo",
             "execution_mode": self.model.mode,
-            "prompt_version": EXTRACTION_VERSION if is_text else PROMPT_VERSION,
-            "prompt_sha256": state["text_extraction"]["prompt_sha256"] if is_text else content_hash(SYSTEM_PROMPT),
+            "prompt_version": EXTRACTION_VERSION if is_text else self.prompt_version,
+            "prompt_sha256": state["text_extraction"]["prompt_sha256"] if is_text else content_hash(self.system_prompt),
+            "tool_transport": self.settings.tool_transport,
             "corpus_version": self.store.corpus_version, "corpus_sha256": self.store.corpus_sha256,
             "configured_model": self.settings.model,
             "observed_models": sorted({c["model_name"] for c in model_calls if c.get("model_name")}),
@@ -135,6 +157,7 @@ class AgentService:
         if is_text:
             report.update({"workflow": "maintenance_text", "text_extraction": state["text_extraction"],
                            "dataset": state["dataset"], "input_source": state.get("input_source"),
+                           "normalisation": state.get("normalisation"),
                            "device_mapping": "user_selected_demo_device", "evidence_kind": "case_reference_not_sop"})
         self.store.update_run(run_id, state["status"], proposal=state.get("proposal"),
                               report=report, error_code=state.get("error_code"))

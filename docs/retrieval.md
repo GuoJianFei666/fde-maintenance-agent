@@ -1,0 +1,136 @@
+# 手册混合检索
+
+`search_manual` 默认仍走 SQLite FTS5 / BM25。`RETRIEVER` 可以改成 `dense`、`hybrid` 或 `hybrid_rerank`。进程内调用和 MCP 子进程读的是同一组环境变量，草案审批和幂等写入不经过检索器。
+
+## 为什么要混合
+
+错误码和零件号是稀有字符串。`RUL0014` 这种查询，词面检索能直接命中唯一段落。改写过的说法则可能和手册没有共同的词，例如「机器抖得厉害」对应的是写着「振动」的段落。稠密向量按语义靠近程度找候选，词面检索按字符串找候选。两条候选名单用倒数排名融合，再交给交叉编码器看查询和段落的原文。
+
+当前中文演示手册里没有单独的零件号。精确标识符这一类，用英文夹具里的告警码 `RUL0014`。
+
+## 模型
+
+嵌入模型用 `intfloat/multilingual-e5-small`（MIT，12 层，向量维度 384，权重约 470 MB）。模型卡要求查询加 `query: `、段落加 `passage: `，中文和英文都要加。模型卡的示例里就有中文查询。
+
+没有用 `BAAI/bge-small-zh-v1.5`。它的模型卡语言标记是 `zh`，结构是 4 层中文 BERT，词表大小 21128，权重约 96 MB。这个词表对英文手册不合适。
+
+没有用 `BAAI/bge-m3`。它是 24 层 XLM-RoBERTa，维度 1024，权重约 2.27 GB，能覆盖中英，但不是小的 CPU 模型。
+
+重排序用 `BAAI/bge-reranker-base`（MIT，骨干是 XLM-RoBERTa-base，权重约 1.11 GB），中英都能打分。`bge-reranker-v2-m3` 约 2.27 GB，CPU 上更重，所以没有作为默认。重排序只看融合后的前 N 条，N 由 `RETRIEVAL_CANDIDATES` 决定，默认 20。
+
+向量存在业务库的 sqlite-vec 表 `manual_vec` 里。项目本来就依赖 `sqlite-vec`，索引和手册在同一个 SQLite 文件中。sqlite-vec 0.1.9 不允许在 KNN 查询里过滤辅助列，所以先取出全部向量邻居，再按设备类型在 Python 里留下 `设备类型` 和 `general`。演示库只有十几条，这一步是精确扫描。向量在写入前做了 L2 归一化，排序用的相似度是由 L2 距离还原的余弦：`1 - 距离² / 2`。
+
+## RRF
+
+Cormack、Clarke 与 Buettcher，SIGIR 2009，Reciprocal Rank Fusion。两条名单里，名次从 1 开始。文档 `d` 的分数是：
+
+```
+score(d) = Σ 1 / (k + rank_r(d))
+```
+
+只对包含 `d` 的名单求和。某条名单里没有 `d`，那一条就加 0。默认 `k = 60`，可用 `RRF_K` 修改。分数相同则按手册 ID 排序，保证顺序稳定。
+
+`hybrid` 直接取融合后的前 `top_k`。`hybrid_rerank` 先取融合后的前 N 条，再用交叉编码器重排，返回前 `top_k`。返回的命中里带有手册 `id`，引用检查仍看这个 ID。
+
+## 索引
+
+默认的 BM25 不建索引，也不下载模型。稠密模式在索引缺失、模型不一致或手册已经变化时返回错误码。这次调用失败，结果里不会带上 BM25 命中。
+
+~~~powershell
+py -3 -m pip install "sentence-transformers>=3,<6"
+py -3 scripts/build_manual_index.py --db runtime/business.db --fixture evals/assetopsbench/fixtures/english_demo.json
+$env:RETRIEVER = "hybrid_rerank"
+$env:EMBEDDER = "sentence-transformers"
+~~~
+
+MCP 子进程会收到 `RETRIEVER`、`RRF_K`、`RETRIEVAL_CANDIDATES`、`EMBEDDING_MODEL`、`RERANKER_MODEL` 和 `EMBEDDER`，不接收 API 密钥。单独启动 HTTP 服务时，这几个变量要写在服务进程上。一个 HTTP 进程仍然只绑一台设备。
+
+`EMBEDDER=fake` 使用词面哈希和词交比重叠，只给测试和 CI。它的分数不能填进下面的表。
+
+## 评测
+
+标注在 `evals/retrieval/labels.json`，共 10 条，开发集和测试集各 5 条。开发集有中文词面、中文改写、英文改写和错误码 `RUL0014`。测试集有中文词面、中文改写和英文词面。划分按查询类型和语言事先指定，不按分数挑选。每条查询只有一个相关段落。指标是 Recall@1、Recall@3、MRR、nDCG@3，以及查询延迟的平均值和 p50。nDCG 按二元相关计算，理想折损是 1。
+
+可以改的只有开发集：嵌入模型、重排序模型、RRF 的 k、融合后送去重排序的前 N 条（`fused_top_n`）、重排序后保留的条数（`rerank_top_k`）。当前冻结值写在 `evals/retrieval/frozen_config.json`：`intfloat/multilingual-e5-small`、`BAAI/bge-reranker-base`、k=60、N=20、保留 10 条。模型按模型卡和权重大小选定，k 用 RRF 论文里的常用默认值。这些值在看测试集分数之前冻结。测试集命令不接受这些参数；配置文件若未标成 `frozen` 且 `frozen_before_split=test`，测试集直接退出，不写分数。
+
+结果 JSON 里有两个哈希。`config_sha256` 是实际使用的那五项的规范 JSON（键排序、无空格）的 SHA256。`frozen_config_sha256` 是整份冻结文件的同一算法哈希。测试集上 `config_matches_frozen` 为 true。
+
+划分写进文件之前，这 10 条曾经放在一起跑过。那次数字已经撤回，不作为测试成绩。测试集只在冻结之后单独跑一次。真实模型的测试结果文件若已存在，脚本不会覆盖。
+
+下表是测试集的一次运行，时间 2026-11-11T09:49:54Z，git 提交 `6b4e1e5cb9d0a7ce666c08449bbd7bae7488264d`。嵌入模型 `intfloat/multilingual-e5-small`，重排序模型 `BAAI/bge-reranker-base`，k=60，融合前 N=20，保留 10 条。`config_sha256` 为 `d6ba80db466ffbe2b056d7461050686baa2a5e6a0dded62913e9f3723248bb87`，`frozen_config_sha256` 为 `4925914e469a531b4f46192c9d87bdb036a67a8b24dea90de211febde0c2b941`。原始文件是 `reports/retrieval-test.json`。计时在模型加载之后，不含下载。这是 Linux CPU 上的延迟，不是 Windows 上的数字。5 条查询不能外推到更大的手册库。
+
+| 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
+| --- | --- | --- | --- | --- | --- |
+| bm25 | 0.600 | 0.600 | 0.600 | 0.600 | 0.630 |
+| dense | 1.000 | 1.000 | 1.000 | 1.000 | 9.296 |
+| hybrid | 1.000 | 1.000 | 1.000 | 1.000 | 9.191 |
+| hybrid_rerank | 0.800 | 1.000 | 0.900 | 0.926 | 97.223 |
+
+测试集里的两条没有共同词的改写，BM25 没有命中。稠密检索和 RRF 把 5 条都排在第一位。交叉编码器把「机器抖得厉害」从第 1 名放到第 2 名，Recall@3 仍是 1。这一次 RRF 的名次和单独的稠密检索相同。
+
+CI 用 `EMBEDDER=fake` 检查开发集和测试集的流程。假嵌入的分数不在这张表里。
+
+~~~powershell
+py -3 evals/retrieval/run.py --split dev --embedder fake --out runtime/retrieval-dev-fake.json
+py -3 evals/retrieval/run.py --split test --embedder fake --out runtime/retrieval-test-fake.json
+# 开发集上试参数。确认后再改 frozen_config.json，并保持 frozen_before_split=test。
+py -3 evals/retrieval/run.py --split dev --embedder sentence-transformers --rrf-k 60 --out runtime/retrieval-dev.json
+# 测试集只跑一次，不带调参参数。
+py -3 evals/retrieval/run.py --split test --embedder sentence-transformers --out runtime/retrieval-test.json
+~~~
+
+后两条在未安装 `sentence-transformers` 或模型下载失败时直接退出，不写分数。
+
+域内这 10 条没有再扩写。没有往 `labels.json` 里加合成查询。上面的 5 条测试结果留在 `reports/retrieval-test.json`，作为这次冻结配置在小集上的历史记录。下面两个公开数据集用同一份冻结配置，各跑一次测试切分，不改 k、N、模型或 top-k。
+
+## 公开英文数据集
+
+两套数据都是英文。抓取脚本校验哈希，不把压缩包提交进仓库。CI 只用 `evals/retrieval/fixtures/` 里的小样和 `EMBEDDER=fake`。
+
+TechManualQA-700，CC BY 4.0。Zenodo 记录 `17410809`，DOI `10.5281/zenodo.17410809`，版本 v1。问题文件 SHA256 `775d776cf5e40815f2e0a80e5d02987d4ff9b2265ab728c20181d81fe3f9af9e`。生成代码在 <https://github.com/tduricic/techmanualqa>，提交 `eda57bdebfc3d4d165417d05c0dc45849e4f4c7d`。700 条人工核过的问答，20 本手册，7 个类别各 100 条，其中不可回答 100 条。档案里没有官方 dev/test。划分只看类别和问题编号：每个类别内按编号排序，偶数下标 dev，奇数下标 test，各 350 条。这个规则写在代码里，跑分之前就定了。
+
+Zenodo 发布的是问题、答案片段和页码，没有手册的页文本。`retrieval_benchmark.py` 要的是本地解析出的整页，那些页文件不在这个档案里。这里的段落是「手册名 + 答案片段」。不可回答的问题没有相关段落，不进入 Recall、MRR、nDCG，只单独计数。所以测试切分的排序指标覆盖 300 条可回答问题，另外 50 条不可回答。
+
+TechQA-RAG-Eval，Apache-2.0，Hugging Face `nvidia/TechQA-RAG-Eval`，修订 `0b5bbc84b7f07d6d09d063130e90b716d8d4a32a`。`train.json` SHA256 `69d97231509482ed6bd5ec1c4bc0607acb82a88d11169eb8383592d0ca8b93c7`，910 行。数据集卡片写 908，以这个文件为准。`corpus.zip` SHA256 `c06aa287dcc1abf8db6b49b8495df095db73342d729f6451ac330785245d10be`，28481 个技术说明文件。可回答问题各有一个黄金文件，496 个黄金文件都在语料里。查看器只有一个名叫 train 的切分，但问题编号自带原来的前缀：`DEV_` 310 条当作 dev，`TRAIN_` 600 条当作 test。没有在看分数之后挪过任何一条。测试切分里 450 条可回答、150 条 `is_impossible`。排序指标只用那 450 条。
+
+冻结的五项和域内测试相同：`intfloat/multilingual-e5-small`、`BAAI/bge-reranker-base`、k=60、融合前 20、保留 10。没有因为这两个数据集改配置。
+
+和域内 `search_manual` 有两处实现差别，结果文件里写了：
+
+- sqlite-vec 0.1.9 的 KNN 不允许 k 大于 4096。TechQA 有 28481 段，做不到把全库精确扫进那条 SQL。稠密名次改为对同一套 L2 归一化向量做精确点积，排序和由 L2 还原的余弦一致。域内小库仍走 sqlite-vec。
+- 演示库的 FTS 词条上限是 80。公开文档的索引保留全部词，否则技术说明后半段的编号进不了 BM25。查询仍走生产分词，最多 80 个词。嵌入模型自己的窗口是 512 个 token，更长的说明会被截断。
+
+~~~powershell
+python evals/retrieval/fetch_public.py --dataset techmanualqa --out runtime/techmanualqa
+python evals/retrieval/fetch_public.py --dataset techqa --out runtime/techqa
+python evals/retrieval/run_public.py --dataset techmanualqa --split test --embedder fake --fixture --out runtime/techmanualqa-test-fake.json
+python evals/retrieval/run_public.py --dataset techqa --split test --embedder fake --fixture --out runtime/techqa-test-fake.json
+python evals/retrieval/run_public.py --dataset techmanualqa --split test --embedder sentence-transformers --questions runtime/techmanualqa/TechManualQA_700.jsonl --out runtime/retrieval-techmanualqa-test.json
+python evals/retrieval/run_public.py --dataset techqa --split test --embedder sentence-transformers --questions runtime/techqa/train.json --corpus runtime/techqa/corpus.zip --out runtime/retrieval-techqa-test.json
+~~~
+
+测试切分拒绝 `--rrf-k`、`--model`、`--reranker`、`--candidates`、`--top-k`。真实模型的结果文件已存在时不覆盖。`fake` 的分数不是模型结果。
+
+下面两张表各是测试切分的一次运行。嵌入模型 `intfloat/multilingual-e5-small`，重排序模型 `BAAI/bge-reranker-base`，k=60，融合前 20，保留 10。`config_sha256` 为 `d6ba80db466ffbe2b056d7461050686baa2a5e6a0dded62913e9f3723248bb87`，`frozen_config_sha256` 为 `4925914e469a531b4f46192c9d87bdb036a67a8b24dea90de211febde0c2b941`，`config_matches_frozen` 为 true。排序指标只统计可回答问题。延迟把该切分里的不可回答问题也算进去：TechManualQA 是 350 条，TechQA 是 600 条。计时在模型加载和建索引之后。这是 Linux CPU 上的数字。
+
+TechManualQA 跑完时 git HEAD 还是 `7fad097ea8980ef1ef664e2a7b1dadf958c2a677`，评测脚本尚未提交，所以 JSON 里写的是这个提交。脚本内容与随后的 `5c998224fb2f17a71bfe107fa2c79dfe59b6d5e0` 一致。时间 2026-11-11T10:21:58Z。段落 559 个。文件 `reports/retrieval-techmanualqa-test.json`。
+
+| 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
+| --- | --- | --- | --- | --- | --- |
+| bm25 | 0.360 | 0.483 | 0.436 | 0.433 | 1.803 |
+| dense | 0.500 | 0.683 | 0.610 | 0.609 | 16.581 |
+| hybrid | 0.427 | 0.627 | 0.544 | 0.546 | 18.428 |
+| hybrid_rerank | 0.543 | 0.697 | 0.634 | 0.633 | 608.182 |
+
+片段和问题经常不是同一组词，所以词面检索低于稠密检索。RRF 在这个片段库上没有超过单独的稠密检索。交叉编码器把 Recall@1 提到 0.543。这是片段检索，不是 `retrieval_benchmark.py` 的整页检索。
+
+TechQA 结束于 2026-11-11T11:22:09Z，git `5c998224fb2f17a71bfe107fa2c79dfe59b6d5e0`。语料 28481 段。文件 `reports/retrieval-techqa-test.json`。
+
+| 模式 | Recall@1 | Recall@3 | MRR | nDCG@3 | 延迟 p50（毫秒） |
+| --- | --- | --- | --- | --- | --- |
+| bm25 | 0.409 | 0.500 | 0.464 | 0.463 | 138.110 |
+| dense | 0.398 | 0.516 | 0.469 | 0.467 | 232.464 |
+| hybrid | 0.431 | 0.536 | 0.502 | 0.494 | 373.009 |
+| hybrid_rerank | 0.420 | 0.571 | 0.504 | 0.508 | 3529.178 |
+
+在这 28481 篇技术说明上，RRF 的 Recall@1 高于单独的 BM25 和稠密检索。交叉编码器把 Recall@3 从 0.536 提到 0.571，Recall@1 略降到 0.420。很多说明长于嵌入模型的 512 token 窗口，黄金段落若在后半篇，稠密检索看不到。重排序要看融合后的 20 篇原文，CPU 上每条查询大约 3.5 秒。

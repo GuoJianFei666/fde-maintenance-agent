@@ -1,12 +1,46 @@
 """Fixed intake nodes after model extraction; cases are references, not SOPs."""
 
+import time
+
 from react_agent.extraction import extract_text
+from react_agent.normalise import llm_record, prompt_sha256, rule_record
 from react_agent.store import content_hash
 
 
-def text_nodes(store, model, cases):
+def text_nodes(store, model, cases, *, normaliser="rules"):
+    def normalise(state):
+        original = state["alarm"]["message"]
+        if normaliser == "off" or state.get("input_source"):
+            record = {"mode": "off" if normaliser == "off" else "source_locked", "text": original,
+                      "changed": False, "pairs": None, "prompt_sha256": prompt_sha256()}
+        elif normaliser == "rules":
+            record = rule_record(original)
+        elif normaliser == "llm":
+            started = time.perf_counter()
+
+            def observed(response):
+                store.trace(state["run_id"], "model", {
+                    "round": 0, "mode": model.mode, "workflow": "maintenance_text", "stage": "normalise",
+                    "model_name": response.response_metadata.get("model_name"), "usage": response.usage_metadata,
+                    "tool_names": [call["name"] for call in response.tool_calls],
+                    "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
+                })
+
+            record = llm_record(model, original, on_response=observed)
+        else:
+            raise ValueError("unknown_text_normaliser")
+        store.trace(state["run_id"], "normalise_text", {
+            "mode": record["mode"], "changed": record["changed"], "prompt_version": record.get("prompt_version"),
+            "prompt_sha256": record.get("prompt_sha256"),
+        })
+        updates = {"normalisation": record}
+        if record["changed"]:
+            updates["alarm"] = {**state["alarm"], "message": record["text"]}
+        return updates
+
     def extract(state):
         source = state.get("input_source")
+        changed = bool(state.get("normalisation", {}).get("changed"))
 
         def observed(response, elapsed_ms):
             store.trace(state["run_id"], "model", {
@@ -16,8 +50,8 @@ def text_nodes(store, model, cases):
                 "tool_calls": response.tool_calls, "elapsed_ms": elapsed_ms,
             })
 
-        result = extract_text(model, state["alarm"]["message"], tokens=source["tokens"] if source else None,
-                              on_response=observed)
+        tokens = source["tokens"] if source and not changed else None
+        result = extract_text(model, state["alarm"]["message"], tokens=tokens, on_response=observed)
         store.trace(state["run_id"], "extract_text", result)
         return {"text_extraction": result, "rounds": 1}
 
@@ -58,4 +92,4 @@ def text_nodes(store, model, cases):
         store.trace(state["run_id"], "draft_text_intake", {"proposal": proposal, "draft_only": True})
         return {"proposal": proposal, "proposal_sha256": content_hash(proposal), "status": "awaiting_approval"}
 
-    return extract, retrieve, draft
+    return normalise, extract, retrieve, draft

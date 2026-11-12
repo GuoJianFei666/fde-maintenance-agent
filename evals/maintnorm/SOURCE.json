@@ -1,0 +1,13 @@
+{
+  "dataset": "nlp-tlp/MaintNorm",
+  "github_repository": "https://github.com/nlp-tlp/maintnorm",
+  "github_commit": "e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8",
+  "huggingface": "https://huggingface.co/datasets/nlp-tlp/MaintNorm",
+  "license": "MIT",
+  "paper": "https://aclanthology.org/2024.wnut-1.7/",
+  "official_splits": ["train", "val", "test"],
+  "development_split_file": "val.norm",
+  "subsets": ["combined", "company_a", "company_b", "company_c"],
+  "main_eval": {"subset": "combined", "split": "test", "language": "en"},
+  "note": "Files are downloaded by evals/maintnorm/fetch.py. This repository does not vendor the corpus."
+}

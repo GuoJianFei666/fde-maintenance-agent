@@ -1,0 +1,13 @@
+{
+  "version": "retrieval-config-v1",
+  "frozen": true,
+  "frozen_before_split": "test",
+  "embedding_model": "intfloat/multilingual-e5-small",
+  "reranker_model": "BAAI/bge-reranker-base",
+  "rrf_k": 60,
+  "fused_top_n": 20,
+  "rerank_top_k": 10,
+  "modes": ["bm25", "dense", "hybrid", "hybrid_rerank"],
+  "chosen_on": "dev",
+  "note": "Model ids follow the model cards and weight sizes. rrf_k is the usual Reciprocal Rank Fusion default. fused_top_n and rerank_top_k were set for this small manual collection. No other values were compared on the test split."
+}

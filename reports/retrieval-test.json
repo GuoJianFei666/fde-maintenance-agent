@@ -1,0 +1,425 @@
+{
+  "git_commit": "6b4e1e5cb9d0a7ce666c08449bbd7bae7488264d",
+  "model_id": "intfloat/multilingual-e5-small",
+  "prompt_version": "retrieval-rrf-v1",
+  "prompt_sha256": "9737eb94d7a4dbacdae50188af5e0492ba179efadac2392d843466a448754c7b",
+  "dataset": {
+    "name": "manual-retrieval-v2",
+    "languages": [
+      "zh",
+      "en"
+    ],
+    "chinese_manuals": "packaged synthetic demo",
+    "english_manuals": "adapted_synthetic_demo",
+    "label_version": "manual-retrieval-v2",
+    "label_sha256": "144935e27f81b3265d8dc15577a4f683da6fe31e16ac1065db728d31c9acaa7b",
+    "query_count": 5,
+    "query_ids": [
+      "zh-vib-paraphrase",
+      "zh-temp-lexical",
+      "zh-belt-lexical",
+      "zh-motor-paraphrase",
+      "en-vib-lexical"
+    ],
+    "dev_count": 5,
+    "test_count": 5
+  },
+  "seed": 7,
+  "split": "test",
+  "timestamp": "2026-11-11T09:49:54.106262+00:00",
+  "scores_are_model_results": true,
+  "embedder": "sentence-transformers",
+  "embedding_model": "intfloat/multilingual-e5-small",
+  "reranker_model": "BAAI/bge-reranker-base",
+  "index": {
+    "embedder_id": "intfloat/multilingual-e5-small",
+    "dimension": 384,
+    "fingerprint": "6e79a93a5b70aa1de9379198dd28bf2339ddbae8152a06f920eb605da08bd2c8",
+    "count": 12
+  },
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "reranker_model": "BAAI/bge-reranker-base",
+    "rrf_k": 60,
+    "fused_top_n": 20,
+    "rerank_top_k": 10
+  },
+  "config_sha256": "d6ba80db466ffbe2b056d7461050686baa2a5e6a0dded62913e9f3723248bb87",
+  "frozen_config_sha256": "4925914e469a531b4f46192c9d87bdb036a67a8b24dea90de211febde0c2b941",
+  "config_matches_frozen": true,
+  "modes": {
+    "bm25": {
+      "metrics": {
+        "query_count": 5,
+        "recall@1": 0.6,
+        "recall@3": 0.6,
+        "mrr": 0.6,
+        "ndcg@3": 0.6,
+        "latency_ms_mean": 0.6150084000182687,
+        "latency_ms_p50": 0.6303730001491203
+      },
+      "by_kind": {
+        "lexical": {
+          "query_count": 3,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 0.622514666550463,
+          "latency_ms_p50": 0.6303730001491203
+        },
+        "paraphrase_no_overlap": {
+          "query_count": 2,
+          "recall@1": 0.0,
+          "recall@3": 0.0,
+          "mrr": 0.0,
+          "ndcg@3": 0.0,
+          "latency_ms_mean": 0.6037490002199775,
+          "latency_ms_p50": 0.5542620001506293
+        }
+      },
+      "queries": [
+        {
+          "id": "zh-vib-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": null,
+          "latency_ms": 0.6532360002893256,
+          "retrieved_ids": [],
+          "retrieval": "SQLite FTS5 / BM25"
+        },
+        {
+          "id": "zh-temp-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 0.6303730001491203,
+          "retrieved_ids": [
+            "PUMP-TEMP-02",
+            "PUMP-VIB-01"
+          ],
+          "retrieval": "SQLite FTS5 / BM25"
+        },
+        {
+          "id": "zh-belt-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 0.6521229997815681,
+          "retrieved_ids": [
+            "BELT-SLIP-01",
+            "BELT-JAM-02"
+          ],
+          "retrieval": "SQLite FTS5 / BM25"
+        },
+        {
+          "id": "zh-motor-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": null,
+          "latency_ms": 0.5542620001506293,
+          "retrieved_ids": [],
+          "retrieval": "SQLite FTS5 / BM25"
+        },
+        {
+          "id": "en-vib-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 0.5850479997207003,
+          "retrieved_ids": [
+            "CHILLER-VIB-01"
+          ],
+          "retrieval": "SQLite FTS5 / BM25"
+        }
+      ]
+    },
+    "dense": {
+      "metrics": {
+        "query_count": 5,
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "mrr": 1.0,
+        "ndcg@3": 1.0,
+        "latency_ms_mean": 9.595554000043194,
+        "latency_ms_p50": 9.295538000060333
+      },
+      "by_kind": {
+        "lexical": {
+          "query_count": 3,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 9.227620666782363,
+          "latency_ms_p50": 9.295538000060333
+        },
+        "paraphrase_no_overlap": {
+          "query_count": 2,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 10.147453999934442,
+          "latency_ms_p50": 9.2531569998755
+        }
+      },
+      "queries": [
+        {
+          "id": "zh-vib-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 1,
+          "latency_ms": 11.041750999993383,
+          "retrieved_ids": [
+            "PUMP-VIB-01",
+            "PUMP-TEMP-02",
+            "ORDER-REVIEW-01",
+            "PUMP-FLOW-03"
+          ],
+          "retrieval": "sqlite-vec dense"
+        },
+        {
+          "id": "zh-temp-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 9.954078000191657,
+          "retrieved_ids": [
+            "PUMP-TEMP-02",
+            "PUMP-VIB-01",
+            "PUMP-FLOW-03",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "sqlite-vec dense"
+        },
+        {
+          "id": "zh-belt-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 9.295538000060333,
+          "retrieved_ids": [
+            "BELT-SLIP-01",
+            "BELT-JAM-02",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "sqlite-vec dense"
+        },
+        {
+          "id": "zh-motor-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 1,
+          "latency_ms": 9.2531569998755,
+          "retrieved_ids": [
+            "MOTOR-HEAT-01",
+            "ORDER-REVIEW-01",
+            "MOTOR-CURRENT-02"
+          ],
+          "retrieval": "sqlite-vec dense"
+        },
+        {
+          "id": "en-vib-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 8.433246000095096,
+          "retrieved_ids": [
+            "CHILLER-VIB-01",
+            "CHILLER-ANOM-01",
+            "CHILLER-DELTAT-01",
+            "CHILLER-LOAD-01",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "sqlite-vec dense"
+        }
+      ]
+    },
+    "hybrid": {
+      "metrics": {
+        "query_count": 5,
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "mrr": 1.0,
+        "ndcg@3": 1.0,
+        "latency_ms_mean": 9.159630600061064,
+        "latency_ms_p50": 9.191280999857554
+      },
+      "by_kind": {
+        "lexical": {
+          "query_count": 3,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 9.193842333388602,
+          "latency_ms_p50": 9.295844999996916
+        },
+        "paraphrase_no_overlap": {
+          "query_count": 2,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 9.108313000069757,
+          "latency_ms_p50": 9.025345000281959
+        }
+      },
+      "queries": [
+        {
+          "id": "zh-vib-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 1,
+          "latency_ms": 9.025345000281959,
+          "retrieved_ids": [
+            "PUMP-VIB-01",
+            "PUMP-TEMP-02",
+            "ORDER-REVIEW-01",
+            "PUMP-FLOW-03"
+          ],
+          "retrieval": "RRF k=60 bm25+dense"
+        },
+        {
+          "id": "zh-temp-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 9.295844999996916,
+          "retrieved_ids": [
+            "PUMP-TEMP-02",
+            "PUMP-VIB-01",
+            "PUMP-FLOW-03",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense"
+        },
+        {
+          "id": "zh-belt-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 9.33424599998034,
+          "retrieved_ids": [
+            "BELT-SLIP-01",
+            "BELT-JAM-02",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense"
+        },
+        {
+          "id": "zh-motor-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 1,
+          "latency_ms": 9.191280999857554,
+          "retrieved_ids": [
+            "MOTOR-HEAT-01",
+            "ORDER-REVIEW-01",
+            "MOTOR-CURRENT-02"
+          ],
+          "retrieval": "RRF k=60 bm25+dense"
+        },
+        {
+          "id": "en-vib-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 8.95143600018855,
+          "retrieved_ids": [
+            "CHILLER-VIB-01",
+            "CHILLER-ANOM-01",
+            "CHILLER-DELTAT-01",
+            "CHILLER-LOAD-01",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense"
+        }
+      ]
+    },
+    "hybrid_rerank": {
+      "metrics": {
+        "query_count": 5,
+        "recall@1": 0.8,
+        "recall@3": 1.0,
+        "mrr": 0.9,
+        "ndcg@3": 0.9261859507142916,
+        "latency_ms_mean": 112.01852379990669,
+        "latency_ms_p50": 97.22325300026569
+      },
+      "by_kind": {
+        "lexical": {
+          "query_count": 3,
+          "recall@1": 1.0,
+          "recall@3": 1.0,
+          "mrr": 1.0,
+          "ndcg@3": 1.0,
+          "latency_ms_mean": 105.64695466670553,
+          "latency_ms_p50": 97.22325300026569
+        },
+        "paraphrase_no_overlap": {
+          "query_count": 2,
+          "recall@1": 0.5,
+          "recall@3": 1.0,
+          "mrr": 0.75,
+          "ndcg@3": 0.8154648767857288,
+          "latency_ms_mean": 121.57587749970844,
+          "latency_ms_p50": 80.51543199962907
+        }
+      },
+      "queries": [
+        {
+          "id": "zh-vib-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 2,
+          "latency_ms": 162.6363229997878,
+          "retrieved_ids": [
+            "PUMP-TEMP-02",
+            "PUMP-VIB-01",
+            "ORDER-REVIEW-01",
+            "PUMP-FLOW-03"
+          ],
+          "retrieval": "RRF k=60 bm25+dense, cross-encoder rerank"
+        },
+        {
+          "id": "zh-temp-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 97.22325300026569,
+          "retrieved_ids": [
+            "PUMP-TEMP-02",
+            "PUMP-VIB-01",
+            "PUMP-FLOW-03",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense, cross-encoder rerank"
+        },
+        {
+          "id": "zh-belt-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 76.7758900001354,
+          "retrieved_ids": [
+            "BELT-SLIP-01",
+            "BELT-JAM-02",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense, cross-encoder rerank"
+        },
+        {
+          "id": "zh-motor-paraphrase",
+          "kind": "paraphrase_no_overlap",
+          "rank": 1,
+          "latency_ms": 80.51543199962907,
+          "retrieved_ids": [
+            "MOTOR-HEAT-01",
+            "MOTOR-CURRENT-02",
+            "ORDER-REVIEW-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense, cross-encoder rerank"
+        },
+        {
+          "id": "en-vib-lexical",
+          "kind": "lexical",
+          "rank": 1,
+          "latency_ms": 142.94172099971547,
+          "retrieved_ids": [
+            "CHILLER-VIB-01",
+            "CHILLER-LOAD-01",
+            "ORDER-REVIEW-01",
+            "CHILLER-ANOM-01",
+            "CHILLER-DELTAT-01"
+          ],
+          "retrieval": "RRF k=60 bm25+dense, cross-encoder rerank"
+        }
+      ]
+    }
+  },
+  "note": "Tuning knobs are applied on dev only. The test split refuses overrides. config_sha256 hashes the five knobs actually used. frozen_config_sha256 hashes the whole frozen file. A fake embedder does not produce model scores."
+}

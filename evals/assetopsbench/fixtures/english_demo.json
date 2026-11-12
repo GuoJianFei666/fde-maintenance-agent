@@ -1,0 +1,20 @@
+{
+  "kind": "adapted_synthetic_demo",
+  "label": "Synthetic English chiller records written for this evaluation. Wording is adapted from AssetOpsBench scenario topics. These are not IBM work orders, sensor archives, or manual pages.",
+  "version": "adapted-demo-v1",
+  "devices": [
+    {"id": "CWC04009", "name": "Chiller 9 demo asset", "type": "chiller", "location": "demo site MAIN", "owner_team": "demo maintenance", "status": "running", "data_kind": "adapted_synthetic_demo"},
+    {"id": "CWC04013", "name": "Chiller demo asset CWC04013", "type": "chiller", "location": "demo site MAIN", "owner_team": "demo maintenance", "status": "running", "data_kind": "adapted_synthetic_demo"},
+    {"id": "CH-6", "name": "Chiller 6 demo asset", "type": "chiller", "location": "demo site MAIN", "owner_team": "demo maintenance", "status": "running", "data_kind": "adapted_synthetic_demo"}
+  ],
+  "manuals": [
+    {"id": "CHILLER-LOAD-01", "device_type": "chiller", "title": "Cooling load upper bound alarm", "body": "When a chiller cooling load upper bound alarm is raised, record the alarm time, the load, and the condenser approach. One cooling load alarm is not proof of fouling. Create an inspection draft for a field check, and do not rank historical failure codes that are not in this manual.", "source": "adapted synthetic manual / cooling load", "version": "adapted-demo-v1"},
+    {"id": "CHILLER-DELTAT-01", "device_type": "chiller", "title": "Alert RUL0014 delta temperature low", "body": "Alert RUL0014 reports cooling substance delta temperature low on a closed-loop water-cooled chiller. Record the supply and return temperatures and the operating point at the alarm time. Draft an inspection only. This paragraph does not list a failure-code ranking.", "source": "adapted synthetic manual / delta temperature", "version": "adapted-demo-v1"},
+    {"id": "CHILLER-ANOM-01", "device_type": "chiller", "title": "Unnamed chiller anomaly inspection", "body": "If the anomaly name is missing, ask for the alarm label, the time window, and the sensor series before ranking work orders. When the device record exists, an inspection draft may cite this unnamed anomaly inspection paragraph, but the draft must not invent a top-three failure code list.", "source": "adapted synthetic manual / unnamed anomaly", "version": "adapted-demo-v1"},
+    {"id": "CHILLER-VIB-01", "device_type": "chiller", "title": "Vibration spectrum gap", "body": "Vibration failure modes require a vibration spectrum file and a failure-mode catalog. This demo stores neither. Do not draft a work order from a vibration question alone; ask for the spectrum and the catalog.", "source": "adapted synthetic manual / vibration gap", "version": "adapted-demo-v1"}
+  ],
+  "history": [
+    {"id": "DEMO-AOB-009", "device_id": "CWC04009", "summary": "Synthetic closed inspection for chiller 9", "status": "closed", "note": "Adapted synthetic history. Not an AssetOpsBench year extract and not a count of real events."},
+    {"id": "DEMO-AOB-013", "device_id": "CWC04013", "summary": "Synthetic closed inspection for CWC04013", "status": "closed", "note": "Adapted synthetic history. Not the 33 work orders described by AssetOpsBench scenario 400."}
+  ]
+}

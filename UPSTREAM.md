@@ -15,3 +15,15 @@
 新增MaintIE维修文本受理路径，使用作者仓库[nlp-tlp/maintie](https://github.com/nlp-tlp/maintie)的专家标注集，固定提交825e7710e4129598da997276a38b3cb40b200bc2。原始JSON、作者MIT许可和README原字节保存在src/react_agent/data/maintie，manifest记录来源、SHA256与条数。作者论文见[MaintIE，LREC-COLING 2024](https://aclanthology.org/2024.lrec-main.954/)。
 
 本轮未复用作者的模型训练代码，也未声称研发或标注该语料。本项目新增的是文件校验、参考/评估分区、案例索引、DeepSeek顶层实体抽取与计分、受理草稿、审批接口和交付报告。公开案例单独存放，不作为演示设备的真实历史。
+
+## 工具协议与后续公开评测
+
+MCP 服务使用官方 Python SDK `mcp`，MIT 许可。本项目没有改 SDK 源码，只注册了四个已有工具。
+
+AssetOpsBench 来自 IBM，Apache-2.0，固定提交 `e844f6468c6c68b328022e7ca8e31da140842cc7`。话语来自 Hugging Face 数据集 `ibm-research/AssetOpsBench`，修订 `5e25bb7f2cd37fb68b9a9e1f99d170ca5be7ce17`。映射了 IoT、FMSR、Workorder、multiagent 共 129 条；TSFM 23 条未映射。同一提交里的场景小样本放在 `evals/assetopsbench/fixtures/official/`，冷机 6 全时序按清单哈希下载。英文演示手册和 5 条护栏是本项目编写的。出处和许可见 `evals/assetopsbench/NOTICE.md`。
+
+PHMForge 来自 `ibm-research/PHMForge`，CC BY 4.0，修订 `7a7e8a5f140d89c562c0b2f870f500e259237b8e`。99 条场景文本可按需下载，信号归档和场景本身都没有导入本仓库的四个告警工具。
+
+MaintNorm 来自 [nlp-tlp/maintnorm](https://github.com/nlp-tlp/maintnorm)，MIT，固定提交 `e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8`。语料按脚本下载，不放进 Git。论文基线只抄 W-NUT 2024 表 7，见 `evals/maintnorm/BASELINES.md`。少样本例句是本项目编写的，不是从官方测试集抽出来的。
+
+手册稠密检索使用 `intfloat/multilingual-e5-small`（MIT）和 `BAAI/bge-reranker-base`（MIT）。权重由本地脚本下载，不放进 Git。向量索引使用已经列入锁定依赖的 `sqlite-vec`，没有再引入 FAISS。RRF 的定义来自 Cormack、Clarke 与 Buettcher，SIGIR 2009。
